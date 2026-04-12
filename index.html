@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blind Experiences</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bk:#0a0a0a;--wh:#fafafa;--mid:#888}
+html,body{height:100%}body{font-family:'Montserrat',sans-serif;background:var(--bk);color:var(--wh);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.screen{display:none;width:100%;min-height:100vh}.screen.active{display:flex}
+/* Intro */
+.intro{flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--bk)}.intro-inner{padding:2rem;max-width:700px}
+.be-logo{width:80px;height:80px;margin:0 auto 1rem}.be-logo img{width:100%;height:100%;object-fit:contain}
+.be-wm{display:flex;align-items:center;justify-content:center;gap:.15em;font-size:.95rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:3rem}.be-wm span:first-child{font-weight:300}.be-wm span:last-child{font-weight:700}
+.intro h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5.5vw,4rem);font-weight:400;line-height:1.12;margin-bottom:1.5rem;font-style:italic}
+.intro .sub{font-size:.9rem;font-weight:300;color:var(--mid);line-height:1.75;margin-bottom:3rem;max-width:440px;margin-inline:auto}
+/* Trip type */
+.tt{flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--bk);padding:2rem}
+.tt h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.5vw,2.3rem);font-weight:400;font-style:italic;margin-bottom:.5rem}
+.tt .sub{font-size:.78rem;color:var(--mid);font-weight:300;margin-bottom:2.5rem}
+.tc{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;max-width:600px;width:100%}
+.tci{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .3s;aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:1.5rem 1rem}
+.tci:hover{border-color:rgba(255,255,255,.25)}.tci img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.32);transition:transform .5s,filter .3s}.tci:hover img{transform:scale(1.05);filter:brightness(.48)}
+.tci .n{position:relative;z-index:2;font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--wh);text-shadow:0 2px 15px rgba(0,0,0,.8);text-align:center;margin-bottom:.2rem}
+.tci .s{position:relative;z-index:2;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:center}
+.tci.sel{border-color:var(--wh)}.tci.sel::after{content:'';position:absolute;inset:0;border:2px solid var(--wh);z-index:3;pointer-events:none}
+.btn{display:inline-block;padding:.9rem 2.8rem;border:1px solid var(--wh);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .4s}.btn:hover{background:var(--wh);color:var(--bk)}.btn.dis{opacity:.2;pointer-events:none}
+/* Interstitial */
+.inter{position:fixed;inset:0;z-index:100;background:var(--bk);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;pointer-events:none;transition:opacity .4s}.inter.show{opacity:1;pointer-events:all}
+.inter .sn{font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:var(--mid);margin-bottom:1rem;font-weight:600}
+.inter h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:400;font-style:italic;line-height:1.2;margin-bottom:.6rem}
+.inter .ss{font-size:.78rem;color:var(--mid);font-weight:300;max-width:320px}
+/* Choice */
+.cs{flex-direction:column;height:100vh;height:100dvh;background:var(--bk);position:relative;overflow:hidden;user-select:none}
+.ch{position:absolute;top:0;left:0;right:0;padding:1rem 1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:30;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent)}
+.cb{flex:1;height:2px;background:rgba(255,255,255,.1);margin:0 1rem;border-radius:1px;overflow:hidden}.cbf{height:100%;background:var(--wh);transition:width .4s}
+.cm{font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.4);text-transform:uppercase;font-weight:500;white-space:nowrap}
+.csl{position:absolute;top:.85rem;left:50%;transform:translateX(-50%);font-size:.48rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mid);font-weight:600;z-index:31}
+.cp{position:absolute;top:4.2rem;left:50%;transform:translateX(-50%);font-family:'Playfair Display',serif;font-size:clamp(.9rem,2vw,1.25rem);font-weight:400;font-style:italic;color:rgba(255,255,255,.85);z-index:30;text-align:center;width:86%;text-shadow:0 2px 20px rgba(0,0,0,.9)}
+.tb{position:absolute;top:6.3rem;left:50%;transform:translateX(-50%);width:80px;height:2px;background:rgba(255,255,255,.06);border-radius:2px;z-index:30;overflow:hidden}.tbf{height:100%;background:var(--wh);border-radius:2px;width:100%}
+.cw{display:flex;width:100%;height:100%}
+.co{flex:1;position:relative;cursor:pointer;overflow:hidden;transition:flex .25s}.co:hover{flex:1.06}
+.co img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s,filter .3s;filter:brightness(.45)}.co:hover img{transform:scale(1.04);filter:brightness(.65)}
+.co .ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:2rem 1rem 3rem;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.7),transparent 40%)}
+.co .lb{font-family:'Playfair Display',serif;font-size:clamp(1rem,2vw,1.35rem);color:var(--wh);text-shadow:0 2px 18px rgba(0,0,0,.8);text-align:center;margin-bottom:.2rem}
+.co .sl{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:center}
+.cd{position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(255,255,255,.08);z-index:10;transform:translateX(-50%)}
+.cor{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:15;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);font-weight:500}
+.co.fl{animation:gf .35s}@keyframes gf{50%{box-shadow:inset 0 0 0 6px rgba(255,255,255,.4)}}
+/* Info */
+.is{flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:var(--bk);padding:2rem}
+.if{max-width:480px;width:100%}.if h2{font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;margin-bottom:.4rem}.if>p{color:var(--mid);font-size:.82rem;font-weight:300;margin-bottom:2.5rem;line-height:1.6}
+.fd{margin-bottom:1.3rem}.fd label{display:block;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-bottom:.4rem;font-weight:500}
+.fd input,.fd select{width:100%;padding:.8rem 0;background:0 0;border:none;border-bottom:1px solid rgba(255,255,255,.1);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.95rem;font-weight:300;outline:none;transition:border-color .3s}
+.fd input:focus,.fd select:focus{border-bottom-color:var(--wh)}.fd input::placeholder{color:rgba(255,255,255,.15)}
+.fd select{-webkit-appearance:none;appearance:none;cursor:pointer}.fd select option{background:var(--bk);color:var(--wh)}
+.fr{display:flex;gap:1.5rem}.fr .fd{flex:1}
+/* Moodboard */
+.mood{flex-direction:column;min-height:100vh;background:var(--bk)}
+/* Slide = one PDF page (landscape 16:9) */
+.slide{position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:var(--bk)}
+.slide img.hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.4)}
+.slide .ctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;text-align:center;padding:2rem 3rem;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.slide .ctr h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.5vw,2.6rem);font-weight:400;line-height:1.15;margin-bottom:.3rem}
+.slide .ctr .tag{font-size:.75rem;font-weight:300;font-style:italic;color:rgba(255,255,255,.6)}
+.slide .logo-bl{position:absolute;bottom:1.5rem;left:1.5rem;display:flex;align-items:center;gap:.5rem;z-index:2}
+.slide .logo-bl img{width:28px;height:28px}
+.slide .logo-bl span{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;font-weight:300;color:rgba(255,255,255,.6)}
+.slide .logo-bl b{font-weight:700}
+/* Collage slide */
+.slide.collage{padding-bottom:0;height:auto}
+.slide.collage .grid4{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);height:0;padding-bottom:56.25%;position:relative}
+.slide.collage .grid4 img{position:absolute;width:50%;height:50%;object-fit:cover}
+.slide.collage .grid4 img:nth-child(1){top:0;left:0}.slide.collage .grid4 img:nth-child(2){top:0;left:50%}
+.slide.collage .grid4 img:nth-child(3){top:50%;left:0}.slide.collage .grid4 img:nth-child(4){top:50%;left:50%}
+.slide.collage .q{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;text-align:center;padding:1.5rem 2.5rem;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);max-width:70%}
+.slide.collage .q blockquote{font-family:'Playfair Display',serif;font-size:clamp(.9rem,2vw,1.3rem);font-style:italic;line-height:1.5;color:rgba(255,255,255,.85)}
+.slide.collage .logo-sm{position:absolute;bottom:1rem;left:1rem;width:28px;height:28px;z-index:3}
+/* Closing slide */
+.slide.closing .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
+.slide.closing h2{font-family:'Playfair Display',serif;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:400;font-style:italic;line-height:1.4;max-width:500px;margin-bottom:.5rem}
+.slide.closing .sub{font-size:.8rem;color:var(--mid);font-weight:300;margin-bottom:2rem}
+/* Traits */
+.traits{padding:2rem;max-width:460px;margin:0 auto}
+.traits-t{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--mid);margin-bottom:1.5rem;text-align:center;font-weight:600}
+.tr{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.8rem}
+.tl{width:70px;text-align:right;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.tlr{width:70px;text-align:left;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.tbar{width:140px;height:3px;background:rgba(255,255,255,.04);border-radius:2px;overflow:hidden}.tfill{height:100%;background:var(--wh);border-radius:2px}
+/* PDF & Feedback */
+.pdf-bar{text-align:center;padding:1.5rem}
+.btn-pdf{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 2rem;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .3s}.btn-pdf:hover{border-color:var(--wh);color:var(--wh)}.btn-pdf svg{width:14px;height:14px;fill:currentColor}
+.fb{max-width:480px;margin:0 auto;padding:2rem;border-top:1px solid rgba(255,255,255,.04)}
+.fb h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;margin-bottom:.3rem;text-align:center}
+.fb .fbs{font-size:.68rem;color:var(--mid);font-weight:300;margin-bottom:1.5rem;text-align:center}
+.sr{display:flex;align-items:center;justify-content:center;gap:.3rem;margin-bottom:1rem}
+.sb{width:34px;height:34px;border:1px solid rgba(255,255,255,.1);background:0 0;color:rgba(255,255,255,.3);font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:500;cursor:pointer;transition:all .2s}.sb:hover{border-color:rgba(255,255,255,.3);color:var(--wh)}.sb.on{background:var(--wh);color:var(--bk);border-color:var(--wh)}
+.slab{display:flex;justify-content:space-between;max-width:360px;margin:-.5rem auto 1rem;font-size:.45rem;color:rgba(255,255,255,.2);letter-spacing:.08em;text-transform:uppercase}
+.fta{width:100%;min-height:80px;background:0 0;border:1px solid rgba(255,255,255,.06);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:300;padding:.7rem;outline:none;resize:vertical;margin-bottom:1.2rem}.fta:focus{border-color:rgba(255,255,255,.2)}.fta::placeholder{color:rgba(255,255,255,.1)}
+.fbt{text-align:center;padding:1.5rem;font-family:'Playfair Display',serif;font-style:italic;color:var(--mid);font-size:.9rem;display:none}
+.dbg{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.9);color:#0f0;font-family:monospace;font-size:.65rem;padding:.5rem;max-height:120px;overflow:auto;z-index:999;display:none}
+@media(max-width:768px){.cw{flex-direction:column}.cd{top:50%;bottom:auto;left:0;right:0;width:100%;height:1px;transform:translateY(-50%)}.cor{top:50%}.fr{flex-direction:column;gap:0}.tc{grid-template-columns:1fr;max-width:320px}.slide .ctr{padding:1rem 1.5rem}.slide .ctr h1{font-size:clamp(1.1rem,4vw,1.6rem)}}
+</style>
+</head>
+<body>
+
+<iframe name="gas_frame" style="display:none"></iframe>
+<div class="dbg" id="dbg"></div>
+
+<div id="intro" class="screen intro active"><div class="intro-inner">
+  <div class="be-logo"><img src="https://static.wixstatic.com/media/f570c0_afaa964de4a14fdc83f12262afd0fe21~mv2.png/v1/fill/w_176,h_174,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/B%20Only%20grey%20(1).png" alt="B"></div>
+  <div class="be-wm"><span>BLIND</span><span>EXPERIENCES</span></div>
+  <h1>The Less You Know,<br>the More You Feel.</h1>
+  <p class="sub">Pairs of images. 3 seconds each. Pick the one that moves you. We'll craft your secret trip from pure instinct.</p>
+  <button class="btn" onclick="show('triptype')">Begin Your Journey</button>
+</div></div>
+
+<div id="triptype" class="screen tt">
+  <h2>What kind of journey?</h2><div class="sub">Select the experience that speaks to you</div>
+  <div class="tc">
+    <div class="tci" onclick="selTrip(this,'honeymoon')"><img src="https://images.unsplash.com/photo-1439130490301-25e322d88054?w=400&h=300&fit=crop&q=80" alt=""><div class="n">Blind Honeymoon</div><div class="s">Your love story, our secret</div></div>
+    <div class="tci" onclick="selTrip(this,'escape')"><img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=400&h=300&fit=crop&q=80" alt=""><div class="n">Blind Escape</div><div class="s">Family adventures await</div></div>
+    <div class="tci" onclick="selTrip(this,'legacy')"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=300&fit=crop&q=80" alt=""><div class="n">Blind Legacy</div><div class="s">Bond across generations</div></div>
+    <div class="tci" onclick="selTrip(this,'expedition')"><img src="https://images.unsplash.com/photo-1527179528411-4219e0714bcc?w=400&h=300&fit=crop&q=80" alt=""><div class="n">Blind Expedition</div><div class="s">Women only</div></div>
+  </div>
+  <div style="margin-top:2rem"><button class="btn dis" id="btnNext" onclick="startQ()">Continue</button></div>
+</div>
+
+<div class="inter" id="inter"><div class="sn" id="sn"></div><h2 id="st"></h2><div class="ss" id="ss"></div></div>
+
+<div id="choice" class="screen cs">
+  <div class="ch"><span class="cm" id="cnt"></span><div class="cb"><div class="cbf" id="bar" style="width:0%"></div></div><span class="cm" id="stm">3s</span></div>
+  <div class="csl" id="sl"></div><div class="cp" id="pr"></div>
+  <div class="tb"><div class="tbf" id="tbr"></div></div>
+  <div class="cw">
+    <div class="co" id="oA" onclick="pick('A')"><img id="iA" src="" alt=""><div class="ov"><div class="lb" id="lA"></div><div class="sl" id="sA"></div></div></div>
+    <div class="cd"></div><div class="cor">or</div>
+    <div class="co" id="oB" onclick="pick('B')"><img id="iB" src="" alt=""><div class="ov"><div class="lb" id="lB"></div><div class="sl" id="sB"></div></div></div>
+  </div>
+</div>
+
+<div id="info" class="screen is"><div class="if">
+  <h2>Almost there.</h2><p>Tell us who you are so we can start dreaming up your Blind Experience.</p>
+  <div class="fr"><div class="fd"><label>First Name</label><input id="fn" placeholder="Sophia"></div><div class="fd"><label>Last Name</label><input id="ln" placeholder="Laurent"></div></div>
+  <div class="fd"><label>Email</label><input id="em" type="email" placeholder="sophia@email.com"></div>
+  <div class="fd"><label>Phone</label><input id="ph" type="tel" placeholder="+39 333 590 4079"></div>
+  <div class="fr">
+    <div class="fd"><label>Travellers</label><select id="px"><option value="2">2 Couple</option><option value="1">1 Solo</option><option value="3">3-4</option><option value="5">5+</option></select></div>
+    <div class="fd"><label>Duration</label><select id="dur"><option value="weekend">Weekend</option><option value="week">5-7 nights</option><option value="ten">10-14 nights</option><option value="extended">2+ weeks</option></select></div>
+  </div>
+  <button class="btn" style="width:100%;margin-top:1.5rem" onclick="buildMood()">Reveal My Moodboard</button>
+</div></div>
+
+<div id="mood" class="screen mood"></div>
+
+<script>
+var GAS='https://script.google.com/macros/s/AKfycbzN1iRzwnyiFz67IVTlAzUJ_FWwWv7z346VQ1giJgCTbqasZRMMV-swVhybZ0G16aEmdA/exec';
+var DEBUG=location.search.indexOf('debug')>-1;
+function dbg(m){if(DEBUG){var d=document.getElementById('dbg');d.style.display='block';d.innerHTML+=m+'<br>';d.scrollTop=d.scrollHeight}console.log('[BE]',m)}
+
+// Unsplash helper - these work on any live-hosted site
+var I=function(id,w,h){return 'https://images.unsplash.com/'+id+'?w='+w+'&h='+h+'&fit=crop&q=80&auto=format'};
+
+var secs=[
+  {l:"Landscapes",t:"Where your eyes wander",s:"Let the scenery choose you."},
+  {l:"Experiences",t:"What makes you feel alive",s:"Activities, sensations, moments."},
+  {l:"Vibes",t:"The feeling you're after",s:"Atmosphere, energy, mood."},
+  {l:"Intentions",t:"Why you need this trip",s:"What you're really searching for."},
+  {l:"Travel Style",t:"How you like to move",s:"Pace, comfort, rhythm."},
+  {l:"Final Instinct",t:"One last gut feeling",s:"Don't think. Just feel."}
+];
+
+var rounds=[
+{s:0,q:"Where does your heart wander?",
+a:{img:I("photo-1507525428034-b723cf961d3e",800,1200),label:"Sun-kissed shores",sub:"Waves \xb7 sand \xb7 warmth",tags:["beach","tropical","warm","relax"]},
+b:{img:I("photo-1464822759023-fed622ff2c3b",800,1200),label:"Mountain majesty",sub:"Peaks \xb7 trails \xb7 altitude",tags:["mountain","adventure","nature","cold"]}},
+{s:0,q:"Which horizon?",
+a:{img:I("photo-1480714378408-67cf0d13bc1b",800,1200),label:"A vibrant city",sub:"Bustle \xb7 culture \xb7 nightlife",tags:["city","culture","fast","social"]},
+b:{img:I("photo-1448375240586-882707db888b",800,1200),label:"Deep in the wild",sub:"Untouched \xb7 remote",tags:["nature","remote","slow","landscape"]}},
+{s:0,q:"Which water?",
+a:{img:I("photo-1544551763-46a013bb70d5",800,1200),label:"Crystal-clear ocean",sub:"Turquoise \xb7 coral \xb7 tropical",tags:["water","tropical","snorkeling","beach"]},
+b:{img:I("photo-1439066615861-d1af74d74000",800,1200),label:"Misty lakes & rivers",sub:"Stillness \xb7 reflection",tags:["nature","landscape","cold","slow"]}},
+{s:0,q:"Which terrain?",
+a:{img:I("photo-1440342359743-84fcb7c21604",800,1200),label:"Lush jungle",sub:"Dense \xb7 humid \xb7 alive",tags:["jungle","nature","adventure","warm"]},
+b:{img:I("photo-1509316975850-ff9c5deb0cd9",800,1200),label:"Desert dunes",sub:"Vast \xb7 golden \xb7 silence",tags:["desert","remote","landscape","warm"]}},
+{s:1,q:"What feeds your soul?",
+a:{img:I("photo-1504674900247-0877df9cc836",800,1200),label:"Local flavours",sub:"Street food \xb7 spice",tags:["food","culture","discover","local"]},
+b:{img:I("photo-1516426122078-c23e76319801",800,1200),label:"Wildlife encounters",sub:"Safari \xb7 elephant",tags:["animals","safari","nature"]}},
+{s:1,q:"Your kind of thrill?",
+a:{img:I("photo-1507608616759-54f48f0af0ee",800,1200),label:"Soaring above",sub:"Balloon \xb7 helicopter",tags:["balloon","helicopter","adventure","luxury"]},
+b:{img:I("photo-1502680390548-bdbf5e85693e",800,1200),label:"Riding the waves",sub:"Surf \xb7 kayak \xb7 salt",tags:["surfing","water","adventure","active"]}},
+{s:1,q:"How do you discover?",
+a:{img:I("photo-1548013146-72479768bada",800,1200),label:"Ancient wonders",sub:"Temples \xb7 ruins \xb7 history",tags:["culture","history","discover","slow"]},
+b:{img:I("photo-1551632811-561732d1e306",800,1200),label:"Trek the unknown",sub:"Boots \xb7 trails \xb7 summit",tags:["trekking","adventure","nature","active"]}},
+{s:1,q:"Your indulgence?",
+a:{img:I("photo-1506377247377-2a5b3b417ebb",800,1200),label:"Vineyard tasting",sub:"Swirl \xb7 sip \xb7 terroir",tags:["wine","culture","deluxe","slow"]},
+b:{img:I("photo-1555396273-367ea4eb4db5",800,1200),label:"Artisan markets",sub:"Crafts \xb7 treasures",tags:["shopping","culture","local","discover"]}},
+{s:2,q:"The energy you crave?",
+a:{img:I("photo-1414235077428-338989a2e8c0",800,1200),label:"Romantic & intimate",sub:"Candlelight \xb7 whispers",tags:["romantic","intimate","slow","deluxe"]},
+b:{img:I("photo-1514525253161-7a46d19cd819",800,1200),label:"Lively & electric",sub:"Music \xb7 dancing",tags:["social","playful","fast","energy"]}},
+{s:2,q:"Your perfect morning?",
+a:{img:I("photo-1506126613408-eca07ce68773",800,1200),label:"Slow sunrise",sub:"Yoga \xb7 tea \xb7 birdsong",tags:["slow","spiritual","relax"]},
+b:{img:I("photo-1476480862126-209bfaa8edc8",800,1200),label:"Hit the ground running",sub:"Trail \xb7 sweat \xb7 dawn",tags:["active","adventure","fast"]}},
+{s:2,q:"Which night?",
+a:{img:I("photo-1504280390367-361c6d9f38f4",800,1200),label:"Stargazing in silence",sub:"Campfire \xb7 infinite sky",tags:["nature","intimate","slow","remote"]},
+b:{img:I("photo-1517457373958-b7bdd4587205",800,1200),label:"Buzzing night scene",sub:"Street food \xb7 lanterns",tags:["social","culture","local","fast"]}},
+{s:2,q:"How should it feel?",
+a:{img:I("photo-1582719508461-905c673771fd",800,1200),label:"Effortlessly luxurious",sub:"Every detail handled",tags:["deluxe","luxury","comfort","slow"]},
+b:{img:I("photo-1469854523086-cc02fe5d8800",800,1200),label:"Beautifully raw",sub:"Unscripted \xb7 real",tags:["adventure","rustic","discover","authentic"]}},
+{s:3,q:"What brought you here?",
+a:{img:I("photo-1518199266791-5375a83190b7",800,1200),label:"Reconnect",sub:"Quality time \xb7 no distractions",tags:["reconnect","intimate","romantic","slow"]},
+b:{img:I("photo-1499209974431-9dddcece7f88",800,1200),label:"Rediscover myself",sub:"Space \xb7 clarity \xb7 growth",tags:["growth","spiritual","solo","slow"]}},
+{s:3,q:"What do you need?",
+a:{img:I("photo-1520250497591-112f2f40a3f4",800,1200),label:"Escape & recharge",sub:"Leave everything behind",tags:["escape","relax","recharge","slow"]},
+b:{img:I("photo-1530789253388-582c481c54b0",800,1200),label:"Challenge & adrenaline",sub:"Push my edges",tags:["adventure","active","challenge","fast"]}},
+{s:3,q:"When you return \u2014",
+a:{img:I("photo-1544161515-4ab6ce6db874",800,1200),label:"Deeply rested",sub:"Restored \xb7 calm",tags:["relax","recharge","slow","comfort"]},
+b:{img:I("photo-1522163182402-834f871fd851",800,1200),label:"Completely transformed",sub:"New perspective \xb7 brave",tags:["growth","adventure","challenge","discover"]}},
+{s:4,q:"Your ideal pace?",
+a:{img:I("photo-1473580044384-7ba9967e16a0",800,1200),label:"Slow & savouring",sub:"Linger \xb7 absorb",tags:["slow","relax","comfort"]},
+b:{img:I("photo-1533105079780-92b9be482077",800,1200),label:"Packed & thrilling",sub:"See everything",tags:["fast","adventure","active"]}},
+{s:4,q:"Where you sleep?",
+a:{img:I("photo-1566073771259-6a8506099945",800,1200),label:"Boutique luxury",sub:"Design \xb7 elegance",tags:["deluxe","luxury","comfort","hotel"]},
+b:{img:I("photo-1499696010180-025ef6e1a8f9",800,1200),label:"Rustic & unique",sub:"Treehouses \xb7 lodges",tags:["rustic","glamping","nature","authentic"]}},
+{s:4,q:"Getting around?",
+a:{img:I("photo-1449824913935-59a10b8d2000",800,1200),label:"Self-drive freedom",sub:"Open road",tags:["selfdrive","freedom","adventure","discover"]},
+b:{img:I("photo-1528127269322-539152af5929",800,1200),label:"Guided & curated",sub:"Local insights",tags:["guided","comfort","culture","local"]}},
+{s:4,q:"Comfort zone?",
+a:{img:I("photo-1516483638261-f4dbaf036963",800,1200),label:"Familiar & charming",sub:"Easy navigation",tags:["comfort","familiar","guided"]},
+b:{img:I("photo-1493976040374-85c8e12f0c0e",800,1200),label:"Totally foreign",sub:"New alphabet",tags:["discover","adventure","challenge","remote"]}},
+{s:5,q:"Warm or cool?",
+a:{img:I("photo-1510414842594-a61c69b5ae57",800,1200),label:"Tropical heat",sub:"Sun \xb7 palms",tags:["warm","tropical","beach","relax"]},
+b:{img:I("photo-1418985991508-e47386d96a71",800,1200),label:"Crisp mountain air",sub:"Fireplaces \xb7 mist",tags:["cold","mountain","cosy","nature"]}},
+{s:5,q:"Final instinct \u2014",
+a:{img:I("photo-1582719508461-905c673771fd",800,1200),label:"Pure indulgence",sub:"Spoil me",tags:["deluxe","relax","luxury","comfort"]},
+b:{img:I("photo-1530789253388-582c481c54b0",800,1200),label:"Raw adventure",sub:"Push my limits",tags:["adventure","active","challenge","nature"]}}
+];
+
+// Moodboard images (DIFFERENT from quiz, keyed by tag)
+var MI={
+beach:[I("photo-1520454974749-611b7248ffdb",600,400),I("photo-1473116763249-2faaef81ccda",600,400),I("photo-1506953823645-5e93625f5048",600,400),I("photo-1499092346589-b9b6be3e94b2",600,400),I("photo-1471922694854-ff1b63b20054",600,400)],
+tropical:[I("photo-1559128010-7c1ad6e1b6a5",600,400),I("photo-1501785888041-af3ef285b470",600,400),I("photo-1537956965359-7573183d1f57",600,400),I("photo-1546500840-ae38253aba9b",600,400)],
+mountain:[I("photo-1519681393784-d120267933ba",600,400),I("photo-1454496522488-7a8e488e8606",600,400),I("photo-1486870591958-9b9d0d1dda99",600,400),I("photo-1483728642387-6c3bdd6c93e5",600,400)],
+adventure:[I("photo-1528543606781-2f6e6857f318",600,400),I("photo-1533130061792-64b345e4a833",600,400),I("photo-1527004013197-933c4bb611b3",600,400),I("photo-1495954222046-2c427ecb546d",600,400)],
+nature:[I("photo-1470071459604-3b5ec3a7fe05",600,400),I("photo-1441974231531-c6227db76b6e",600,400),I("photo-1472396961693-142e6e269027",600,400),I("photo-1465189684280-6a8fa9b19a7a",600,400)],
+city:[I("photo-1477959858617-67f85cf4f1df",600,400),I("photo-1514565131-fce0801e5785",600,400),I("photo-1444723121867-7a241cacace9",600,400)],
+culture:[I("photo-1558862107-d49ef2a04d72",600,400),I("photo-1512100356356-de1b84283e18",600,400),I("photo-1545569341-9eb8b30979d9",600,400),I("photo-1547981609-4b6bfe67ca0b",600,400)],
+food:[I("photo-1540189549336-e6e99c3679fe",600,400),I("photo-1565299624946-b28f40a0ae38",600,400),I("photo-1482049016688-2d3e1b311543",600,400),I("photo-1414235077428-338989a2e8c0",600,400)],
+deluxe:[I("photo-1571896349842-33c89424de2d",600,400),I("photo-1542314831-068cd1dbfeeb",600,400),I("photo-1520250497591-112f2f40a3f4",600,400),I("photo-1584132967334-10e028bd69f7",600,400)],
+relax:[I("photo-1507652313519-d4e9174996dd",600,400),I("photo-1540555700478-4be289fbec6f",600,400),I("photo-1506126613408-eca07ce68773",600,400)],
+water:[I("photo-1530053969600-caed2596d242",600,400),I("photo-1468413253725-0d5181091126",600,400),I("photo-1505118380757-91f5f5632de0",600,400)],
+discover:[I("photo-1504598318550-17eba1008a68",600,400),I("photo-1528702748617-c64d49f918af",600,400),I("photo-1486299267070-83823f5448dd",600,400)],
+romantic:[I("photo-1529519195486-81e0e6b2add0",600,400),I("photo-1510076857177-7470076d4098",600,400),I("photo-1469371670807-013ccf25f16a",600,400)],
+slow:[I("photo-1505765050516-f72dcac9c60e",600,400),I("photo-1473580044384-7ba9967e16a0",600,400)],
+active:[I("photo-1551632811-561732d1e306",600,400),I("photo-1502680390548-bdbf5e85693e",600,400),I("photo-1476480862126-209bfaa8edc8",600,400)],
+animals:[I("photo-1474511320723-9a56873571b7",600,400),I("photo-1535338454528-1b5c8e9b3e42",600,400),I("photo-1456926631375-92c8ce872def",600,400)],
+warm:[I("photo-1520454974749-611b7248ffdb",600,400),I("photo-1559128010-7c1ad6e1b6a5",600,400),I("photo-1510414842594-a61c69b5ae57",600,400)],
+cold:[I("photo-1519681393784-d120267933ba",600,400),I("photo-1418985991508-e47386d96a71",600,400),I("photo-1483728642387-6c3bdd6c93e5",600,400)]
+};
+var HI={beach:I("photo-1520454974749-611b7248ffdb",1400,800),tropical:I("photo-1559128010-7c1ad6e1b6a5",1400,800),mountain:I("photo-1519681393784-d120267933ba",1400,800),adventure:I("photo-1528543606781-2f6e6857f318",1400,800),nature:I("photo-1470071459604-3b5ec3a7fe05",1400,800),city:I("photo-1477959858617-67f85cf4f1df",1400,800),culture:I("photo-1558862107-d49ef2a04d72",1400,800),food:I("photo-1540189549336-e6e99c3679fe",1400,800),deluxe:I("photo-1571896349842-33c89424de2d",1400,800),relax:I("photo-1507652313519-d4e9174996dd",1400,800),water:I("photo-1530053969600-caed2596d242",1400,800),discover:I("photo-1504598318550-17eba1008a68",1400,800),romantic:I("photo-1529519195486-81e0e6b2add0",1400,800),slow:I("photo-1505765050516-f72dcac9c60e",1400,800),active:I("photo-1551632811-561732d1e306",1400,800),animals:I("photo-1474511320723-9a56873571b7",1400,800),warm:I("photo-1510414842594-a61c69b5ae57",1400,800),cold:I("photo-1519681393784-d120267933ba",1400,800),intimate:I("photo-1529519195486-81e0e6b2add0",1400,800),comfort:I("photo-1571896349842-33c89424de2d",1400,800)};
+
+var tot=rounds.length,cur=0,ch=[],tI,tO,lSec=-1,trip='',fbs=0,pid='';
+var logoUrl='https://static.wixstatic.com/media/f570c0_afaa964de4a14fdc83f12262afd0fe21~mv2.png/v1/fill/w_88,h_87,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/B%20Only%20grey%20(1).png';
+
+function pl(n){if(n>=tot)return;[rounds[n].a.img,rounds[n].b.img].forEach(function(s){var i=new Image();i.src=s})}
+pl(0);pl(1);pl(2);
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById(id).classList.add('active')}
+function selTrip(el,t){document.querySelectorAll('.tci').forEach(function(c){c.classList.remove('sel')});el.classList.add('sel');trip=t;document.getElementById('btnNext').classList.remove('dis')}
+function showI(si,cb){var s=secs[si];document.getElementById('sn').textContent='Part '+(si+1)+' of '+secs.length;document.getElementById('st').textContent=s.t;document.getElementById('ss').textContent=s.s;document.getElementById('inter').classList.add('show');setTimeout(function(){document.getElementById('inter').classList.remove('show');cb()},1800)}
+function startQ(){cur=0;ch=[];lSec=-1;show('choice');ld()}
+function ld(){if(cur>=tot){show('info');return}if(rounds[cur].s!==lSec){lSec=rounds[cur].s;showI(rounds[cur].s,function(){lr()});return}lr()}
+function lr(){if(cur>=tot){show('info');return}var r=rounds[cur];pl(cur+1);pl(cur+2);document.getElementById('sl').textContent=secs[r.s].l;document.getElementById('pr').textContent=r.q;document.getElementById('iA').src=r.a.img;document.getElementById('lA').textContent=r.a.label;document.getElementById('sA').textContent=r.a.sub;document.getElementById('iB').src=r.b.img;document.getElementById('lB').textContent=r.b.label;document.getElementById('sB').textContent=r.b.sub;document.getElementById('cnt').textContent=(cur+1)+' / '+tot;document.getElementById('bar').style.width=(cur/tot*100)+'%';var tb=document.getElementById('tbr');tb.style.transition='none';tb.style.width='100%';void tb.offsetWidth;tb.style.transition='width 3s linear';tb.style.width='0%';var t=3;document.getElementById('stm').textContent='3s';clearInterval(tI);clearTimeout(tO);tI=setInterval(function(){t--;document.getElementById('stm').textContent=t+'s';if(t<=0)clearInterval(tI)},1000);tO=setTimeout(function(){pick(Math.random()>.5?'A':'B',true)},3100)}
+function pick(side,auto){clearInterval(tI);clearTimeout(tO);var r=rounds[cur],d=side==='A'?r.a:r.b;ch.push({tags:d.tags,label:d.label,s:r.s,auto:!!auto});document.getElementById(side==='A'?'oA':'oB').classList.add('fl');setTimeout(function(){document.getElementById('oA').classList.remove('fl');document.getElementById('oB').classList.remove('fl')},350);document.getElementById('bar').style.width=((cur+1)/tot*100)+'%';setTimeout(function(){cur++;ld()},420)}
+
+// === BACKEND: 3 parallel methods ===
+function sendGAS(data){
+  dbg('Sending to GAS: '+data.action);
+  // Method 1: Hidden form
+  try{
+    var f=document.createElement('form');f.method='POST';f.action=GAS;f.target='gas_frame';
+    var inp=document.createElement('input');inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(data);
+    f.appendChild(inp);document.body.appendChild(f);f.submit();setTimeout(function(){f.remove()},2000);
+    dbg('Form submitted');
+  }catch(e){dbg('Form err: '+e)}
+  // Method 2: Fetch
+  try{
+    fetch(GAS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(data)}).then(function(){dbg('Fetch OK')}).catch(function(e){dbg('Fetch err: '+e)});
+  }catch(e){dbg('Fetch err: '+e)}
+  // Method 3: Beacon
+  try{
+    navigator.sendBeacon(GAS,new Blob([JSON.stringify(data)],{type:'text/plain'}));
+    dbg('Beacon sent');
+  }catch(e){dbg('Beacon err: '+e)}
+}
+
+function getImgs(tags,n){var imgs=[],u={},idx=0;while(imgs.length<n&&idx<100){var tag=tags[idx%tags.length];var pool=MI[tag]||[];var p=pool[Math.floor(idx/tags.length)%pool.length];if(p&&!u[p]){u[p]=1;imgs.push(p)}idx++}if(imgs.length<n){var all=Object.values(MI).flat();for(var i=0;i<all.length&&imgs.length<n;i++){if(!u[all[i]]){u[all[i]]=1;imgs.push(all[i])}}}return imgs.slice(0,n)}
+
+function buildMood(){
+  var fn=document.getElementById('fn').value.trim(),ln=document.getElementById('ln').value.trim();
+  var em=document.getElementById('em').value.trim(),phone=document.getElementById('ph').value.trim();
+  var pax=document.getElementById('px').value,dur=document.getElementById('dur').value;
+  if(!fn||!em){alert('Please fill in name and email.');return}
+
+  var tc={};ch.forEach(function(c){c.tags.forEach(function(t){tc[t]=(tc[t]||0)+1})});
+  var sorted=Object.entries(tc).sort(function(a,b){return b[1]-a[1]});
+  var top=sorted.slice(0,8).map(function(e){return e[0]});
+  var topTag=top[0]||'adventure';
+  var sp=function(a,b){var x=tc[a]||0,y=tc[b]||0,t=x+y||1;return Math.round(x/t*100)};
+  var traits=[{l:"Relaxation",r:"Adventure",p:sp('relax','adventure')},{l:"Slow",r:"Fast",p:sp('slow','fast')},{l:"Intimate",r:"Social",p:sp('intimate','social')},{l:"Luxury",r:"Rustic",p:sp('deluxe','rustic')},{l:"Warm",r:"Cold",p:sp('warm','cold')},{l:"Familiar",r:"Foreign",p:sp('comfort','discover')}];
+
+  var quotes={adventure:"Life begins at the edge of your comfort zone.",nature:"In every walk with nature, one receives far more than they seek.",relax:"Almost everything will work again if you unplug it for a few minutes.",culture:"Travel makes one modest.",deluxe:"Luxury is the moments that take your breath away.",discover:"The real voyage of discovery consists in having new eyes.",beach:"The ocean stirs the heart and inspires the imagination.",intimate:"The best thing to hold onto in life is each other.",growth:"We travel not to escape life, but for life not to escape us.",slow:"There is more to life than increasing its speed.",active:"The world is a book, and those who do not travel read only one page."};
+  var quote=quotes[topTag]||quotes.adventure;
+  var tripL={honeymoon:'Blind Honeymoon',escape:'Blind Escape',legacy:'Blind Legacy',expedition:'Blind Expedition'};
+  var typeM={adventure:'Adventure Expedition',nature:'Nature Immersion',relax:'Sanctuary Retreat',culture:'Cultural Discovery',deluxe:'Luxury Escape',discover:"Explorer\u2019s Journey",beach:'Coastal Paradise',food:'Culinary Journey',animals:'Safari',mountain:'Alpine Expedition',intimate:'Intimate Escape',romantic:'Romantic Journey',growth:'Transformational Journey',slow:'Slow Travel',active:'Active Adventure',warm:'Tropical Getaway',cold:'Alpine Retreat'};
+  var expType=typeM[topTag]||'Experience';
+  var gImgs=getImgs(top,16);
+  var hero=HI[topTag]||HI.adventure;
+
+  pid='p_'+Date.now();
+  var pd={action:'profile',id:pid,timestamp:new Date().toISOString(),tripType:trip,name:fn+' '+ln,email:em,phone:phone,travellers:pax,duration:dur,experienceType:expType,topTags:top,tagBreakdown:tc,spectrum:traits.map(function(t){return{left:t.l,right:t.r,pct:t.p}}),choices:ch.map(function(c){return{label:c.label,tags:c.tags,auto:c.auto}}),autoPicks:ch.filter(function(c){return c.auto}).length};
+  sendGAS(pd);
+
+  var bLogo='<div class="logo-bl"><img src="'+logoUrl+'" alt="B"><span>BLIND<b>EXPERIENCES</b></span></div>';
+  var sLogo='<img class="logo-sm" src="'+logoUrl+'" alt="B">';
+  var scoreBtns='';for(var i=1;i<=10;i++)scoreBtns+='<button class="sb" onclick="setS('+i+')">'+i+'</button>';
+
+  document.getElementById('mood').innerHTML=
+    // Slide 1: Hero
+    '<div class="slide" id="s1"><img class="hero" src="'+hero+'" alt="" crossorigin="anonymous">'+
+    '<div class="ctr"><h1>'+fn+'\u2019s '+tripL[trip]+'</h1><div class="tag">'+expType+' \xb7 Your surprise trip awaits.</div></div>'+bLogo+'</div>'+
+    // Slide 2: Quote + 4 images
+    '<div class="slide collage" id="s2"><div class="grid4">'+gImgs.slice(0,4).map(function(u){return '<img src="'+u+'" alt="" crossorigin="anonymous">'}).join('')+'</div>'+
+    '<div class="q"><blockquote>\u201C'+quote+'\u201D</blockquote></div>'+sLogo+'</div>'+
+    // Slide 3: 4 images + quote
+    '<div class="slide collage" id="s3"><div class="grid4">'+gImgs.slice(4,8).map(function(u){return '<img src="'+u+'" alt="" crossorigin="anonymous">'}).join('')+'</div>'+
+    '<div class="q"><blockquote>\u201CThe less you know, the more you feel.\u201D</blockquote></div>'+sLogo+'</div>'+
+    // Slide 4: 4 images + quote
+    '<div class="slide collage" id="s4"><div class="grid4">'+gImgs.slice(8,12).map(function(u){return '<img src="'+u+'" alt="" crossorigin="anonymous">'}).join('')+'</div>'+
+    '<div class="q"><blockquote>\u201CTraveling is the perfect way to embrace transformation.\u201D</blockquote></div>'+sLogo+'</div>'+
+    // Slide 5: 4 images + spectrum
+    '<div class="slide collage" id="s5"><div class="grid4">'+gImgs.slice(12,16).map(function(u){return '<img src="'+u+'" alt="" crossorigin="anonymous">'}).join('')+'</div>'+
+    '<div class="q"><blockquote>\u201CAll journeys have secret destinations of which the traveler is unaware.\u201D<br><small>\u2014 Martin Buber</small></blockquote></div>'+sLogo+'</div>'+
+    // Slide 6: Closing
+    '<div class="slide closing" id="s6"><img class="hero" src="'+hero+'" alt="" crossorigin="anonymous" style="filter:brightness(.25)">'+
+    '<div class="inner"><h2>We can\u2019t wait to start planning your magical '+tripL[trip]+'.</h2><div class="sub">We are ready when you are.</div>'+
+    '<div class="brand"><div class="brand-logo" style="width:40px;height:40px"><img src="'+logoUrl+'" alt="B" style="width:100%;height:100%"></div><div class="brand-t" style="font-size:.85rem;letter-spacing:.2em">BLIND<b>EXPERIENCES</b></div></div></div></div>'+
+    // Spectrum (below slides, on-screen only)
+    '<div class="traits"><div class="traits-t">Your Travel Spectrum</div>'+traits.map(function(t){return '<div class="tr"><span class="tl">'+t.l+'</span><div class="tbar"><div class="tfill" style="width:'+t.p+'%"></div></div><span class="tlr">'+t.r+'</span></div>'}).join('')+'</div>'+
+    // PDF download
+    '<div class="pdf-bar"><button class="btn-pdf" id="btnPdf" onclick="dlPDF()"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download Moodboard as PDF</button></div>'+
+    // Feedback
+    '<div class="fb" id="fbBox"><h3>How well does this reflect you?</h3><div class="fbs">Rate this moodboard and help us improve.</div>'+
+    '<div class="sr">'+scoreBtns+'</div><div class="slab"><span>Not at all</span><span>Perfectly</span></div>'+
+    '<textarea class="fta" id="fbTxt" placeholder="What resonated? What felt off? Any specific wishes?"></textarea>'+
+    '<button class="btn" style="width:100%" onclick="subFb()">Submit Feedback</button>'+
+    '<div class="fbt" id="fbThx">Thank you! Your feedback helps us craft the perfect experience.</div></div>';
+  show('mood');
+}
+
+function setS(n){fbs=n;document.querySelectorAll('.sb').forEach(function(b,i){b.classList.toggle('on',i<n)})}
+function subFb(){
+  var txt=document.getElementById('fbTxt').value.trim();
+  sendGAS({action:'feedback',profileId:pid,score:fbs,text:txt,timestamp:new Date().toISOString()});
+  document.getElementById('fbBox').querySelectorAll('button,.sr,.slab,.fta,.fbs').forEach(function(el){el.style.display='none'});
+  document.getElementById('fbThx').style.display='block';
+}
+
+// Multi-page PDF (one page per slide)
+async function dlPDF(){
+  var btn=document.getElementById('btnPdf');btn.textContent='Generating PDF...';
+  try{
+    var jsPDF=window.jspdf.jsPDF;
+    var pdf=new jsPDF('l','mm','a4'); // landscape
+    var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();
+    var slides=document.querySelectorAll('.slide');
+    // Wait for all images
+    var allImgs=document.querySelectorAll('.slide img');
+    await Promise.all(Array.from(allImgs).map(function(img){return img.complete?Promise.resolve():new Promise(function(r){img.onload=r;img.onerror=r})}));
+    for(var i=0;i<slides.length;i++){
+      if(i>0)pdf.addPage();
+      var canvas=await html2canvas(slides[i],{useCORS:true,allowTaint:true,scale:2,backgroundColor:'#0a0a0a'});
+      var ratio=canvas.width/canvas.height;
+      var imgW=pw,imgH=pw/ratio;
+      if(imgH>ph){imgH=ph;imgW=ph*ratio}
+      var x=(pw-imgW)/2,y=(ph-imgH)/2;
+      pdf.addImage(canvas.toDataURL('image/jpeg',.92),'JPEG',x,y,imgW,imgH);
+    }
+    pdf.save('BlindExperiences-Moodboard.pdf');
+  }catch(e){console.error(e);alert('Fallback: use right-click > Print > Save as PDF')}
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download Moodboard as PDF';
+}
+
+// Test function - call from browser console: testBackend()
+window.testBackend=function(){
+  dbg('Testing backend...');
+  sendGAS({action:'profile',id:'test_'+Date.now(),timestamp:new Date().toISOString(),tripType:'test',name:'Test User',email:'test@test.com',phone:'',travellers:'2',duration:'week',experienceType:'Test',topTags:['beach','adventure'],tagBreakdown:{beach:5,adventure:3},spectrum:[{left:'Relax',right:'Adventure',pct:60}],choices:[{label:'Test',tags:['beach'],auto:false}],autoPicks:0});
+  alert('Test data sent! Check your Google Sheet in 10 seconds.');
+};
+</script>
+</body>
+</html>
