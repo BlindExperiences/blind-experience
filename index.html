@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blind Experiences</title>
+<title>Blind Experiences — Create Your Moodboard</title>
 <meta property="og:title" content="Create Your Blind Experiences Moodboard">
 <meta property="og:description" content="Discover your perfect surprise trip through visual instinct. The less you know, the more you feel.">
-<meta property="og:image" content="https://static.wixstatic.com/media/f570c0_afaa964de4a14fdc83f12262afd0fe21~mv2.png/v1/fill/w_176,h_174,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/B%20Only%20grey%20(1).png">
+<meta property="og:image" content="https://static.wixstatic.com/media/f570c0_8e896edc30b74b26b9c27e7d8a4bfbf8~mv2.jpg/v1/fill/w_1200,h_630/blindexperiences-og.jpg">
 <meta property="og:url" content="https://blindexperiences.github.io/blind-experience/">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -20,6 +19,9 @@
 .be-logo{width:90px;height:90px;margin:0 auto 1.2rem}.be-logo img{width:100%;height:100%;object-fit:contain}
 .be-wm{display:flex;align-items:center;justify-content:center;gap:.15em;font-size:1rem;letter-spacing:.24em;text-transform:uppercase;margin-bottom:3rem}.be-wm span:first-child{font-weight:300}.be-wm span:last-child{font-weight:700}
 .intro h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:400;line-height:1.1;margin-bottom:2.5rem;font-style:italic}
+.social-banner{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:1.5rem 2rem;text-align:center;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+.social-banner p{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:rgba(255,255,255,.75);margin-bottom:.8rem;line-height:1.6}
+.social-banner small{font-size:.7rem;color:var(--mid);letter-spacing:.08em}
 .btn{display:inline-block;padding:1rem 3rem;border:1px solid var(--wh);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .4s}.btn:hover{background:var(--wh);color:var(--bk)}.btn.dis{opacity:.2;pointer-events:none}
 .ethos{flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--bk);padding:2.5rem}
 .ethos-inner{max-width:580px}
@@ -40,37 +42,37 @@
 .inter .sn{font-size:.9rem;letter-spacing:.25em;text-transform:uppercase;color:var(--mid);margin-bottom:1.2rem;font-weight:600}
 .inter h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:400;font-style:italic;line-height:1.2;margin-bottom:.8rem}
 .inter .ss{font-size:.95rem;color:var(--mid);font-weight:300;max-width:380px;line-height:1.7}
-/* SLIDER SCREEN — no timer */
+/* SLIDER SCREEN */
 .qs{flex-direction:column;height:100vh;height:100dvh;background:var(--bk);position:relative;overflow:hidden;user-select:none}
 .qsh{position:absolute;top:0;left:0;right:0;padding:1rem 1.5rem 1.5rem;display:flex;align-items:center;justify-content:space-between;z-index:30;background:linear-gradient(to bottom,rgba(0,0,0,.9),transparent)}
 .qsh .meta{font-size:.65rem;letter-spacing:.15em;color:rgba(255,255,255,.45);text-transform:uppercase;font-weight:500}
 .qsh .qpbar{flex:1;height:2px;background:rgba(255,255,255,.1);margin:0 1rem}.qsh .qpbf{height:100%;background:var(--wh);transition:width .4s}
 .qsq{position:absolute;top:3.5rem;left:50%;transform:translateX(-50%);font-family:'Playfair Display',serif;font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:400;font-style:italic;color:rgba(255,255,255,.92);z-index:30;text-align:center;width:90%;text-shadow:0 2px 20px rgba(0,0,0,.9)}
-/* Images — text centred, section label at bottom */
 .qsimg{display:flex;position:absolute;top:0;left:0;right:0;bottom:150px}
 .qsopt{position:relative;overflow:hidden;cursor:pointer;transition:flex .5s ease;flex:1}
 .qsopt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:filter .4s}
 .qsopt .darkfade{position:absolute;inset:0;background:rgba(0,0,0,.38);transition:background .4s}
-.qsopt .lay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;padding-bottom:3rem}
+.qsopt .lay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;padding-bottom:2rem}
 .qsopt .pct{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,7vw,5.5rem);font-weight:400;color:var(--wh);text-shadow:0 4px 30px rgba(0,0,0,.95);line-height:1;margin-bottom:.6rem;transition:all .3s}
 .qsopt .lbl{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,2.2vw,1.5rem);color:var(--wh);text-shadow:0 2px 20px rgba(0,0,0,.9);text-align:center;margin-bottom:.3rem;padding:0 1rem}
 .qsopt .slb{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9);padding:0 1.5rem}
-/* Section label — bottom of images */
 .qssec{position:absolute;bottom:152px;left:0;right:0;z-index:25;text-align:center;padding:.5rem 1rem;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.7))}
 .qssec span{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:600}
-/* Slider panel */
-.qsslide{position:absolute;bottom:0;left:0;right:0;height:150px;padding:1.2rem 2.5rem 1.4rem;z-index:20;background:rgba(0,0,0,.9);display:flex;flex-direction:column;justify-content:space-between}
+.qsslide{position:absolute;bottom:0;left:0;right:0;height:150px;padding:1rem 2rem 1rem;z-index:20;background:rgba(0,0,0,.92);display:flex;flex-direction:column;justify-content:space-between}
 .qsaxis{display:flex;justify-content:space-between;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:600}
 .qsbar-wrap{position:relative;width:100%;height:44px;display:flex;align-items:center}
-.qsbar{width:100%;height:3px;background:rgba(255,255,255,.15);border-radius:3px;position:relative}
+.qsbar{width:100%;height:3px;background:rgba(255,255,255,.15);border-radius:3px}
 .qsbar-fill{position:absolute;top:0;left:0;height:100%;background:var(--wh);border-radius:3px;width:50%;transition:width .12s}
-.qsthumb{position:absolute;width:24px;height:24px;background:var(--wh);border-radius:50%;box-shadow:0 0 0 2px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.8);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;transition:left .12s,box-shadow .2s}
+.qsthumb{position:absolute;width:24px;height:24px;background:var(--wh);border-radius:50%;box-shadow:0 0 0 2px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.8);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;transition:left .12s}
 .qsthumb.touched{box-shadow:0 0 0 10px rgba(255,255,255,.12),0 4px 16px rgba(0,0,0,.8)}
 .qsbar-wrap input[type=range]{position:absolute;width:100%;height:44px;opacity:0;cursor:pointer;z-index:5;margin:0}
-.qsbottom{display:flex;align-items:center;justify-content:space-between}
-.qshint{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)}
-.qscbtn{padding:.7rem 2rem;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.35);font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;background:0 0;cursor:not-allowed;transition:all .3s}
+/* Back + Continue on same row */
+.qsactions{display:flex;align-items:center;justify-content:space-between;gap:.8rem}
+.back-btn{display:none;align-items:center;gap:.35rem;padding:.65rem 1.4rem;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.45);font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .3s}.back-btn:hover{border-color:rgba(255,255,255,.4);color:var(--wh)}.back-btn.vis{display:flex}
+.qshint{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);flex:1;text-align:center}
+.qscbtn{padding:.65rem 1.8rem;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.35);font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;background:0 0;cursor:not-allowed;transition:all .3s}
 .qscbtn.ready{border-color:var(--wh);color:var(--wh);cursor:pointer}.qscbtn.ready:hover{background:var(--wh);color:var(--bk)}
+/* INFO */
 .is{flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:var(--bk);padding:2rem}
 .ifo{max-width:480px;width:100%}.ifo h2{font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;margin-bottom:.4rem}.ifo>p{color:var(--mid);font-size:.85rem;font-weight:300;margin-bottom:2.5rem;line-height:1.6}
 .fd{margin-bottom:1.3rem}.fd label{display:block;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-bottom:.4rem;font-weight:500}
@@ -78,6 +80,7 @@
 .fd input:focus,.fd select:focus{border-bottom-color:var(--wh)}.fd input::placeholder{color:rgba(255,255,255,.15)}
 .fd select{-webkit-appearance:none;appearance:none;cursor:pointer}.fd select option{background:var(--bk);color:var(--wh)}
 .fr{display:flex;gap:1.5rem}.fr .fd{flex:1}
+/* MOODBOARD */
 .mood{flex-direction:column;min-height:100vh;background:var(--bk)}
 .sl{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#0a0a0a}
 .sl.cover img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.4)}
@@ -86,21 +89,24 @@
 .sl.cover .cb .tag{font-size:.85rem;font-weight:300;font-style:italic;color:rgba(255,255,255,.65)}
 .sl .blogo{position:absolute;bottom:1.2rem;left:1.5rem;display:flex;align-items:center;gap:.5rem;z-index:3}
 .sl .blogo img{width:26px;height:26px}.sl .blogo span{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:300}.sl .blogo b{font-weight:700}
+/* Mosaic grid — use background-image for html2canvas compatibility */
 .sl .grid{position:absolute;inset:0;display:grid;gap:3px}
 .grid.gA{grid-template-columns:62% 38%;grid-template-rows:1fr 1fr}.grid.gA .gi:nth-child(1){grid-row:1/3}
-.grid.gB{grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr}
-.grid.gC{grid-template-columns:1fr 1fr;grid-template-rows:62% 38%}.grid.gC .gi:nth-child(1){grid-column:1/3}
+.grid.gB{grid-template-columns:1fr 1fr 1fr}.grid.gB .gi{min-height:0}
+.grid.gC{grid-template-columns:1fr 1fr;grid-template-rows:60% 40%}.grid.gC .gi:nth-child(1){grid-column:1/3}
 .grid.gD{grid-template-columns:38% 62%;grid-template-rows:1fr 1fr}.grid.gD .gi:nth-child(3){grid-row:1/3;grid-column:2}
-.grid .gi{overflow:hidden}.grid .gi img{width:100%;height:100%;object-fit:cover;display:block}
+.grid .gi{overflow:hidden;background:#111;background-size:cover;background-position:center}
 .sl .qo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;text-align:center;padding:2rem 3rem;background:rgba(0,0,0,.78);backdrop-filter:blur(10px);max-width:58%}
 .sl .qo blockquote{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,2.2vw,1.6rem);font-style:italic;line-height:1.6;color:rgba(255,255,255,.95)}
 .sl.closing img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.12)}
 .sl.closing .ci{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.5rem}
-.sl.closing h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.2vw,2.2rem);font-weight:400;font-style:italic;line-height:1.4;max-width:520px;margin-bottom:.6rem;color:#ffffff;text-shadow:0 2px 20px rgba(0,0,0,.8)}
-.sl.closing .cs{font-size:.9rem;color:rgba(255,255,255,.8);font-weight:300;margin-bottom:2rem;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.sl.closing h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.2vw,2.2rem);font-weight:400;font-style:italic;line-height:1.4;max-width:520px;margin-bottom:.6rem;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.8)}
+.sl.closing .cs{font-size:.9rem;color:rgba(255,255,255,.8);font-weight:300;margin-bottom:1.5rem}
+.sl.closing .share-url{font-size:.7rem;letter-spacing:.12em;color:rgba(255,255,255,.5);margin-bottom:2rem}
 .sl.closing .brand{display:flex;align-items:center;justify-content:center;gap:.8rem}
 .sl.closing .brand img{width:44px;height:44px}
 .sl.closing .brand-t{font-size:.95rem;letter-spacing:.22em;text-transform:uppercase;font-weight:300;color:rgba(255,255,255,.9)}
+/* TRAITS */
 .traits{padding:2.5rem 2rem;max-width:580px;margin:0 auto}
 .traits-t{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--mid);margin-bottom:1.8rem;text-align:center;font-weight:600}
 .tr{display:flex;align-items:center;gap:.7rem;margin-bottom:1rem}
@@ -109,34 +115,31 @@
 .tbar{width:200px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;flex-shrink:0}
 .tfill{height:100%;background:var(--wh);border-radius:2px}
 .tpct{width:34px;text-align:center;font-size:.62rem;color:rgba(255,255,255,.5);font-weight:500;flex-shrink:0}
-.pdf-bar{text-align:center;padding:1.5rem}
-.btn-pdf{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 2.2rem;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55);font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .3s}.btn-pdf:hover{border-color:var(--wh);color:var(--wh)}.btn-pdf svg{width:14px;height:14px;fill:currentColor}
-.fb{max-width:520px;margin:0 auto;padding:2.5rem 2rem;border-top:1px solid rgba(255,255,255,.06)}
+/* SHARE + PDF — prominent, before feedback */
+.action-bar{max-width:560px;margin:0 auto;padding:2rem 2rem 1rem;display:flex;flex-direction:column;gap:1.2rem}
+.pdf-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.95rem 2rem;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .3s}.pdf-btn:hover{border-color:var(--wh);color:var(--wh)}.pdf-btn svg{width:15px;height:15px;fill:currentColor}
+.share-label{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--mid);text-align:center;font-weight:600}
+.share-row{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}
+.sh-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.75rem 1.5rem;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .3s}
+.sh-btn:hover{color:var(--wh)}.sh-btn.fb:hover{border-color:#1877f2;color:#1877f2}.sh-btn.li:hover{border-color:#0a66c2;color:#0a66c2}.sh-btn.ig:hover{border-color:#e1306c;color:#e1306c}
+.share-msg{text-align:center;font-size:.7rem;color:rgba(255,255,255,.22);font-style:italic;padding:0 2rem}
+/* FEEDBACK */
+.fb{max-width:520px;margin:0 auto;padding:1.5rem 2rem 2.5rem;border-top:1px solid rgba(255,255,255,.06)}
 .fb h3{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;margin-bottom:.5rem;text-align:center}
 .fb .fbs{font-size:.9rem;color:var(--mid);font-weight:300;margin-bottom:2rem;text-align:center;line-height:1.6}
 .sr{display:flex;align-items:center;justify-content:center;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap}
 .sb{width:40px;height:40px;border:1px solid rgba(255,255,255,.12);background:0 0;color:rgba(255,255,255,.35);font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s}.sb:hover{border-color:rgba(255,255,255,.35);color:var(--wh)}.sb.on{background:var(--wh);color:var(--bk);border-color:var(--wh)}
 .slab{display:flex;justify-content:space-between;max-width:420px;margin:-.6rem auto 1.5rem;font-size:.6rem;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase}
 .fta{width:100%;min-height:100px;background:0 0;border:1px solid rgba(255,255,255,.08);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.95rem;font-weight:300;padding:.9rem;outline:none;resize:vertical;margin-bottom:1.5rem}.fta:focus{border-color:rgba(255,255,255,.25)}.fta::placeholder{color:rgba(255,255,255,.12)}
-
-.back-btn{position:absolute;top:1rem;left:1.5rem;z-index:35;background:0 0;border:none;color:rgba(255,255,255,.45);font-family:'Montserrat',sans-serif;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;padding:.3rem .5rem;transition:color .2s;display:none}.back-btn:hover{color:var(--wh)}.back-btn.vis{display:flex;align-items:center;gap:.4rem}
-.share-wrap{max-width:520px;margin:0 auto;padding:2rem 2rem;border-top:1px solid rgba(255,255,255,.06)}
-.share-wrap h3{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;margin-bottom:.4rem;text-align:center}
-.share-wrap p{font-size:.88rem;color:var(--mid);font-weight:300;margin-bottom:1.8rem;text-align:center;line-height:1.6}
-.share-btns{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem}
-.share-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .3s;text-decoration:none}.share-btn:hover{border-color:var(--wh);color:var(--wh)}
-.share-btn.fb:hover{border-color:#1877f2;color:#1877f2}.share-btn.li:hover{border-color:#0a66c2;color:#0a66c2}.share-btn.ig:hover{border-color:#e1306c;color:#e1306c}
-.share-note{text-align:center;font-size:.72rem;color:rgba(255,255,255,.25);font-style:italic}
-.social-banner{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:1.8rem 2rem;text-align:center;margin-bottom:2.5rem}
-.social-banner p{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:rgba(255,255,255,.7);margin-bottom:1rem;line-height:1.6}
 .fbt{text-align:center;padding:2rem;font-family:'Playfair Display',serif;font-style:italic;color:var(--mid);font-size:1.1rem;display:none}
-@media(max-width:768px){.fr{flex-direction:column;gap:0}.tc{grid-template-columns:1fr;max-width:440px}.qsimg{bottom:140px}.qsslide{height:140px;padding:1rem 1.5rem 1.1rem}.qssec{bottom:142px}.qsopt .pct{font-size:2.8rem}.qsopt .lbl{font-size:1rem}.sl.cover .cb{padding:1.2rem 1.5rem}.sl.cover .cb h1{font-size:clamp(1.2rem,5vw,1.8rem)}.sl .qo{max-width:80%;padding:1.2rem 1.5rem}.tbar{width:120px}}
+@media(max-width:768px){.fr{flex-direction:column;gap:0}.tc{grid-template-columns:1fr;max-width:440px}.qsimg{bottom:140px}.qsslide{height:140px}.qssec{bottom:142px}.qsopt .pct{font-size:2.8rem}.qsopt .lbl{font-size:1rem}.sl.cover .cb{padding:1.2rem 1.5rem}.sl.cover .cb h1{font-size:clamp(1.2rem,5vw,1.8rem)}.sl .qo{max-width:80%;padding:1.2rem 1.5rem}.tbar{width:120px}.share-row{gap:.5rem}.sh-btn{padding:.65rem 1rem;font-size:.58rem}}
 </style>
 </head>
 <body>
 <iframe name="gas_frame" style="display:none"></iframe>
 
 <div id="intro" class="screen intro active"><div class="intro-inner">
+  <div id="socialBanner"></div>
   <div class="be-logo"><img src="https://static.wixstatic.com/media/f570c0_afaa964de4a14fdc83f12262afd0fe21~mv2.png/v1/fill/w_176,h_174,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/B%20Only%20grey%20(1).png" alt="B"></div>
   <div class="be-wm"><span>BLIND</span><span>EXPERIENCES</span></div>
   <h1>The Less You Know,<br>the More You Feel.</h1>
@@ -158,35 +161,22 @@
   <div style="margin-top:2rem"><button class="btn dis" id="btnNext" onclick="startQ()">Continue</button></div>
 </div>
 
-<div class="inter" id="inter">
-  <div class="sn" id="sn"></div><h2 id="stitle"></h2><div class="ss" id="ssub"></div>
-</div>
+<div class="inter" id="inter"><div class="sn" id="sn"></div><h2 id="stitle"></h2><div class="ss" id="ssub"></div></div>
 
 <div id="qscreen" class="screen qs">
   <div class="qsh"><span class="meta" id="qcnt"></span><div class="qpbar"><div class="qpbf" id="qbar" style="width:0%"></div></div><span class="meta">&nbsp;</span></div>
-  
-  <button class="back-btn" id="backBtn" onclick="goBack()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
   <div class="qsq" id="qq"></div>
   <div class="qsimg">
-    <div class="qsopt" id="qoA" onclick="tapSide('A')">
-      <img id="qiA" src="" alt=""><div class="darkfade" id="dfA"></div>
-      <div class="lay"><div class="pct" id="qpctA">50%</div><div class="lbl" id="qlA"></div><div class="slb" id="qsA"></div></div>
-    </div>
-    <div class="qsopt" id="qoB" onclick="tapSide('B')">
-      <img id="qiB" src="" alt=""><div class="darkfade" id="dfB"></div>
-      <div class="lay"><div class="pct" id="qpctB">50%</div><div class="lbl" id="qlB"></div><div class="slb" id="qsB"></div></div>
-    </div>
+    <div class="qsopt" id="qoA" onclick="tapSide('A')"><img id="qiA" src="" alt=""><div class="darkfade" id="dfA"></div><div class="lay"><div class="pct" id="qpctA">50%</div><div class="lbl" id="qlA"></div><div class="slb" id="qsA"></div></div></div>
+    <div class="qsopt" id="qoB" onclick="tapSide('B')"><img id="qiB" src="" alt=""><div class="darkfade" id="dfB"></div><div class="lay"><div class="pct" id="qpctB">50%</div><div class="lbl" id="qlB"></div><div class="slb" id="qsB"></div></div></div>
   </div>
   <div class="qssec"><span id="qsec"></span></div>
   <div class="qsslide">
     <div class="qsaxis"><span id="qaxL"></span><span id="qaxR"></span></div>
-    <div class="qsbar-wrap">
-      <div class="qsbar"><div class="qsbar-fill" id="qbf"></div></div>
-      <div class="qsthumb" id="qth"></div>
-      <input type="range" min="0" max="100" value="50" id="qrange">
-    </div>
-    <div class="qsbottom">
-      <span class="qshint" id="qhint">Drag to balance &nbsp;&middot;&nbsp; or tap an image</span>
+    <div class="qsbar-wrap"><div class="qsbar"><div class="qsbar-fill" id="qbf"></div></div><div class="qsthumb" id="qth"></div><input type="range" min="0" max="100" value="50" id="qrange"></div>
+    <div class="qsactions">
+      <button class="back-btn" id="backBtn" onclick="goBack()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+      <span class="qshint" id="qhint">Drag or tap an image</span>
       <button class="qscbtn" id="qcont" onclick="nextQ()">Continue</button>
     </div>
   </div>
@@ -199,7 +189,7 @@
   <div class="fd"><label>Phone</label><input id="ph" type="tel" placeholder="+39 333 590 4079"></div>
   <div class="fr">
     <div class="fd"><label>Travellers</label><select id="px"><option value="2">2 &mdash; Couple</option><option value="1">1 &mdash; Solo</option><option value="3">3-4 &mdash; Small group</option><option value="5">5+ &mdash; Family</option></select></div>
-    <div class="fd"><label>Duration</label><select id="dur"><option value="weekend">Weekend</option><option value="week">5-7 nights</option><option value="ten">10-14 nights</option><option value="extended">2+ weeks</option></select></div>
+    <div class="fd"><label>Duration</label><select id="dur"><option value="week">5-7 nights</option><option value="ten">10-14 nights</option><option value="extended">2+ weeks</option></select></div>
   </div>
   <button class="btn" style="width:100%;margin-top:1.5rem" onclick="buildMood()">Reveal My Moodboard</button>
 </div></div>
@@ -208,10 +198,16 @@
 
 <script>
 var GAS='https://script.google.com/macros/s/AKfycbycDchPBCfRKFpGhGDVHQuv9U3yUSbxQoxl7-g_AeTpAM8hBOV0j_FDdM2wzjnonGoCaA/exec';
+var SITE='https://blindexperiences.github.io/blind-experience/';
 var U=function(id,w,h){return 'https://images.unsplash.com/'+id+'?w='+w+'&h='+h+'&fit=crop&q=80&auto=format'};
 var logoUrl='https://static.wixstatic.com/media/f570c0_afaa964de4a14fdc83f12262afd0fe21~mv2.png/v1/fill/w_88,h_87,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/B%20Only%20grey%20(1).png';
 
-// TRIP CARDS — dramatic landscapes, no resort imagery
+// ?ref=social banner
+if(location.search.indexOf('ref=social')>-1){
+  var sb=document.getElementById('socialBanner');
+  sb.innerHTML='<div class="social-banner"><p>Someone shared their Blind Experiences moodboard with you.<br>Now create yours &mdash; and see where your instincts take you.</p><small>blindexperiences.com</small></div>';
+}
+
 var tripCards={
   honeymoon:{img:U("photo-1510784722466-f2aa9c52fff6",600,340),name:"Blind Honeymoon",sub:"Your love story, our secret"},
   escape:{img:U("photo-1502086223501-7ea6ecd79368",600,340),name:"Blind Escape",sub:"Family adventures await"},
@@ -225,7 +221,7 @@ var sections=[
   {l:"Stage 3",t:"Your Final Instinct",s:"The personal heart of this journey."}
 ];
 
-// SLIDER QUESTIONS — editorial, landscape-first images. No resort, no close-up faces.
+// All quiz images: unique IDs, no close-up faces, landscape-first
 var baseQ=[
   {sec:0,axis:'horizon',q:"Where do you want to land?",
    leftLabel:"Solitude",rightLabel:"Social Pulse",
@@ -237,8 +233,8 @@ var baseQ=[
    b:{img:U("photo-1452626038306-9aae5e071dd3",900,1300),label:"Out before the world wakes",sub:"Trail at dawn, mist still rising"}},
   {sec:0,axis:'comfort',q:"How should it feel underfoot?",
    leftLabel:"Polished",rightLabel:"Beautifully Raw",
-   a:{img:U("photo-1528360983277-13d401cdc186",900,1300),label:"Crafted, considered, seamless",sub:"Design that disappears into landscape"},
-   b:{img:U("photo-1455763916899-e8b50eca9967",900,1300),label:"Canvas, campfire, stars overhead",sub:"Luxury without the polish"}},
+   a:{img:U("photo-1445019980597-93fa8acb246c",900,1300),label:"Crafted, considered, seamless",sub:"Where design meets wilderness"},
+   b:{img:U("photo-1455763916899-e8b50eca9967",900,1300),label:"Canvas, campfire, stars overhead",sub:"Luxury without the veneer"}},
   {sec:0,axis:'landscape',q:"Which light draws you closer?",
    leftLabel:"Warm & Lush",rightLabel:"Cool & Dramatic",
    a:{img:U("photo-1516815231560-8f41ec531527",900,1300),label:"Tropical warmth",sub:"Dense green, humidity, colour"},
@@ -246,15 +242,15 @@ var baseQ=[
   {sec:0,axis:'setting',q:"How far from the world do you want to go?",
    leftLabel:"Pure Nature",rightLabel:"Living Culture",
    a:{img:U("photo-1472214103451-9374bd1c798e",900,1300),label:"Far from any road",sub:"Wilderness, dark skies, stillness"},
-   b:{img:U("photo-1539635278303-d4002c07eae3",900,1300),label:"Woven into local life",sub:"Markets, language, belonging"}},
+   b:{img:U("photo-1513635269975-59663e0ac1ad",900,1300),label:"Woven into local life",sub:"Markets, language, belonging"}},
   {sec:1,axis:'spirit',q:"What feeds your spirit?",
    leftLabel:"Wildlife & Wildlands",rightLabel:"Human Connection",
    a:{img:U("photo-1535338454528-1b5c8e9b3e42",900,1300),label:"Wild ecosystems",sub:"Untouched, protected, ancient"},
-   b:{img:U("photo-1539635278303-d4002c07eae3",900,1300),label:"People and their stories",sub:"Craft, ritual, community warmth"}},
+   b:{img:U("photo-1555396273-367ea4eb4db5",900,1300),label:"People and their craft",sub:"Markets, stories, human warmth"}},
   {sec:1,axis:'cultural',q:"Which layer of time?",
    leftLabel:"Ancient Roots",rightLabel:"Modern Vibes",
    a:{img:U("photo-1507003211169-0a1dd7228f2d",900,1300),label:"Ancient wonders",sub:"Ruins, ceremony, deep history"},
-   b:{img:U("photo-1509130872995-86c1ba8d4bdc",900,1300),label:"Contemporary edge",sub:"Modern gastronomy, art, urban gems"}}
+   b:{img:U("photo-1514565131-fce0801e5785",900,1300),label:"Contemporary edge",sub:"Modern art, gastronomy, urban energy"}}
 ];
 
 var finalQ={
@@ -269,64 +265,51 @@ var finalQ={
   legacy:{sec:2,axis:'narrative',q:"How shall we tell the story?",
     leftLabel:"Honoring Heritage",rightLabel:"Breaking the Mold",
     a:{img:U("photo-1509909756405-be0199881695",900,1300),label:"Heritage and deep roots",sub:"Grand landscapes, slow chapters"},
-    b:{img:U("photo-1478720568477-152d9b164e26",900,1300),label:"New traditions",sub:"A challenge that bonds all ages"}},
+    b:{img:U("photo-1529156069898-49953e39b3ac",900,1300),label:"New traditions forged together",sub:"A challenge that bonds all ages"}},
   expedition:{sec:2,axis:'awakening',q:"What part of you are we waking up?",
     leftLabel:"Radical Rest",rightLabel:"Bold Bravery",
     a:{img:U("photo-1474642566-c879a30c9bc3",900,1300),label:"Deep stillness",sub:"Silence, restoration, space to breathe"},
-    b:{img:U("photo-1494783367193-149034c05e8f",900,1300),label:"Raw strength",sub:"Physical challenge, wild terrain"}}
+    b:{img:U("photo-1551632811-561732d1e306",900,1300),label:"Raw strength",sub:"Physical challenge, wild terrain"}}
 };
 
-// MOODBOARD POOLS — landscape-first, no resort, no close-up human faces
-// All IDs are different from quiz images above
+// Moodboard pools — ALL different IDs from quiz images above, landscape-first, no close-ups
 var MI={
-  solitude:[U("photo-1506744038136-46273834b3fb",700,500),U("photo-1511884642898-4c92516a3ec1",700,500),U("photo-1501854140801-50d01698950b",700,500),U("photo-1508739773434-c26b3d09e071",700,500)],
-  social:[U("photo-1513635269975-59663e0ac1ad",700,500),U("photo-1514890547357-a9ee288728e0",700,500),U("photo-1524661135-423995f22d0b",700,500),U("photo-1444723121867-7a241cacace9",700,500)],
+  solitude:[U("photo-1506744038136-46273834b3fb",700,500),U("photo-1511884642898-4c92516a3ec1",700,500),U("photo-1501854140801-50d01698950b",700,500),U("photo-1464822759023-fed622ff2c3b",700,500)],
+  social:[U("photo-1524661135-423995f22d0b",700,500),U("photo-1514890547357-a9ee288728e0",700,500),U("photo-1444723121867-7a241cacace9",700,500),U("photo-1519501025264-65ba15a82390",700,500)],
   slow:[U("photo-1459755486867-b55449bb39ff",700,500),U("photo-1523301343968-6a6ebf63c672",700,500),U("photo-1475688621402-4257c812d6db",700,500),U("photo-1473496169904-658ba7574b0d",700,500)],
-  active:[U("photo-1483728642387-6c3bdd6c93e5",700,500),U("photo-1461958508236-9a742665a0d5",700,500),U("photo-1508193638397-1c4234db14d8",700,500),U("photo-1551632811-561732d1e306",700,500)],
-  polished:[U("photo-1520250497591-112f2f40a3f4",700,500),U("photo-1571896349842-33c89424de2d",700,500),U("photo-1566073771259-6a8506099945",700,500),U("photo-1584132967334-10e028bd69f7",700,500)],
-  raw:[U("photo-1497436072909-60f360e1d4b1",700,500),U("photo-1532274402911-5a369e4c4bb5",700,500),U("photo-1504280390367-361c6d9f38f4",700,500),U("photo-1470770841072-f978cf4d019e",700,500)],
+  active:[U("photo-1483728642387-6c3bdd6c93e5",700,500),U("photo-1461958508236-9a742665a0d5",700,500),U("photo-1508193638397-1c4234db14d8",700,500),U("photo-1504280390367-361c6d9f38f4",700,500)],
+  polished:[U("photo-1520250497591-112f2f40a3f4",700,500),U("photo-1571896349842-33c89424de2d",700,500),U("photo-1584132967334-10e028bd69f7",700,500),U("photo-1566073771259-6a8506099945",700,500)],
+  raw:[U("photo-1497436072909-60f360e1d4b1",700,500),U("photo-1532274402911-5a369e4c4bb5",700,500),U("photo-1470770841072-f978cf4d019e",700,500),U("photo-1504280390367-361c6d9f38f4",700,500)],
   warm:[U("photo-1590523741831-ab7e8b8f9c7f",700,500),U("photo-1501785888041-af3ef285b470",700,500),U("photo-1559128010-7c1ad6e1b6a5",700,500),U("photo-1520454974749-611b7248ffdb",700,500)],
   cold:[U("photo-1419242902214-272b3f66ee7a",700,500),U("photo-1486870591958-9b9d0d1dda99",700,500),U("photo-1519681393784-d120267933ba",700,500),U("photo-1467173572719-f14b9fb86e5f",700,500)],
   nature:[U("photo-1470071459604-3b5ec3a7fe05",700,500),U("photo-1441974231531-c6227db76b6e",700,500),U("photo-1472396961693-142e6e269027",700,500),U("photo-1465189684280-6a8fa9b19a7a",700,500)],
-  culture:[U("photo-1539650116574-75c0c6d73f6e",700,500),U("photo-1555400038-63f5ba517a47",700,500),U("photo-1558862107-d49ef2a04d72",700,500),U("photo-1547981609-4b6bfe67ca0b",700,500)],
+  culture:[U("photo-1539650116574-75c0c6d73f6e",700,500),U("photo-1558862107-d49ef2a04d72",700,500),U("photo-1547981609-4b6bfe67ca0b",700,500),U("photo-1512100356356-de1b84283e18",700,500)],
   wildlife:[U("photo-1474511320723-9a56873571b7",700,500),U("photo-1456926631375-92c8ce872def",700,500),U("photo-1437622368342-7a3d73a34c8f",700,500),U("photo-1504173010664-32509aeebb62",700,500)],
-  human:[U("photo-1555396273-367ea4eb4db5",700,500),U("photo-1512100356356-de1b84283e18",700,500),U("photo-1543747579-795b9c2c3ada",700,500),U("photo-1529156069898-49953e39b3ac",700,500)],
+  human:[U("photo-1543747579-795b9c2c3ada",700,500),U("photo-1531206715517-5c0ba140b2b8",700,500),U("photo-1544928147-79a2dbc1f389",700,500),U("photo-1529156069898-49953e39b3ac",700,500)],
   ancient:[U("photo-1548013146-72479768bada",700,500),U("photo-1580674684081-7617fbf3d745",700,500),U("photo-1564507592333-c60657eea523",700,500),U("photo-1525867710668-e54b89276c2d",700,500)],
-  modern:[U("photo-1514565131-fce0801e5785",700,500),U("photo-1531058020387-3be344556be6",700,500),U("photo-1565299624946-b28f40a0ae38",700,500),U("photo-1540189549336-e6e99c3679fe",700,500)],
+  modern:[U("photo-1531058020387-3be344556be6",700,500),U("photo-1565299624946-b28f40a0ae38",700,500),U("photo-1540189549336-e6e99c3679fe",700,500),U("photo-1491553895911-0055eca6402d",700,500)],
   intimate:[U("photo-1516589091380-5d8e87df6999",700,500),U("photo-1414235077428-338989a2e8c0",700,500),U("photo-1507003211169-0a1dd7228f2d",700,500)],
   thrill:[U("photo-1533130061792-64b345e4a833",700,500),U("photo-1527004013197-933c4bb611b3",700,500),U("photo-1495954222046-2c427ecb546d",700,500)],
   play:[U("photo-1506953823645-5e93625f5048",700,500),U("photo-1520454974749-611b7248ffdb",700,500),U("photo-1473116763249-2faaef81ccda",700,500)],
   learning:[U("photo-1476231682828-37e571bc172f",700,500),U("photo-1503676260728-1c00da094a0b",700,500),U("photo-1516426122078-c23e76319801",700,500)],
   heritage:[U("photo-1519167758481-83f550bb8abe",700,500),U("photo-1509909756405-be0199881695",700,500),U("photo-1547306843-7d1c5c7a6b07",700,500)],
-  newways:[U("photo-1484910292437-025e5d83ce44",700,500),U("photo-1502086223501-7ea6ecd79368",700,500),U("photo-1478720568477-152d9b164e26",700,500)],
+  newways:[U("photo-1484910292437-025e5d83ce44",700,500),U("photo-1478720568477-152d9b164e26",700,500),U("photo-1502086223501-7ea6ecd79368",700,500)],
   rest:[U("photo-1507652313519-d4e9174996dd",700,500),U("photo-1540555700478-4be289fbec6f",700,500),U("photo-1474642566-c879a30c9bc3",700,500)],
   grit:[U("photo-1461958508236-9a742665a0d5",700,500),U("photo-1483728642387-6c3bdd6c93e5",700,500),U("photo-1494783367193-149034c05e8f",700,500)]
 };
-var travImgs={
-  couple:[U("photo-1516589178581-6cd7833ae3b2",700,500),U("photo-1510784722466-f2aa9c52fff6",700,500)],
-  family:[U("photo-1478720568477-152d9b164e26",700,500),U("photo-1502086223501-7ea6ecd79368",700,500)],
-  women:[U("photo-1494783367193-149034c05e8f",700,500),U("photo-1484910292437-025e5d83ce44",700,500)],
-  solo:[U("photo-1499209974431-9dddcece7f88",700,500),U("photo-1532274402911-5a369e4c4bb5",700,500)]
-};
-var heroImgs={
-  solitude:U("photo-1433086966358-54859d0ed716",1600,900),social:U("photo-1477959858617-67f85cf4f1df",1600,900),
-  slow:U("photo-1499028344343-cd173ffc68a9",1600,900),active:U("photo-1483728642387-6c3bdd6c93e5",1600,900),
-  polished:U("photo-1571896349842-33c89424de2d",1600,900),raw:U("photo-1497436072909-60f360e1d4b1",1600,900),
-  warm:U("photo-1590523741831-ab7e8b8f9c7f",1600,900),cold:U("photo-1454496522488-7a8e488e8606",1600,900),
-  nature:U("photo-1470071459604-3b5ec3a7fe05",1600,900),culture:U("photo-1539650116574-75c0c6d73f6e",1600,900),
-  wildlife:U("photo-1535338454528-1b5c8e9b3e42",1600,900),human:U("photo-1555396273-367ea4eb4db5",1600,900),
-  ancient:U("photo-1548013146-72479768bada",1600,900),modern:U("photo-1514565131-fce0801e5785",1600,900)
-};
+var travImgs={couple:[U("photo-1516589178581-6cd7833ae3b2",700,500),U("photo-1510784722466-f2aa9c52fff6",700,500)],family:[U("photo-1478720568477-152d9b164e26",700,500),U("photo-1502086223501-7ea6ecd79368",700,500)],women:[U("photo-1494783367193-149034c05e8f",700,500),U("photo-1484910292437-025e5d83ce44",700,500)],solo:[U("photo-1499209974431-9dddcece7f88",700,500),U("photo-1532274402911-5a369e4c4bb5",700,500)]};
+var heroImgs={solitude:U("photo-1433086966358-54859d0ed716",1600,900),social:U("photo-1477959858617-67f85cf4f1df",1600,900),slow:U("photo-1499028344343-cd173ffc68a9",1600,900),active:U("photo-1483728642387-6c3bdd6c93e5",1600,900),polished:U("photo-1445019980597-93fa8acb246c",1600,900),raw:U("photo-1497436072909-60f360e1d4b1",1600,900),warm:U("photo-1590523741831-ab7e8b8f9c7f",1600,900),cold:U("photo-1454496522488-7a8e488e8606",1600,900),nature:U("photo-1470071459604-3b5ec3a7fe05",1600,900),culture:U("photo-1539650116574-75c0c6d73f6e",1600,900),wildlife:U("photo-1535338454528-1b5c8e9b3e42",1600,900),human:U("photo-1531206715517-5c0ba140b2b8",1600,900),ancient:U("photo-1507003211169-0a1dd7228f2d",1600,900),modern:U("photo-1514565131-fce0801e5785",1600,900)};
 
 var trip='',cur=0,activeQs=[],answers={},touched=false,sliderVal=50,pid='',fbs=0;
 
 (function(){var tc=document.getElementById('tripCards');Object.keys(tripCards).forEach(function(k){var c=tripCards[k];tc.innerHTML+='<div class="tci" onclick="selTrip(this,\''+k+'\')"><img src="'+c.img+'" alt=""><div class="tgrad"></div><div class="tn">'+c.name+'</div><div class="ts">'+c.sub+'</div></div>'})})();
 function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById(id).classList.add('active')}
 function selTrip(el,t){document.querySelectorAll('.tci').forEach(function(c){c.classList.remove('sel')});el.classList.add('sel');trip=t;document.getElementById('btnNext').classList.remove('dis')}
-function startQ(){activeQs=baseQ.concat([finalQ[trip]]);cur=0;answers={};show('qscreen');showInter(0,function(){ld()})}
+function startQ(){activeQs=baseQ.concat([finalQ[trip]]);cur=0;answers={};show('qscreen');showInter(0,function(){loadQ()})}
 function showInter(secIdx,cb){var s=sections[secIdx];document.getElementById('sn').textContent=s.l;document.getElementById('stitle').textContent=s.t;document.getElementById('ssub').textContent=s.s;document.getElementById('inter').classList.add('show');setTimeout(function(){document.getElementById('inter').classList.remove('show');cb()},2000)}
 function ld(){if(cur>=activeQs.length){show('info');return}var q=activeQs[cur];if(cur>0&&q.sec!==activeQs[cur-1].sec){showInter(q.sec,function(){loadQ()});return}loadQ()}
 function loadQ(){
+  if(cur>=activeQs.length){show('info');return}
   var q=activeQs[cur];
   document.getElementById('qq').textContent=q.q;
   document.getElementById('qiA').src=q.a.img;document.getElementById('qlA').textContent=q.a.label;document.getElementById('qsA').textContent=q.a.sub;
@@ -335,67 +318,64 @@ function loadQ(){
   document.getElementById('qsec').textContent=sections[q.sec].l+' \u2014 '+sections[q.sec].t;
   document.getElementById('qcnt').textContent=(cur+1)+' / '+activeQs.length;
   document.getElementById('qbar').style.width=(cur/activeQs.length*100)+'%';
-  sliderVal=50;touched=false;
-  document.getElementById('qrange').value=50;updateSlider(50);
-  document.getElementById('qcont').classList.remove('ready');
-  document.getElementById('qhint').innerHTML='Drag to balance &nbsp;&middot;&nbsp; or tap an image';
-  document.getElementById('qth').classList.remove('touched');
+  document.getElementById('backBtn').classList.toggle('vis',cur>0);
+  var saved=answers[q.axis];
+  if(saved){sliderVal=saved.value;touched=true}else{sliderVal=50;touched=false}
+  document.getElementById('qrange').value=sliderVal;
+  document.getElementById('qth').classList.toggle('touched',touched);
+  document.getElementById('qcont').classList.toggle('ready',touched);
+  document.getElementById('qhint').innerHTML=touched?'Ready &mdash; continue when you are':'Drag or tap an image';
+  updateSlider(sliderVal);
 }
 function updateSlider(v){
   sliderVal=v;var lPct=100-v,rPct=v;
-  document.getElementById('qpctA').textContent=lPct+'%';
-  document.getElementById('qpctB').textContent=rPct+'%';
-  document.getElementById('qbf').style.width=v+'%';
-  document.getElementById('qth').style.left=v+'%';
+  document.getElementById('qpctA').textContent=lPct+'%';document.getElementById('qpctB').textContent=rPct+'%';
+  document.getElementById('qbf').style.width=v+'%';document.getElementById('qth').style.left=v+'%';
   document.getElementById('qiA').style.filter='brightness('+(0.35+(lPct/100)*0.5)+')';
   document.getElementById('qiB').style.filter='brightness('+(0.35+(rPct/100)*0.5)+')';
   document.getElementById('dfA').style.background='rgba(0,0,0,'+(0.08+(rPct/100)*0.35)+')';
   document.getElementById('dfB').style.background='rgba(0,0,0,'+(0.08+(lPct/100)*0.35)+')';
-  if(touched){document.getElementById('qcont').classList.add('ready');document.getElementById('qhint').textContent='Ready — continue when you are';document.getElementById('qth').classList.add('touched')}
+  if(touched){document.getElementById('qcont').classList.add('ready');document.getElementById('qhint').innerHTML='Ready &mdash; continue when you are';document.getElementById('qth').classList.add('touched')}
 }
 function tapSide(s){touched=true;var v=s==='A'?8:92;document.getElementById('qrange').value=v;updateSlider(v)}
-function nextQ(){if(!touched)return;var q=activeQs[cur];answers[q.axis]={value:sliderVal,leftLabel:q.leftLabel,rightLabel:q.rightLabel};document.getElementById('qbar').style.width=((cur+1)/activeQs.length*100)+'%';cur++;setTimeout(function(){ld()},300)}
+function nextQ(){if(!touched)return;answers[activeQs[cur].axis]={value:sliderVal,leftLabel:activeQs[cur].leftLabel,rightLabel:activeQs[cur].rightLabel};document.getElementById('qbar').style.width=((cur+1)/activeQs.length*100)+'%';cur++;setTimeout(function(){ld()},300)}
+function goBack(){if(cur<=0)return;cur--;loadQ()}
 document.getElementById('qrange').addEventListener('input',function(e){touched=true;updateSlider(parseInt(e.target.value))});
 
 function sendGAS(data){if(!GAS)return;try{var f=document.createElement('form');f.method='POST';f.action=GAS;f.target='gas_frame';var inp=document.createElement('input');inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(data);f.appendChild(inp);document.body.appendChild(f);f.submit();setTimeout(function(){f.remove()},2000)}catch(e){console.error(e)}}
 
-function getTopTags(ans){
-  var axMap={horizon:{left:'solitude',right:'social'},rhythm:{left:'slow',right:'active'},comfort:{left:'polished',right:'raw'},landscape:{left:'warm',right:'cold'},setting:{left:'nature',right:'culture'},spirit:{left:'wildlife',right:'human'},cultural:{left:'ancient',right:'modern'},connection:{left:'intimate',right:'thrill'},growth:{left:'play',right:'learning'},narrative:{left:'heritage',right:'newways'},awakening:{left:'rest',right:'grit'}};
-  var scores={};
-  Object.keys(ans).forEach(function(axis){var a=ans[axis],m=axMap[axis];if(!m)return;scores[m.left]=(scores[m.left]||0)+(100-a.value);scores[m.right]=(scores[m.right]||0)+a.value});
-  return Object.entries(scores).sort(function(a,b){return b[1]-a[1]}).map(function(e){return e[0]}).filter(function(t){return MI[t]});
-}
-function getImgs(topTags,n,tt){
-  var imgs=[],u={};
-  (travImgs[tt]||[]).forEach(function(url){if(imgs.length<2&&!u[url]){u[url]=1;imgs.push(url)}});
-  var idx=0;while(imgs.length<n&&idx<200){var tag=topTags[idx%topTags.length];var pool=MI[tag];if(pool){var p=pool[Math.floor(idx/topTags.length)%pool.length];if(p&&!u[p]){u[p]=1;imgs.push(p)}}idx++}
-  return imgs.slice(0,n);
-}
+function getTopTags(ans){var axMap={horizon:{left:'solitude',right:'social'},rhythm:{left:'slow',right:'active'},comfort:{left:'polished',right:'raw'},landscape:{left:'warm',right:'cold'},setting:{left:'nature',right:'culture'},spirit:{left:'wildlife',right:'human'},cultural:{left:'ancient',right:'modern'},connection:{left:'intimate',right:'thrill'},growth:{left:'play',right:'learning'},narrative:{left:'heritage',right:'newways'},awakening:{left:'rest',right:'grit'}};var scores={};Object.keys(ans).forEach(function(axis){var a=ans[axis],m=axMap[axis];if(!m)return;scores[m.left]=(scores[m.left]||0)+(100-a.value);scores[m.right]=(scores[m.right]||0)+a.value});return Object.entries(scores).sort(function(a,b){return b[1]-a[1]}).map(function(e){return e[0]}).filter(function(t){return MI[t]})}
+function getImgs(topTags,n,tt){var imgs=[],u={};(travImgs[tt]||[]).forEach(function(url){if(imgs.length<2&&!u[url]){u[url]=1;imgs.push(url)}});var idx=0;while(imgs.length<n&&idx<200){var tag=topTags[idx%topTags.length];var pool=MI[tag];if(pool){var p=pool[Math.floor(idx/topTags.length)%pool.length];if(p&&!u[p]){u[p]=1;imgs.push(p)}}idx++}return imgs.slice(0,n)}
 function getTravType(){if(trip==='honeymoon')return 'couple';if(trip==='expedition')return 'women';if(trip==='legacy'||document.getElementById('px').value>='3')return 'family';return document.getElementById('px').value==='1'?'solo':'couple'}
+
+var capturedCanvas=null;
 
 function buildMood(){
   var fn=document.getElementById('fn').value.trim(),lnm=document.getElementById('ln').value.trim();
   var em=document.getElementById('em').value.trim(),phone=document.getElementById('ph').value.trim();
   var pax=document.getElementById('px').value,dur=document.getElementById('dur').value;
   if(!fn||!em){alert('Please fill in name and email.');return}
-  var topTags=getTopTags(answers);var travType=getTravType();
-  var gImgs=getImgs(topTags,15,travType);
+  var topTags=getTopTags(answers);var travType=getTravType();var gImgs=getImgs(topTags,15,travType);
   var hero=heroImgs[topTags[0]]||heroImgs.nature;
   var spectrum=Object.keys(answers).map(function(k){var a=answers[k];return{axis:k,left:a.leftLabel,right:a.rightLabel,leftPct:100-a.value,rightPct:a.value}});
   var typeM={solitude:'Sanctuary Retreat',social:'Urban Discovery',slow:'Slow Travel',active:'Active Expedition',polished:'Luxury Escape',raw:'Wild Adventure',warm:'Tropical Journey',cold:'Alpine Adventure',nature:'Nature Immersion',culture:'Cultural Discovery',wildlife:'Conservation Journey',human:'Community Journey',ancient:'Heritage Quest',modern:'Contemporary Journey',intimate:'Intimate Sanctuary',thrill:'Shared Adventure',play:'Family Joy',learning:'Discovery Journey',heritage:'Legacy Journey',newways:'New Traditions',rest:'Radical Rest',grit:'Bold Expedition'};
   var expType=typeM[topTags[0]]||'Blind Experience';
   var tripL={honeymoon:'Blind Honeymoon',escape:'Blind Escape',legacy:'Blind Legacy',expedition:'Blind Expedition'};
-  var moodQ={solitude:["Silence is not empty — it's full of answers.","Not all those who wander are lost."],social:["The world is a book, and those who do not travel read only one page.","Wherever you go becomes a part of you somehow."],slow:["The journey itself is my home.","Not until we are lost do we begin to understand ourselves."],active:["Life begins at the edge of your comfort zone.","Do not follow where the path may lead."],polished:["Details make perfection, and perfection is not a detail.","Luxury is the ease of a T-shirt in a very expensive dress."],raw:["Adventure is worthwhile in itself.","The most beautiful things cannot be seen — they must be felt."],warm:["To travel is to live.","Wherever you go, go with all your heart."],cold:["Climb the mountains and get their good tidings.","The mountains are calling, and I must go."],nature:["In every walk with nature, one receives far more than they seek.","The earth has music for those who listen."],culture:["Travel makes one modest — you see what a tiny place you occupy in the world.","A traveler without observation is a bird without wings."],wildlife:["Look deep into nature, and then you will understand everything better.","Take only memories, leave only footprints."],human:["We are all travelers in the wilderness of this world.","Wherever you go, you meet part of yourself."],ancient:["All journeys have secret destinations of which the traveler is unaware.","The real voyage of discovery consists not in seeking new landscapes."],modern:["The real voyage of discovery consists in having new eyes.","Every exit is an entry somewhere else."]};
+  var moodQ={solitude:["Silence is not empty \u2014 it\u2019s full of answers.","Not all those who wander are lost."],social:["The world is a book, and those who do not travel read only one page.","Wherever you go becomes a part of you somehow."],slow:["The journey itself is my home.","Not until we are lost do we begin to understand ourselves."],active:["Life begins at the edge of your comfort zone.","Do not follow where the path may lead."],polished:["Details make perfection, and perfection is not a detail.","Luxury is the ease of a T-shirt in a very expensive dress."],raw:["Adventure is worthwhile in itself.","The most beautiful things cannot be seen \u2014 they must be felt."],warm:["To travel is to live.","Wherever you go, go with all your heart."],cold:["Climb the mountains and get their good tidings.","The mountains are calling, and I must go."],nature:["In every walk with nature, one receives far more than they seek.","The earth has music for those who listen."],culture:["Travel makes one modest \u2014 you see what a tiny place you occupy in the world.","A traveler without observation is a bird without wings."],wildlife:["Look deep into nature, and then you will understand everything better.","Take only memories, leave only footprints."],human:["We are all travelers in the wilderness of this world.","Wherever you go, you meet part of yourself."],ancient:["All journeys have secret destinations of which the traveler is unaware.","The real voyage of discovery consists not in seeking new landscapes."],modern:["The real voyage of discovery consists in having new eyes.","Every exit is an entry somewhere else."]};
   var qArr=moodQ[topTags[0]]||moodQ.nature;var q1=qArr[0],q2=qArr[1];
 
-  pid='p_'+Date.now();
+  pid='p_'+Date.now();capturedCanvas=null;
   sendGAS({action:'profile',id:pid,timestamp:new Date().toISOString(),tripType:trip,name:fn+' '+lnm,email:em,phone:phone,travellers:pax,duration:dur,experienceType:expType,topTags:topTags.slice(0,5),axes:Object.fromEntries(Object.keys(answers).map(function(k){return[k,answers[k].value]})),spectrum:spectrum.map(function(s){return{left:s.left,right:s.right,pct:s.leftPct}})});
 
   var bLogo='<div class="blogo"><img src="'+logoUrl+'" alt="B"><span>BLIND<b>EXPERIENCES</b></span></div>';
   var scoreBtns='';for(var i=1;i<=10;i++)scoreBtns+='<button class="sb" onclick="setS('+i+')">'+i+'</button>';
+
+  // Mosaic using background-image for html2canvas compatibility + no ratio distortion
   function mkMos(imgs,layout,quote){
     var n={'gA':3,'gB':3,'gC':3,'gD':3}[layout]||3;
-    var cells=imgs.slice(0,n).map(function(u){return '<div class="gi"><img src="'+u+'" alt="" crossorigin="anonymous"></div>'}).join('');
+    var cells=imgs.slice(0,n).map(function(u){
+      return '<div class="gi" style="background-image:url(\''+u+'\')"></div>';
+    }).join('');
     var q=quote?'<div class="qo"><blockquote>\u201C'+quote+'\u201D</blockquote></div>':'';
     return '<div class="sl"><div class="grid '+layout+'">'+cells+'</div>'+q+'</div>';
   }
@@ -406,22 +386,24 @@ function buildMood(){
   html+=mkMos(gImgs.slice(3,6),'gB',q1);
   html+=mkMos(gImgs.slice(6,9),'gC',null);
   html+=mkMos(gImgs.slice(9,12),'gD',q2);
-  html+='<div class="sl closing"><img class="bg" src="'+hero+'" alt="" crossorigin="anonymous"><div class="ci"><h2>We can\u2019t wait to start planning your magical '+tripL[trip]+'.</h2><div class="cs">We are ready when you are.</div><div class="brand"><img src="'+logoUrl+'" alt="B"><div class="brand-t">BLIND<b style="font-weight:700">EXPERIENCES</b></div></div></div></div>';
+  html+='<div class="sl closing"><img class="bg" src="'+hero+'" alt="" crossorigin="anonymous"><div class="ci"><h2>We can\u2019t wait to start planning your magical '+tripL[trip]+'.</h2><div class="cs">We are ready when you are.</div><div class="share-url">blindexperiences.github.io/blind-experience</div><div class="brand"><img src="'+logoUrl+'" alt="B"><div class="brand-t">BLIND<b style="font-weight:700">EXPERIENCES</b></div></div></div></div>';
 
   var traitsHtml='<div class="traits"><div class="traits-t">Your Travel Profile</div>';
   spectrum.forEach(function(s){traitsHtml+='<div class="tr"><span class="tl">'+s.left+'</span><span class="tpct">'+s.leftPct+'%</span><div class="tbar"><div class="tfill" style="width:'+s.leftPct+'%"></div></div><span class="tpct">'+s.rightPct+'%</span><span class="tlr">'+s.right+'</span></div>'});
   traitsHtml+='</div>';
 
-  document.getElementById('mood').innerHTML=html+traitsHtml+
-    '<div class="share-wrap"><h3>Share Your Moodboard</h3><p>Inspire someone to discover their own travel soul. Anyone who sees it can create theirs.</p>'+
-    '<div class="share-btns">'+
-    '<button class="share-btn fb" onclick="sharePlatform(\'facebook\')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</button>'+
-    '<button class="share-btn li" onclick="sharePlatform(\'linkedin\')"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</button>'+
-    '<button class="share-btn ig" onclick="sharePlatform(\'instagram\')" id="igBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram</button>'+
+  var shareHtml='<div class="action-bar">'+
+    '<button class="pdf-btn" id="btnPdf" onclick="dlPDF()"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download Moodboard as PDF</button>'+
+    '<div class="share-label">Share your moodboard</div>'+
+    '<div class="share-row">'+
+      '<button class="sh-btn fb" onclick="doShare(\'facebook\')"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> Facebook</button>'+
+      '<button class="sh-btn li" onclick="doShare(\'linkedin\')"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</button>'+
+      '<button class="sh-btn ig" onclick="doShare(\'instagram\')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Instagram</button>'+
     '</div>'+
-    '<div class="share-note">Anyone who sees your post can create their own at blindexperiences.github.io/blind-experience</div>'+
-    '</div>'+
-    '<div class="pdf-bar"><button class="btn-pdf" id="btnPdf" onclick="dlPDF()"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download Moodboard as PDF</button></div>'+
+    '<div class="share-msg">BlindExperiences created this moodboard for me, how does yours look like? Find out here: '+SITE+'</div>'+
+    '</div>';
+
+  document.getElementById('mood').innerHTML=html+traitsHtml+shareHtml+
     '<div class="fb" id="fbBox"><h3>How well does this reflect you?</h3><div class="fbs">Help us craft your perfect experience. Score the moodboard and share any thoughts &mdash; every detail helps.</div><div class="sr">'+scoreBtns+'</div><div class="slab"><span>Not at all</span><span>Perfectly</span></div><textarea class="fta" id="fbTxt" placeholder="What resonated? What felt off? Any specific wishes?"></textarea><button class="btn" style="width:100%" onclick="subFb()">Submit Feedback</button><div class="fbt" id="fbThx">Thank you. Your feedback shapes every trip we design.</div></div>';
   show('mood');
 }
@@ -429,106 +411,76 @@ function buildMood(){
 function setS(n){fbs=n;document.querySelectorAll('.sb').forEach(function(b,i){b.classList.toggle('on',i<n)})}
 function subFb(){sendGAS({action:'feedback',profileId:pid,score:fbs,text:document.getElementById('fbTxt').value.trim(),timestamp:new Date().toISOString()});document.getElementById('fbBox').querySelectorAll('button,.sr,.slab,.fta,.fbs').forEach(function(el){el.style.display='none'});document.getElementById('fbThx').style.display='block'}
 
+var SHARE_MSG='BlindExperiences created this moodboard for me, how does yours look like? Find out here: '+SITE+'?ref=social';
+
+async function doShare(platform){
+  var shareUrl=SITE+'?ref=social';
+  if(platform==='facebook'){
+    window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(shareUrl)+'&quote='+encodeURIComponent(SHARE_MSG),'_blank','width=600,height=400');
+    return;
+  }
+  if(platform==='linkedin'){
+    window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(shareUrl),'_blank','width=600,height=500');
+    return;
+  }
+  if(platform==='instagram'){
+    // Capture first moodboard slide as image
+    try{
+      var slide=document.querySelector('.sl.cover');
+      var canvas=await html2canvas(slide,{useCORS:true,allowTaint:true,scale:2,backgroundColor:'#0a0a0a',logging:false});
+      canvas.toBlob(async function(blob){
+        var file=new File([blob],'BlindExperiences-Moodboard.jpg',{type:'image/jpeg'});
+        // Try native share (mobile browsers)
+        if(navigator.share){
+          try{
+            if(navigator.canShare&&navigator.canShare({files:[file]})){
+              await navigator.share({files:[file],title:'My Blind Experiences Moodboard',text:SHARE_MSG});
+              return;
+            }else{
+              // Share URL only (no file)
+              await navigator.share({title:'My Blind Experiences Moodboard',text:SHARE_MSG,url:shareUrl});
+              return;
+            }
+          }catch(e){if(e.name==='AbortError')return}
+        }
+        // Desktop fallback: download image + copy caption
+        var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BlindExperiences-Moodboard.jpg';a.click();
+        setTimeout(function(){
+          if(navigator.clipboard){navigator.clipboard.writeText(SHARE_MSG)}
+          alert('Image downloaded!\n\nCaption copied to clipboard:\n"'+SHARE_MSG+'"');
+        },600);
+      },'image/jpeg',.9);
+    }catch(e){
+      console.error(e);
+      // Absolute fallback: just copy the message
+      if(navigator.clipboard){navigator.clipboard.writeText(SHARE_MSG+'\n'+shareUrl)}
+      alert('Copy this caption for your Instagram:\n\n"'+SHARE_MSG+'"');
+    }
+  }
+}
+
 async function dlPDF(){
   var btn=document.getElementById('btnPdf');btn.textContent='Generating PDF...';
   try{
-    var jsPDF=window.jspdf.jsPDF;
-    var pdf=new jsPDF('l','mm','a4');
+    var jsPDF=window.jspdf.jsPDF;var pdf=new jsPDF('l','mm','a4');
     var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();
     var slides=document.querySelectorAll('.sl');
-    await Promise.all(Array.from(document.querySelectorAll('.sl img')).map(function(img){
-      return img.complete?Promise.resolve():new Promise(function(r){img.onload=r;img.onerror=r});
-    }));
+    // Wait for all images to load
+    await new Promise(function(res){setTimeout(res,800)});
     for(var i=0;i<slides.length;i++){
       if(i>0)pdf.addPage();
-      var canvas=await html2canvas(slides[i],{useCORS:true,allowTaint:true,scale:2,backgroundColor:'#0a0a0a'});
-      // Black background
+      var canvas=await html2canvas(slides[i],{useCORS:true,allowTaint:true,scale:2,backgroundColor:'#0a0a0a',logging:false,imageTimeout:8000});
       pdf.setFillColor(10,10,10);pdf.rect(0,0,pw,ph,'F');
-      // Fit image maintaining ratio, centred
       var ratio=canvas.width/canvas.height,pr=pw/ph;
       var iw,ih,x,y;
       if(ratio>=pr){iw=pw;ih=pw/ratio;x=0;y=(ph-ih)/2}
       else{ih=ph;iw=ph*ratio;x=(pw-iw)/2;y=0}
-      pdf.addImage(canvas.toDataURL('image/jpeg',.92),'JPEG',x,y,iw,ih);
+      pdf.addImage(canvas.toDataURL('image/jpeg',.9),'JPEG',x,y,iw,ih);
     }
     pdf.save('BlindExperiences-Moodboard.pdf');
   }catch(e){console.error(e);alert('Fallback: right-click > Print > Save as PDF')}
-  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download Moodboard as PDF';
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download Moodboard as PDF';
 }
-
-var SITE_URL='https://blindexperiences.github.io/blind-experience/';
-
-function goBack(){
-  if(cur<=0)return;
-  cur--;
-  var q=activeQs[cur];
-  // Restore saved answer if any
-  var saved=answers[q.axis];
-  if(saved){sliderVal=saved.value;touched=true}else{sliderVal=50;touched=false}
-  document.getElementById('qrange').value=sliderVal;
-  // Load without triggering interstitial on the way back
-  loadQ();
-  // Restore slider visual
-  updateSlider(sliderVal);
-  if(touched)document.getElementById('qcont').classList.add('ready');
-}
-
-function loadQ(){
-  var q=activeQs[cur];
-  document.getElementById('qq').textContent=q.q;
-  document.getElementById('qiA').src=q.a.img;document.getElementById('qlA').textContent=q.a.label;document.getElementById('qsA').textContent=q.a.sub;
-  document.getElementById('qiB').src=q.b.img;document.getElementById('qlB').textContent=q.b.label;document.getElementById('qsB').textContent=q.b.sub;
-  document.getElementById('qaxL').textContent=q.leftLabel;document.getElementById('qaxR').textContent=q.rightLabel;
-  document.getElementById('qsec').textContent=sections[q.sec].l+' — '+sections[q.sec].t;
-  document.getElementById('qcnt').textContent=(cur+1)+' / '+activeQs.length;
-  document.getElementById('qbar').style.width=(cur/activeQs.length*100)+'%';
-  document.getElementById('backBtn').classList.toggle('vis',cur>0);
-  // Only reset if not restoring a previous answer
-  var saved=answers[q.axis];
-  if(!saved){sliderVal=50;touched=false;document.getElementById('qrange').value=50;document.getElementById('qcont').classList.remove('ready');document.getElementById('qhint').innerHTML='Drag to balance &nbsp;&middot;&nbsp; or tap an image';document.getElementById('qth').classList.remove('touched')}
-  updateSlider(sliderVal);
-}
-
-// Social sharing
-async function sharePlatform(platform){
-  var url=SITE_URL+'?ref=social';
-  var text='I just created my Blind Experiences travel moodboard. The less you know, the more you feel — create yours:';
-  if(platform==='facebook'){
-    window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url)+'&quote='+encodeURIComponent(text),'_blank','width=600,height=400');
-  }else if(platform==='linkedin'){
-    window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(url),'_blank','width=600,height=500');
-  }else if(platform==='instagram'){
-    // Try native Web Share API first (works on mobile)
-    try{
-      var slide=document.querySelector('.sl');
-      var canvas=await html2canvas(slide,{useCORS:true,allowTaint:true,scale:2,backgroundColor:'#0a0a0a'});
-      canvas.toBlob(async function(blob){
-        var file=new File([blob],'BlindExperiences-Moodboard.jpg',{type:'image/jpeg'});
-        if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-          await navigator.share({files:[file],title:'My Blind Experiences Moodboard',text:text+' '+SITE_URL});
-        }else{
-          // Desktop fallback: download image
-          var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BlindExperiences-Moodboard.jpg';a.click();
-          setTimeout(function(){alert('Image saved! Post it on Instagram and add the link: '+SITE_URL)},500);
-        }
-      },'image/jpeg',.9);
-    }catch(e){console.error(e);alert('Save your moodboard PDF and post it on Instagram with the link: '+SITE_URL)}
-  }
-}
-
-// ?ref=social landing: show a special banner on intro
-(function(){
-  if(location.search.indexOf('ref=social')>-1){
-    var el=document.querySelector('.intro-inner h1');
-    if(el){
-      var banner=document.createElement('div');
-      banner.className='social-banner';
-      banner.innerHTML='<p>Someone shared their Blind Experiences moodboard with you.<br>Now create yours &mdash; and see where your instincts take you.</p>';
-      el.parentNode.insertBefore(banner,el);
-    }
-  }
-})();
-
 </script>
 </body>
 </html>
