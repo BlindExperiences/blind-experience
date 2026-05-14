@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Blind Experiences Moodboard</title>
+<meta property="og:title" content="My Blind Experiences Moodboard">
+<meta property="og:description" content="BlindExperiences created this moodboard for me, how does yours look like? Find out here.">
+<meta property="og:url" content="https://blindexperiences.github.io/blind-experience/?ref=social">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bk:#080808;--wh:#f8f5f0;--gold:#c9a96e}
+html,body{background:var(--bk);color:var(--wh);font-family:'Montserrat',sans-serif;-webkit-font-smoothing:antialiased}
+.ui{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.4rem 2rem;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(8,8,8,.96),transparent);pointer-events:none}
+.ui-brand{display:flex;align-items:center;gap:.5rem;pointer-events:all}
+.ui-brand img{width:22px;height:22px;opacity:.6}
+.ui-brand span{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(248,245,240,.4)}.ui-brand b{font-weight:600;color:rgba(248,245,240,.6)}
+.ui-actions{display:flex;gap:.7rem;pointer-events:all}
+.ui-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.3rem;font-family:'Montserrat',sans-serif;font-size:.55rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .3s;border:none;outline:none}
+.ui-btn.dl{background:var(--wh);color:var(--bk)}.ui-btn.dl:hover{background:var(--gold);color:#fff}
+.ui-btn.sh{background:transparent;border:1px solid rgba(248,245,240,.18);color:rgba(248,245,240,.55)}.ui-btn.sh:hover{border-color:var(--wh);color:var(--wh)}
+.ui-btn svg{width:12px;height:12px;flex-shrink:0}.ui-btn.dl svg{fill:currentColor}.ui-btn.sh svg{fill:none;stroke:currentColor;stroke-width:2}
+.ui-btn.busy{opacity:.4;pointer-events:none}
+/* Share panel */
+.share-panel{position:fixed;bottom:0;left:0;right:0;z-index:201;padding:1.8rem 2rem;background:rgba(8,8,8,.96);backdrop-filter:blur(16px);border-top:1px solid rgba(248,245,240,.08);transform:translateY(100%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.share-panel.open{transform:translateY(0)}
+.sp-title{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(248,245,240,.4);margin-bottom:1.2rem}
+.sp-btns{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem}
+.sp-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.4rem;border:1px solid rgba(248,245,240,.15);color:rgba(248,245,240,.55);font-family:'Montserrat',sans-serif;font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;background:0 0;cursor:pointer;transition:all .25s}
+.sp-btn:hover{color:var(--wh);border-color:var(--wh)}.sp-btn.fb:hover{border-color:#1877f2;color:#1877f2}.sp-btn.li:hover{border-color:#0a66c2;color:#0a66c2}.sp-btn.ig:hover{border-color:#e1306c;color:#e1306c}
+.sp-btn svg{width:14px;height:14px}.sp-btn.fb svg,.sp-btn.li svg{fill:currentColor}.sp-btn.ig svg{fill:none;stroke:currentColor;stroke-width:2}
+.sp-msg{font-size:.65rem;color:rgba(248,245,240,.3);font-style:italic;line-height:1.5;padding:.8rem 0 0}
+.sp-close{position:absolute;top:1.2rem;right:1.8rem;background:0 0;border:none;color:rgba(248,245,240,.35);font-size:1.2rem;cursor:pointer;line-height:1;padding:.2rem}.sp-close:hover{color:var(--wh)}
+/* Slides */
+#slides{display:flex;flex-direction:column}
+.sl{position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#080808}
+.sl-inner{position:absolute;inset:0}
+/* Cover */
+.cover .bg,.closing .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cover .bg{filter:brightness(.38) saturate(1.1)}
+.cover .vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 25%,rgba(0,0,0,.7) 100%)}
+.cover .card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;padding:2.5rem 4.5rem;background:rgba(8,8,8,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(248,245,240,.1);min-width:340px;max-width:80%}
+.cover .ey{font-size:.48rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-bottom:1rem}
+.cover h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:300;font-style:italic;line-height:1.1;margin-bottom:.6rem}
+.cover .desc{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(248,245,240,.4);font-weight:300}
+.cover .lm{position:absolute;bottom:1.4rem;left:1.8rem;display:flex;align-items:center;gap:.5rem}
+.cover .lm img{width:22px;height:22px;opacity:.65}
+.cover .lm span{font-size:.45rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,245,240,.38)}.cover .lm b{font-weight:600}
+/* Grids */
+.gi{background-size:cover;background-position:center}
+.g2{display:grid;grid-template-columns:60% 40%;grid-template-rows:1fr;gap:2px}
+.g2r{display:grid;grid-template-rows:1fr 1fr;gap:2px;height:100%}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px}
+.g4{display:grid;grid-template-rows:60% 40%;gap:2px}
+.g4b{display:grid;grid-template-columns:1fr 1fr;gap:2px;height:100%}
+.g5{display:grid;grid-template-columns:40% 60%;gap:2px}
+.g5l{display:grid;grid-template-rows:1fr 1fr;gap:2px;height:100%}
+/* Quote */
+.qo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;text-align:center;padding:2rem 3.2rem;background:rgba(8,8,8,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-left:3px solid var(--gold);max-width:55%;pointer-events:none}
+.qo blockquote{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2vw,1.6rem);font-style:italic;font-weight:300;line-height:1.65;color:rgba(248,245,240,.92)}
+.qo cite{display:block;margin-top:.8rem;font-family:'Montserrat',sans-serif;font-size:.45rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-style:normal}
+/* Closing */
+.closing .bg{filter:brightness(.12) saturate(.7)}
+.closing .inn{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem}
+.closing h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.2vw,2.5rem);font-weight:300;font-style:italic;line-height:1.35;color:#fff;max-width:540px;margin-bottom:.7rem}
+.closing .sub{font-size:.68rem;font-weight:300;color:rgba(255,255,255,.55);letter-spacing:.1em;margin-bottom:.7rem;line-height:1.7}
+.closing .url{font-size:.45rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:2.5rem}
+.closing .brand{display:flex;align-items:center;justify-content:center;gap:.7rem}
+.closing .brand img{width:38px;height:38px;opacity:.8}
+.closing .bt{font-size:.75rem;letter-spacing:.28em;text-transform:uppercase;font-weight:300;color:rgba(255,255,255,.8)}.closing .bt b{font-weight:600}
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--wh);color:var(--bk);font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.15em;padding:.75rem 2rem;z-index:300;transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+/* Debug panel */
+.dbg{display:none;position:fixed;bottom:4rem;left:1rem;right:1rem;background:rgba(0,0,0,.9);border:1px solid #333;padding:1rem;font-size:.6rem;color:#0f0;font-family:monospace;z-index:300;max-height:200px;overflow:auto}
+@media(max-width:768px){.ui{padding:1rem}.ui-btn{padding:.5rem .9rem;font-size:.5rem}.cover .card{padding:1.5rem 2rem;min-width:0}.cover h1{font-size:clamp(1.3rem,6vw,2rem)}.qo{max-width:80%;padding:1.2rem 1.8rem}.qo blockquote{font-size:clamp(.9rem,3.5vw,1.2rem)}.closing h2{font-size:clamp(1.2rem,5vw,1.8rem)}.sp-btns{gap:.5rem}.sp-btn{padding:.6rem 1rem;font-size:.55rem}}
+</style>
+</head>
+<body>
+<div class="ui">
+  <div class="ui-brand"><img id="uiLogo" src="https://static.wixstatic.com/media/f570c0_afaa964de4a14fdc83f12262afd0fe21~mv2.png/v1/fill/w_88,h_87,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/B%20Only%20grey%20(1).png" alt=""><span>BLIND<b>EXPERIENCES</b></span></div>
+  <div class="ui-actions">
+    <button class="ui-btn sh" onclick="openShare()"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>Share</button>
+    <button class="ui-btn dl" id="dlBtn" onclick="dlPDF()"><svg viewBox="0 0 24 24" style="fill:currentColor"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download PDF</button>
+  </div>
+</div>
+
+<div class="share-panel" id="sharePanel">
+  <button class="sp-close" onclick="closeShare()">&#215;</button>
+  <div class="sp-title">Share your moodboard</div>
+  <div class="sp-btns">
+    <button class="sp-btn fb" onclick="doFB()"><svg viewBox="0 0 24 24" style="fill:currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>Facebook</button>
+    <button class="sp-btn li" onclick="doLI()"><svg viewBox="0 0 24 24" style="fill:currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</button>
+    <button class="sp-btn ig" id="igBtn" onclick="doIG()"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram</button>
+  </div>
+  <div class="sp-msg" id="spMsg">"BlindExperiences created this moodboard for me, how does yours look like? Find out here: blindexperiences.github.io/blind-experience"</div>
+</div>
+
+<div id="slides"></div>
+<div class="toast" id="toast"></div>
+<div class="dbg" id="dbg"></div>
+
+<script>
+var LOGO='https://static.wixstatic.com/media/f570c0_afaa964de4a14fdc83f12262afd0fe21~mv2.png/v1/fill/w_88,h_87,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/B%20Only%20grey%20(1).png';
+var SITE='https://blindexperiences.github.io/blind-experience/';
+var SHARE_URL=SITE+'?ref=social';
+var SHARE_MSG='BlindExperiences created this moodboard for me, how does yours look like? Find out here: '+SHARE_URL;
+var DEBUG=location.search.indexOf('debug=1')>-1;
+var U=function(id,w,h){return 'https://images.unsplash.com/'+id+'?w='+w+'&h='+h+'&fit=crop&q=82&auto=format'};
+
+// ── IMAGE POOLS ────────────────────────────────────────────
+// ALL: wide landscapes, atmospheric scenes, people at distance only.
+// NONE of these IDs appear in the questionnaire slider images.
+var POOLS={
+  solitude:[
+    U('photo-1506744038136-46273834b3fb',900,600), // mountain lake reflection, no people
+    U('photo-1511884642898-4c92516a3ec1',900,600), // dawn mist mountains
+    U('photo-1501854140801-50d01698950b',900,600), // aerial green landscape
+    U('photo-1532339142463-fd0a8979791a',900,600)  // empty forest road at dawn
+  ],
+  social:[
+    U('photo-1524661135-423995f22d0b',900,600),    // city at night aerial
+    U('photo-1519501025264-65ba15a82390',900,600), // urban street atmospheric
+    U('photo-1480714378408-67cf0d13bc1b',900,600), // city skyline at dusk
+    U('photo-1449824913935-59a10b8d2000',900,600)  // open road into city
+  ],
+  slow:[
+    U('photo-1459755486867-b55449bb39ff',900,600), // peaceful harbour morning
+    U('photo-1523301343968-6a6ebf63c672',900,600), // hammock between palms
+    U('photo-1475688621402-4257c812d6db',900,600), // misty lake at dawn
+    U('photo-1473496169904-658ba7574b0d',900,600)  // calm river/boat scene
+  ],
+  active:[
+    U('photo-1483728642387-6c3bdd6c93e5',900,600), // mountain road winding
+    U('photo-1508193638397-1c4234db14d8',900,600), // kayak on clear water
+    U('photo-1461958508236-9a742665a0d5',900,600), // climber on rock face, distance
+    U('photo-1540317580384-e5d43616b9aa',900,600)  // cyclist on mountain trail
+  ],
+  polished:[
+    U('photo-1520250497591-112f2f40a3f4',900,600), // luxury terrace with infinity view
+    U('photo-1571896349842-33c89424de2d',900,600), // luxury property exterior, no people
+    U('photo-1584132967334-10e028bd69f7',900,600), // minimalist design interior, empty
+    U('photo-1578683010236-d716f9a3f461',900,600)  // elegant outdoor bath/terrace
+  ],
+  raw:[
+    U('photo-1497436072909-60f360e1d4b1',900,600), // wild valley fog
+    U('photo-1532274402911-5a369e4c4bb5',900,600), // mountain wilderness trail
+    U('photo-1470770841072-f978cf4d019e',900,600), // stormy coastal cliff
+    U('photo-1504280390367-361c6d9f38f4',900,600)  // tent under starry sky
+  ],
+  warm:[
+    U('photo-1590523741831-ab7e8b8f9c7f',900,600), // tropical beach aerial
+    U('photo-1501785888041-af3ef285b470',900,600), // tropical bay at golden hour
+    U('photo-1559128010-7c1ad6e1b6a5',900,600),    // island from above
+    U('photo-1520454974749-611b7248ffdb',900,600)  // beach from above no people
+  ],
+  cold:[
+    U('photo-1419242902214-272b3f66ee7a',900,600), // milky way over snowy peak
+    U('photo-1486870591958-9b9d0d1dda99',900,600), // mountain peak dramatic light
+    U('photo-1519681393784-d120267933ba",900,600), // snowy mountain range
+    U('photo-1467173572719-f14b9fb86e5f',900,600)  // frozen winter forest
+  ],
+  nature:[
+    U('photo-1470071459604-3b5ec3a7fe05',900,600), // misty valley at sunrise
+    U('photo-1441974231531-c6227db76b6e',900,600), // sunlight through forest
+    U('photo-1472396961693-142e6e269027',900,600), // mountain lake reflection
+    U('photo-1465189684280-6a8fa9b19a7a',900,600)  // wild meadow flowers
+  ],
+  culture:[
+    U('photo-1539650116574-75c0c6d73f6e',900,600), // colorful temple exterior
+    U('photo-1558862107-d49ef2a04d72',900,600),    // lanterns at night
+    U('photo-1547981609-4b6bfe67ca0b',900,600),    // vibrant spice market overview
+    U('photo-1512100356356-de1b84283e18',900,600)  // mosque courtyard aerial
+  ],
+  wildlife:[
+    U('photo-1474511320723-9a56873571b7',900,600), // eagle in flight, vast sky
+    U('photo-1456926631375-92c8ce872def',900,600), // whale breach, ocean wide
+    U('photo-1437622368342-7a3d73a34c8f',900,600), // cheetah on rock, savanna
+    U('photo-1504173010664-32509aeebb62',900,600)  // elephant herd aerial
+  ],
+  human:[
+    U('photo-1543747579-795b9c2c3ada',900,600),    // market scene from above, no close faces
+    U('photo-1499692431049-71c40b25e3f6',900,600), // crowd at festival, wide shot
+    U('photo-1527631746610-bca00a040d60',900,600), // people walking old town, distance
+    U('photo-1533050487297-09b450131914',900,600)  // aerial village life
+  ],
+  ancient:[
+    U('photo-1548013146-72479768bada',900,600),    // Taj Mahal wide shot
+    U('photo-1580674684081-7617fbf3d745',900,600), // Angkor Wat at dawn
+    U('photo-1564507592333-c60657eea523',900,600), // Greek ruins with sky
+    U('photo-1525867710668-e54b89276c2d',900,600)  // colosseum wide angle
+  ],
+  modern:[
+    U('photo-1531058020387-3be344556be6',900,600), // contemporary art museum exterior
+    U('photo-1514565131-fce0801e5785',900,600),    // modern architecture abstract
+    U('photo-1491553895911-0055eca6402d',900,600), // modern bridge/structure
+    U('photo-1565299624946-b28f40a0ae38',900,600)  // contemporary plated food
+  ],
+  intimate:[
+    U('photo-1476511324498-2f3afc2b4ab2',900,600), // couple silhouette far sunset
+    U('photo-1414235077428-338989a2e8c0',900,600), // candlelit table for two, no faces
+    U('photo-1507003211169-0a1dd7228f2d',900,600), // ancient amphitheatre, intimate scale
+    U('photo-1519167758481-83f550bb8abe',900,600)  // candlelit stone interior
+  ],
+  thrill:[
+    U('photo-1533130061792-64b345e4a833',900,600), // paraglider over valley
+    U('photo-1527004013197-933c4bb611b3',900,600), // zipline in forest canopy
+    U('photo-1495954222046-2c427ecb546d',900,600), // mountain bike trail
+    U('photo-1508739773434-c26b3d09e071',900,600)  // hiker on ridge, distance
+  ],
+  play:[
+    U('photo-1506953823645-5e93625f5048',900,600), // tropical beach aerial
+    U('photo-1473116763249-2faaef81ccda",900,600), // colourful beach village
+    U('photo-1502086223501-7ea6ecd79368',900,600), // family hiking, small in landscape
+    U('photo-1520454974749-611b7248ffdb',900,600)  // beach from above
+  ],
+  learning:[
+    U('photo-1476231682828-37e571bc172f',900,600), // child exploring tide pool
+    U('photo-1503676260728-1c00da094a0b',900,600), // open book on a cliff
+    U('photo-1516426122078-c23e76319801',900,600), // elephants in savanna wide
+    U('photo-1547306843-7d1c5c7a6b07',900,600)    // ancient map/compass
+  ],
+  heritage:[
+    U('photo-1519167758481-83f550bb8abe',900,600), // grand candlelit stone hall
+    U('photo-1509909756405-be0199881695',900,600), // heritage estate wide aerial
+    U('photo-1580674684081-7617fbf3d745',900,600), // Angkor Wat
+    U('photo-1525867710668-e54b89276c2d',900,600)  // ancient colosseum
+  ],
+  newways:[
+    U('photo-1484910292437-025e5d83ce44',900,600), // women trekking mountain, distance
+    U('photo-1478720568477-152d9b164e26',900,600), // multi-gen family outdoors
+    U('photo-1529156069898-49953e39b3ac",900,600), // group hiking far away
+    U('photo-1522098543979-ffc7f79a56c4',900,600)  // women on mountain ridge
+  ],
+  rest:[
+    U('photo-1507652313519-d4e9174996dd',900,600), // hammock in jungle
+    U('photo-1540555700478-4be289fbec6f',900,600), // spa stone in nature
+    U('photo-1474642566-c879a30c9bc3',900,600),    // still mountain lake
+    U('photo-1517487881594-2787fef5ebf7',900,600)  // slow breakfast table, no face
+  ],
+  grit:[
+    U('photo-1461958508236-9a742665a0d5',900,600), // climber on rock, distance
+    U('photo-1483728642387-6c3bdd6c93e5',900,600), // winding mountain road
+    U('photo-1494783367193-149034c05e8f',900,600), // women hiking rocky trail
+    U('photo-1522098543979-ffc7f79a56c4',900,600)  // women on summit
+  ]
+};
+
+// Traveller images — ALWAYS people small in frame, wide shots
+var TRAV={
+  couple:[U('photo-1469854523086-cc02fe5d8800',900,600),U('photo-1510784722466-f2aa9c52fff6',900,600)],
+  family:[U('photo-1478720568477-152d9b164e26',900,600),U('photo-1502086223501-7ea6ecd79368',900,600)],
+  women: [U('photo-1494783367193-149034c05e8f',900,600),U('photo-1484910292437-025e5d83ce44',900,600)],
+  solo:  [U('photo-1499209974431-9dddcece7f88',900,600),U('photo-1532274402911-5a369e4c4bb5',900,600)]
+};
+
+// Hero (large, wide) — one per dominant tag
+var HERO={
+  solitude:U('photo-1506744038136-46273834b3fb',1800,1000),
+  social:  U('photo-1524661135-423995f22d0b',1800,1000),
+  slow:    U('photo-1475688621402-4257c812d6db',1800,1000),
+  active:  U('photo-1483728642387-6c3bdd6c93e5',1800,1000),
+  polished:U('photo-1520250497591-112f2f40a3f4',1800,1000),
+  raw:     U('photo-1497436072909-60f360e1d4b1',1800,1000),
+  warm:    U('photo-1590523741831-ab7e8b8f9c7f',1800,1000),
+  cold:    U('photo-1419242902214-272b3f66ee7a',1800,1000),
+  nature:  U('photo-1470071459604-3b5ec3a7fe05',1800,1000),
+  culture: U('photo-1539650116574-75c0c6d73f6e',1800,1000),
+  wildlife:U('photo-1474511320723-9a56873571b7',1800,1000),
+  human:   U('photo-1543747579-795b9c2c3ada',1800,1000),
+  ancient: U('photo-1548013146-72479768bada',1800,1000),
+  modern:  U('photo-1514565131-fce0801e5785',1800,1000),
+  intimate:U('photo-1476511324498-2f3afc2b4ab2',1800,1000),
+  thrill:  U('photo-1533130061792-64b345e4a833',1800,1000),
+  rest:    U('photo-1507652313519-d4e9174996dd',1800,1000),
+  grit:    U('photo-1494783367193-149034c05e8f',1800,1000)
+};
+
+var QUOTES={
+  solitude:["Silence is not empty \u2014 it is full of answers.","Not all those who wander are lost."],
+  social:  ["The world is a book, and those who do not travel read only one page.","Every city hides a secret self that reveals itself only to those who stay."],
+  slow:    ["The journey itself is my home.","There is more to life than increasing its speed."],
+  active:  ["Life begins at the edge of your comfort zone.","Go far enough and you begin to meet yourself."],
+  polished:["Details make perfection, and perfection is not a detail.","True luxury is the freedom from wanting anything more."],
+  raw:     ["Adventure is worthwhile in itself.","The most beautiful things cannot be seen \u2014 they must be felt."],
+  warm:    ["To travel is to live.","The tropics whisper things the cold world cannot hold."],
+  cold:    ["The mountains are calling, and I must go.","Climb the mountains and get their good tidings."],
+  nature:  ["In every walk with nature, one receives far more than they seek.","The earth does not belong to us \u2014 we belong to the earth."],
+  culture: ["Travel makes one modest. You see what a tiny place you occupy in the world.","A traveler without observation is a bird without wings."],
+  wildlife:["Look deep into nature, and then you will understand everything better.","Take only memories. Leave only footprints."],
+  human:   ["We are all travelers in the wilderness of this world.","Wherever you go, you meet a part of yourself."],
+  ancient: ["All journeys have secret destinations of which the traveler is unaware.","The real voyage of discovery consists not in seeking new landscapes."],
+  modern:  ["The real voyage of discovery consists in having new eyes.","Every exit is an entry somewhere else."],
+  intimate:["The best thing to hold onto in life is each other.","Love is the great adventure."],
+  thrill:  ["Together we summit. Together we fly.","A shared challenge is the shortest path to knowing someone fully."],
+  rest:    ["Rest is not idleness. It is the soul listening.","In stillness, we find what motion cannot reach."],
+  grit:    ["You are stronger than the story you tell yourself.","Somewhere between your comfort zone and your dream is where life begins."]
+};
+
+// ── TAG SCORING ───────────────────────────────────────────
+var AXIS_MAP={
+  horizon:  {left:'solitude',right:'social'},
+  rhythm:   {left:'slow',right:'active'},
+  comfort:  {left:'polished',right:'raw'},
+  landscape:{left:'warm',right:'cold'},
+  setting:  {left:'nature',right:'culture'},
+  spirit:   {left:'wildlife',right:'human'},
+  cultural: {left:'ancient',right:'modern'},
+  connection:{left:'intimate',right:'thrill'},
+  growth:   {left:'play',right:'learning'},
+  narrative:{left:'heritage',right:'newways'},
+  awakening:{left:'rest',right:'grit'}
+};
+
+function getTopTags(axes){
+  if(!axes||!Object.keys(axes).length)return['nature','slow','warm','culture'];
+  var scores={};
+  Object.keys(axes).forEach(function(axis){
+    var m=AXIS_MAP[axis];if(!m)return;
+    var v=Number(axes[axis]);
+    var lScore=100-v, rScore=v;
+    scores[m.left]=(scores[m.left]||0)+lScore;
+    scores[m.right]=(scores[m.right]||0)+rScore;
+  });
+  var sorted=Object.entries(scores).sort(function(a,b){return b[1]-a[1]}).map(function(e){return e[0]}).filter(function(t){return POOLS[t]});
+  if(DEBUG){
+    var dbgEl=document.getElementById('dbg');dbgEl.style.display='block';
+    dbgEl.innerHTML='<b>AXES:</b> '+JSON.stringify(axes)+'<br><b>SCORES:</b> '+JSON.stringify(scores)+'<br><b>TOP TAGS:</b> '+sorted.slice(0,6).join(', ');
+  }
+  console.log('[BE Moodboard] Axes:',axes,'Top tags:',sorted.slice(0,5));
+  return sorted;
+}
+
+function pickImgs(topTags,n,travType){
+  var imgs=[],used={};
+  (TRAV[travType]||TRAV.couple).forEach(function(u){if(imgs.length<2&&!used[u]){used[u]=1;imgs.push(u)}});
+  var i=0;
+  while(imgs.length<n&&i<400){
+    var tag=topTags[i%topTags.length];
+    var pool=POOLS[tag];
+    if(pool){var idx=Math.floor(i/topTags.length)%pool.length;var p=pool[idx];if(p&&!used[p]){used[p]=1;imgs.push(p)}}
+    i++;
+  }
+  return imgs.slice(0,n);
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function gi(url){return '<div class="gi" style="background-image:url(\''+url+'\')"></div>'}
+function qo(text){return '<div class="qo"><blockquote>'+text+'</blockquote></div>'}
+
+function render(cfg){
+  var name=cfg.name||'Your',tripLabel=cfg.tripLabel||'Blind Experience',expType=cfg.expType||'A Journey Without Map';
+  var axes=cfg.axes||{},travType=cfg.travType||'couple';
+  var topTags=getTopTags(axes);
+  var tag0=topTags[0]||'nature';
+  var heroUrl=(HERO[tag0]||HERO.nature);
+  var imgs=pickImgs(topTags,12,travType);
+  var qs=QUOTES[tag0]||QUOTES.nature;
+  var q1='\u201C'+qs[0]+'\u201D',q2='\u201C'+qs[1]+'\u201D';
+  var wrap=document.getElementById('slides');
+  wrap.innerHTML='';
+
+  // P1 Cover
+  var p1=document.createElement('div');p1.className='sl cover';
+  p1.innerHTML='<div class="sl-inner"><img class="bg" src="'+heroUrl+'" crossorigin="anonymous" alt=""><div class="vig"></div>'+
+    '<div class="card"><div class="ey">Blind Experiences &nbsp;&middot;&nbsp; Private Journey</div>'+
+    '<h1>'+name+'\u2019s<br>'+tripLabel+'</h1><div class="desc">'+expType+'</div></div>'+
+    '<div class="lm"><img src="'+LOGO+'" alt=""><span>BLIND<b>EXPERIENCES</b></span></div></div>';
+  wrap.appendChild(p1);
+
+  // P2 Asymmetric 60/40
+  var p2=document.createElement('div');p2.className='sl';
+  p2.innerHTML='<div class="sl-inner g2">'+gi(imgs[0])+'<div class="g2r">'+gi(imgs[1])+gi(imgs[2])+'</div></div>';
+  wrap.appendChild(p2);
+
+  // P3 Three columns + quote
+  var p3=document.createElement('div');p3.className='sl';
+  p3.innerHTML='<div class="sl-inner g3">'+gi(imgs[3])+gi(imgs[4])+gi(imgs[5])+qo(q1)+'</div>';
+  wrap.appendChild(p3);
+
+  // P4 Full-width top + two below
+  var p4=document.createElement('div');p4.className='sl';
+  p4.innerHTML='<div class="sl-inner g4"><div class="gi g4t" style="background-image:url(\''+imgs[6]+'\')"></div><div class="g4b">'+gi(imgs[7])+gi(imgs[8])+'</div></div>';
+  wrap.appendChild(p4);
+
+  // P5 Two-stack left + tall right + quote
+  var p5=document.createElement('div');p5.className='sl';
+  p5.innerHTML='<div class="sl-inner g5"><div class="g5l">'+gi(imgs[9])+gi(imgs[10])+'</div>'+gi(imgs[11])+qo(q2)+'</div>';
+  wrap.appendChild(p5);
+
+  // P6 Closing
+  var p6=document.createElement('div');p6.className='sl closing';
+  p6.innerHTML='<div class="sl-inner"><img class="bg" src="'+heroUrl+'" crossorigin="anonymous" alt="">'+
+    '<div class="inn"><h2>We can\u2019t wait to start planning your magical '+tripLabel+'.</h2>'+
+    '<div class="sub">We are ready when you are.</div>'+
+    '<div class="url">blindexperiences.github.io/blind-experience</div>'+
+    '<div class="brand"><img src="'+LOGO+'" alt=""><div class="bt">BLIND<b>EXPERIENCES</b></div></div></div></div>';
+  wrap.appendChild(p6);
+}
+
+// ── SHARE ────────────────────────────────────────────────
+function openShare(){document.getElementById('sharePanel').classList.add('open')}
+function closeShare(){document.getElementById('sharePanel').classList.remove('open')}
+
+// Facebook — popup window, exact message
+function doFB(){
+  var url='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(SHARE_URL)+'&quote='+encodeURIComponent(SHARE_MSG);
+  window.open(url,'fb-share','width=626,height=436,resizable=yes');
+  closeShare();
+}
+
+// LinkedIn — popup window
+function doLI(){
+  var url='https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(SHARE_URL);
+  window.open(url,'li-share','width=626,height=436,resizable=yes');
+  closeShare();
+}
+
+// Instagram — three-path approach
+async function doIG(){
+  closeShare();
+  var btn=document.getElementById('igBtn');btn.textContent='Preparing\u2026';
+  try{
+    // Capture cover slide
+    var slide=document.querySelector('.sl.cover');
+    if(!slide)throw new Error('no slide');
+    // Preload hero image
+    var bgImg=slide.querySelector('img.bg');
+    if(bgImg&&!bgImg.complete){await new Promise(function(r){bgImg.onload=r;bgImg.onerror=r})}
+    await new Promise(function(r){setTimeout(r,400)});
+    var canvas=await html2canvas(slide,{useCORS:true,allowTaint:true,scale:2,backgroundColor:'#080808',logging:false,imageTimeout:8000});
+    var blob=await new Promise(function(res){canvas.toBlob(res,'image/jpeg',0.92)});
+    var file=new File([blob],'BlindExperiences-Moodboard.jpg',{type:'image/jpeg'});
+    // PATH 1: mobile with file share
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],text:SHARE_MSG,url:SHARE_URL});btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram';return}
+      catch(e){if(e.name==='AbortError'){btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram';return}}
+    }
+    // PATH 2: mobile URL-only share
+    if(navigator.share){
+      try{await navigator.share({text:SHARE_MSG,url:SHARE_URL});btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram';return}
+      catch(e){if(e.name==='AbortError'){btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram';return}}
+    }
+    // PATH 3: desktop — download image + copy caption
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BlindExperiences-Moodboard.jpg';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a)},1000);
+    if(navigator.clipboard){await navigator.clipboard.writeText(SHARE_MSG)}
+    showToast('Image saved \u2014 caption copied to clipboard');
+  }catch(e){
+    console.error(e);
+    // Last resort: copy text only
+    if(navigator.clipboard){await navigator.clipboard.writeText(SHARE_MSG);showToast('Caption copied to clipboard')}
+    else{showToast('Tip: screenshot the moodboard and share on Instagram')}
+  }
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram';
+}
+
+// ── PDF ───────────────────────────────────────────────────
+async function dlPDF(){
+  var btn=document.getElementById('dlBtn');btn.classList.add('busy');btn.textContent='Generating\u2026';
+  // Preload all bg images
+  var urls=[];
+  document.querySelectorAll('.gi').forEach(function(el){var m=el.style.backgroundImage.match(/url\(['"]?(.*?)['"]?\)/);if(m)urls.push(m[1])});
+  document.querySelectorAll('.sl img').forEach(function(img){if(img.src)urls.push(img.src)});
+  await Promise.all(urls.map(function(u){return new Promise(function(res){var i=new Image();i.crossOrigin='anonymous';i.onload=res;i.onerror=res;i.src=u})}));
+  await new Promise(function(r){setTimeout(r,800)});
+  try{
+    var jsPDF=window.jspdf.jsPDF;
+    var pdf=new jsPDF('l','mm','a4');
+    var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();
+    var slides=document.querySelectorAll('.sl');
+    for(var i=0;i<slides.length;i++){
+      if(i>0)pdf.addPage();
+      pdf.setFillColor(8,8,8);pdf.rect(0,0,pw,ph,'F');
+      var canvas=await html2canvas(slides[i],{useCORS:true,allowTaint:true,scale:2,backgroundColor:'#080808',logging:false,imageTimeout:10000});
+      var ratio=canvas.width/canvas.height,pr=pw/ph;
+      var iw,ih,x,y;
+      if(ratio>=pr){iw=pw;ih=pw/ratio;x=0;y=(ph-ih)/2}
+      else{ih=ph;iw=ph*ratio;x=(pw-iw)/2;y=0}
+      pdf.addImage(canvas.toDataURL('image/jpeg',.92),'JPEG',x,y,iw,ih);
+    }
+    pdf.save('BlindExperiences-Moodboard.pdf');
+    showToast('Moodboard saved \u2713');
+  }catch(e){console.error(e);showToast('Try: right-click > Print > Save as PDF')}
+  btn.classList.remove('busy');
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="fill:currentColor;width:12px;height:12px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download PDF';
+}
+
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3200)}
+
+// ── INIT ──────────────────────────────────────────────────
+var cfg=(function(){
+  try{var s=localStorage.getItem('blindMoodboard');if(s)return JSON.parse(s)}catch(e){}
+  // Demo: two contrasting profiles to confirm personalisation works
+  var demo=location.search.indexOf('demo=cold')>-1?
+    {name:"Alex",tripLabel:"Blind Expedition",expType:"Alpine Expedition",travType:"women",axes:{horizon:15,rhythm:75,comfort:40,landscape:90,setting:20,spirit:30,cultural:35,awakening:85}}:
+    {name:"Sofia",tripLabel:"Blind Honeymoon",expType:"Sanctuary Retreat",travType:"couple",axes:{horizon:20,rhythm:25,comfort:15,landscape:20,setting:35,spirit:40,cultural:30,connection:10}};
+  return demo;
+})();
+
+render(cfg);
+window.initMoodboard=function(c){try{localStorage.setItem('blindMoodboard',JSON.stringify(c))}catch(e){}render(c)};
+</script>
+</body>
+</html>
