@@ -194,7 +194,7 @@
   <button class="btn" style="width:100%;margin-top:1.5rem" onclick="buildMood()">Reveal My Moodboard</button>
 </div></div>
 
-<div id="mood" class="screen mood"></div>
+<div id="mood" class="screen mood"><div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Montserrat,sans-serif;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)">Loading your moodboard…</div></div>
 
 <script>
 var GAS='https://script.google.com/macros/s/AKfycbycDchPBCfRKFpGhGDVHQuv9U3yUSbxQoxl7-g_AeTpAM8hBOV0j_FDdM2wzjnonGoCaA/exec';
@@ -365,7 +365,10 @@ function buildMood(){
   var qArr=moodQ[topTags[0]]||moodQ.nature;var q1=qArr[0],q2=qArr[1];
 
   pid='p_'+Date.now();capturedCanvas=null;
-  sendGAS({action:'profile',id:pid,timestamp:new Date().toISOString(),tripType:trip,name:fn+' '+lnm,email:em,phone:phone,travellers:pax,duration:dur,experienceType:expType,topTags:topTags.slice(0,5),axes:Object.fromEntries(Object.keys(answers).map(function(k){return[k,answers[k].value]})),spectrum:spectrum.map(function(s){return{left:s.left,right:s.right,pct:s.leftPct}})});
+  var axesObj=Object.fromEntries(Object.keys(answers).map(function(k){return[k,answers[k].value]}));
+  sendGAS({action:'profile',id:pid,timestamp:new Date().toISOString(),tripType:trip,name:fn+' '+lnm,email:em,phone:phone,travellers:pax,duration:dur,experienceType:expType,topTags:topTags.slice(0,5),axes:axesObj,spectrum:spectrum.map(function(s){return{left:s.left,right:s.right,pct:s.leftPct}})});
+  // Store data for moodboard page
+  try{localStorage.setItem('blindMoodboard',JSON.stringify({name:fn,tripLabel:tripL[trip],expType:expType,travType:travType,axes:axesObj,pid:pid}))}catch(e){}
 
   var bLogo='<div class="blogo"><img src="'+logoUrl+'" alt="B"><span>BLIND<b>EXPERIENCES</b></span></div>';
   var scoreBtns='';for(var i=1;i<=10;i++)scoreBtns+='<button class="sb" onclick="setS('+i+')">'+i+'</button>';
@@ -405,7 +408,8 @@ function buildMood(){
 
   document.getElementById('mood').innerHTML=html+traitsHtml+shareHtml+
     '<div class="fb" id="fbBox"><h3>How well does this reflect you?</h3><div class="fbs">Help us craft your perfect experience. Score the moodboard and share any thoughts &mdash; every detail helps.</div><div class="sr">'+scoreBtns+'</div><div class="slab"><span>Not at all</span><span>Perfectly</span></div><textarea class="fta" id="fbTxt" placeholder="What resonated? What felt off? Any specific wishes?"></textarea><button class="btn" style="width:100%" onclick="subFb()">Submit Feedback</button><div class="fbt" id="fbThx">Thank you. Your feedback shapes every trip we design.</div></div>';
-  show('mood');
+  // Redirect to moodboard
+  setTimeout(function(){window.location.href='moodboard.html'},200);
 }
 
 function setS(n){fbs=n;document.querySelectorAll('.sb').forEach(function(b,i){b.classList.toggle('on',i<n)})}
