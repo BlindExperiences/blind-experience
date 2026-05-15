@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blind Experiences — Create Your Moodboard</title>
@@ -59,10 +59,10 @@
 .qsslide{position:absolute;bottom:0;left:0;right:0;height:150px;padding:1rem 2rem 1rem;z-index:20;background:rgba(0,0,0,.92);display:flex;flex-direction:column;justify-content:space-between}
 .qsaxis{display:flex;justify-content:space-between;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:600}
 .qsbar-wrap{position:relative;width:100%;height:44px;display:flex;align-items:center}
-.qsbar{width:100%;height:3px;background:rgba(255,255,255,.15);border-radius:3px}
-.qsbar-fill{position:absolute;top:0;left:0;height:100%;background:var(--wh);border-radius:3px;width:50%;transition:width .12s}
-.qsthumb{position:absolute;width:3px;height:3px;background:var(--wh);border-radius:0;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;transition:left .12s}
-.qsthumb.touched{box-shadow:0 0 0 10px rgba(255,255,255,.12),0 4px 16px rgba(0,0,0,.8)}
+.qsbar{position:relative;width:100%;height:2px;background:rgba(248,245,240,.15);border-radius:1px}
+.qsbar-fill{position:absolute;top:0;left:0;height:2px;background:var(--wh);border-radius:1px;width:50%;transition:width .12s}
+.qsthumb{position:absolute;width:10px;height:10px;background:#f8f5f0;border-radius:50%;box-shadow:0 0 0 3px rgba(248,245,240,.18);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;transition:left .12s}
+.qsthumb.touched{box-shadow:0 0 0 6px rgba(248,245,240,.15)}
 .qsbar-wrap input[type=range]{position:absolute;width:100%;height:44px;opacity:0;cursor:pointer;z-index:5;margin:0}
 /* Back + Continue on same row */
 .qsactions{display:flex;align-items:center;justify-content:space-between;gap:.8rem}
@@ -176,8 +176,8 @@ var baseQ=[
    b:{img:U("photo-1477959858617-67f85cf4f1df",900,1300),label:"A city humming with life",sub:"Rooftops, light, electric pulse"}},
   {sec:0,axis:'rhythm',q:"What is your rhythm of the sun?",
    leftLabel:"Slow",rightLabel:"Active Discovery",
-   a:{img:U("photo-1499028344343-cd173ffc68a9",900,1300),label:"Still morning, soft light",sub:"Coffee cooling, time stretching"},
-   b:{img:U("photo-1452626038306-9aae5e071dd3",900,1300),label:"Out before the world wakes",sub:"Trail at dawn, mist still rising"}},
+   a:{img:U("photo-32VRIapyQJk",900,1300),label:"Still morning, soft light",sub:"Coffee cooling, time stretching"},
+   b:{img:U("photo-PtfrMfx-X7o",900,1300),label:"Out before the world wakes",sub:"Trail at dawn, mist still rising"}},
   {sec:0,axis:'comfort',q:"How should it feel underfoot?",
    leftLabel:"Polished",rightLabel:"Beautifully Raw",
    a:{img:U("photo-1445019980597-93fa8acb246c",900,1300),label:"Crafted, considered, seamless",sub:"Where design meets wilderness"},
@@ -192,11 +192,11 @@ var baseQ=[
    b:{img:U("photo-1513635269975-59663e0ac1ad",900,1300),label:"Woven into local life",sub:"Markets, language, belonging"}},
   {sec:1,axis:'spirit',q:"What feeds your spirit?",
    leftLabel:"Wildlife & Wildlands",rightLabel:"Human Connection",
-   a:{img:U("photo-1535338454528-1b5c8e9b3e42",900,1300),label:"Wild ecosystems",sub:"Untouched, protected, ancient"},
+   a:{img:U("photo-ltoD8LNvlxs",900,1300),label:"Wild ecosystems",sub:"Untouched, protected, ancient"},
    b:{img:U("photo-1555396273-367ea4eb4db5",900,1300),label:"People and their craft",sub:"Markets, stories, human warmth"}},
   {sec:1,axis:'cultural',q:"Which layer of time?",
    leftLabel:"Ancient Roots",rightLabel:"Contemporary Edge",
-   a:{img:U("photo-1507003211169-0a1dd7228f2d",900,1300),label:"Ancient wonders",sub:"Ruins, ceremony, deep history"},
+   a:{img:U("photo-FnNIDG9k8Ag",900,1300),label:"Ancient wonders",sub:"Ruins, ceremony, deep history"},
    b:{img:U("photo-1514565131-fce0801e5785",900,1300),label:"Contemporary edge",sub:"Modern art, gastronomy, urban energy"}}
 ];
 
@@ -211,7 +211,7 @@ var finalQ={
     b:{img:U("photo-1476231682828-37e571bc172f",900,1300),label:"Eyes wide open",sub:"Tracking, learning, discovering"}},
   legacy:{sec:2,axis:'narrative',q:"How shall we tell the story?",
     leftLabel:"Honoring Heritage",rightLabel:"Breaking the Mold",
-    a:{img:U("photo-1509909756405-be0199881695",900,1300),label:"Heritage and deep roots",sub:"Grand landscapes, slow chapters"},
+    a:{img:U("photo-1UpaTI9SqQ8",900,1300),label:"Heritage and deep roots",sub:"Grand landscapes, slow chapters"},
     b:{img:U("photo-1529156069898-49953e39b3ac",900,1300),label:"New traditions forged together",sub:"A challenge that bonds all ages"}},
   expedition:{sec:2,axis:'awakening',q:"What part of you are we waking up?",
     leftLabel:"Radical Rest",rightLabel:"Bold Bravery",
@@ -226,7 +226,7 @@ var MI={
   slow:[U("photo-1459755486867-b55449bb39ff",700,500),U("photo-1523301343968-6a6ebf63c672",700,500),U("photo-1475688621402-4257c812d6db",700,500),U("photo-1473496169904-658ba7574b0d",700,500)],
   active:[U("photo-1483728642387-6c3bdd6c93e5",700,500),U("photo-1461958508236-9a742665a0d5",700,500),U("photo-1508193638397-1c4234db14d8",700,500),U("photo-1504280390367-361c6d9f38f4",700,500)],
   polished:[U("photo-1520250497591-112f2f40a3f4",700,500),U("photo-1571896349842-33c89424de2d",700,500),U("photo-1584132967334-10e028bd69f7",700,500),U("photo-1566073771259-6a8506099945",700,500)],
-  raw:[U("photo-1497436072909-60f360e1d4b1",700,500),U("photo-1532274402911-5a369e4c4bb5",700,500),U("photo-1470770841072-f978cf4d019e",700,500),U("photo-1504280390367-361c6d9f38f4",700,500)],
+  raw:[U("photo-1497436072909-60f360e1d4b1",700,500),U("photo-1532274402911-5a369e4c4bb5",700,500),U("photo-32VRIapyQJk",700,500),U("photo-1504280390367-361c6d9f38f4",700,500)],
   warm:[U("photo-1590523741831-ab7e8b8f9c7f",700,500),U("photo-1501785888041-af3ef285b470",700,500),U("photo-1559128010-7c1ad6e1b6a5",700,500),U("photo-1520454974749-611b7248ffdb",700,500)],
   cold:[U("photo-1419242902214-272b3f66ee7a",700,500),U("photo-1486870591958-9b9d0d1dda99",700,500),U("photo-1519681393784-d120267933ba",700,500),U("photo-1467173572719-f14b9fb86e5f",700,500)],
   nature:[U("photo-1470071459604-3b5ec3a7fe05",700,500),U("photo-1441974231531-c6227db76b6e",700,500),U("photo-1472396961693-142e6e269027",700,500),U("photo-1465189684280-6a8fa9b19a7a",700,500)],
@@ -239,13 +239,13 @@ var MI={
   thrill:[U("photo-1533130061792-64b345e4a833",700,500),U("photo-1527004013197-933c4bb611b3",700,500),U("photo-1495954222046-2c427ecb546d",700,500)],
   play:[U("photo-1506953823645-5e93625f5048",700,500),U("photo-1520454974749-611b7248ffdb",700,500),U("photo-1473116763249-2faaef81ccda",700,500)],
   learning:[U("photo-1476231682828-37e571bc172f",700,500),U("photo-1503676260728-1c00da094a0b",700,500),U("photo-1516426122078-c23e76319801",700,500)],
-  heritage:[U("photo-1519167758481-83f550bb8abe",700,500),U("photo-1509909756405-be0199881695",700,500),U("photo-1547306843-7d1c5c7a6b07",700,500)],
+  heritage:[U("photo-1519167758481-83f550bb8abe",700,500),U("photo-1UpaTI9SqQ8",700,500),U("photo-1547306843-7d1c5c7a6b07",700,500)],
   newways:[U("photo-1484910292437-025e5d83ce44",700,500),U("photo-1478720568477-152d9b164e26",700,500),U("photo-1502086223501-7ea6ecd79368",700,500)],
   rest:[U("photo-1507652313519-d4e9174996dd",700,500),U("photo-1540555700478-4be289fbec6f",700,500),U("photo-1474642566-c879a30c9bc3",700,500)],
   grit:[U("photo-1461958508236-9a742665a0d5",700,500),U("photo-1483728642387-6c3bdd6c93e5",700,500),U("photo-1494783367193-149034c05e8f",700,500)]
 };
 var travImgs={couple:[U("photo-1516589178581-6cd7833ae3b2",700,500),U("photo-1510784722466-f2aa9c52fff6",700,500)],family:[U("photo-1478720568477-152d9b164e26",700,500),U("photo-1502086223501-7ea6ecd79368",700,500)],women:[U("photo-1494783367193-149034c05e8f",700,500),U("photo-1484910292437-025e5d83ce44",700,500)],solo:[U("photo-1499209974431-9dddcece7f88",700,500),U("photo-1532274402911-5a369e4c4bb5",700,500)]};
-var heroImgs={solitude:U("photo-1433086966358-54859d0ed716",1800,1000),social:U("photo-1477959858617-67f85cf4f1df",1800,1000),slow:U("photo-1499028344343-cd173ffc68a9",1800,1000),active:U("photo-1483728642387-6c3bdd6c93e5",1800,1000),polished:U("photo-1445019980597-93fa8acb246c",1800,1000),raw:U("photo-1497436072909-60f360e1d4b1",1800,1000),warm:U("photo-1590523741831-ab7e8b8f9c7f",1800,1000),cold:U("photo-1454496522488-7a8e488e8606",1800,1000),nature:U("photo-1470071459604-3b5ec3a7fe05",1800,1000),culture:U("photo-1539650116574-75c0c6d73f6e",1800,1000),wildlife:U("photo-1535338454528-1b5c8e9b3e42",1800,1000),human:U("photo-1531206715517-5c0ba140b2b8",1800,1000),ancient:U("photo-1507003211169-0a1dd7228f2d",1800,1000),modern:U("photo-1514565131-fce0801e5785",1800,1000)};
+var heroImgs={solitude:U("photo-1433086966358-54859d0ed716",1800,1000),social:U("photo-1477959858617-67f85cf4f1df",1800,1000),slow:U("photo-32VRIapyQJk",1800,1000),active:U("photo-1483728642387-6c3bdd6c93e5",1800,1000),polished:U("photo-1445019980597-93fa8acb246c",1800,1000),raw:U("photo-1497436072909-60f360e1d4b1",1800,1000),warm:U("photo-1590523741831-ab7e8b8f9c7f",1800,1000),cold:U("photo-1454496522488-7a8e488e8606",1800,1000),nature:U("photo-1470071459604-3b5ec3a7fe05",1800,1000),culture:U("photo-1539650116574-75c0c6d73f6e",1800,1000),wildlife:U("photo-ltoD8LNvlxs",1800,1000),human:U("photo-1531206715517-5c0ba140b2b8",1800,1000),ancient:U("photo-FnNIDG9k8Ag",1800,1000),modern:U("photo-1514565131-fce0801e5785",1800,1000)};
 
 var trip='',cur=0,activeQs=[],answers={},touched=false,sliderVal=50,pid='',fbs=0;
 
