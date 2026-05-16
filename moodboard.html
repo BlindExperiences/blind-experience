@@ -115,11 +115,11 @@ var POOLS={
     U('photo-1480714378408-67cf0d13bc1b',900,600), // city skyline dusk
     U('photo-1449824913935-59a10b8d2000',900,600), // open road into city
     U('photo-1494253186083-7d4869552c3e',900,600), // cityscape night
-    U('photo-1477736116577-f05ec9ee78ee',900,600), // city street night
+    U('photo-1499923264978-f6e6e7da5a4c',900,600), // city aerial lights
     U('photo-1493959715878-7e79b92ba9d7',900,600), // night city lights
     U('photo-1518563172008-e56c5dfbaef6',900,600), // urban architecture
     U('photo-1434861636547-3ddea1c9b477',900,600), // busy street, people tiny
-    U('photo-1487958449943-2429e8be8625',900,600)  // city reflections night
+    U('photo-1529655683826-aba9b3e77383',900,600)  // tokyo city aerial night
   ],
   slow:[
     U('photo-1439694314941-69ad16a8c49c',900,600), // morning table, still life
@@ -399,9 +399,13 @@ function getWeightedTags(axes){
   return sorted;
 }
 
-function pickWeightedImgs(weightedTags,n,travType){
+function pickWeightedImgs(weightedTags,n,travType,heroUrl){
   // Allocate n slots proportionally by weight
   var used={};
+  // Exclude hero image from pool to avoid same photo on cover+slides+closing
+  if(heroUrl){var hm=heroUrl.match(/\/(photo-[\w-]+)\?/);if(hm)used[hm[1]]=1;}
+  // Also block the full URL to catch 900×600 vs 1800×1000 variants
+  if(heroUrl){used[heroUrl.replace(/\?.*$/,'')]=1;}
   var slots=[];
   var tag0=weightedTags[0]?weightedTags[0].tag:'nature';
 
@@ -456,7 +460,8 @@ function pickWeightedImgs(weightedTags,n,travType){
 }
 
 function img(url,cls){
-  return '<img src="'+url+'" class="im'+(cls?' '+cls:'')+'" crossorigin="anonymous" alt="" loading="eager">';
+  var fb="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=900&h=600&fit=crop&q=82&auto=format";
+  return '<img src="'+url+'" class="im'+(cls?' '+cls:'')+'" crossorigin="anonymous" alt="" loading="eager" onerror="if(this.src!==''+fb+'')this.src=''+fb+''">';
 }
 function gc(url){
   return '<div class="gc">'+img(url)+'</div>';
@@ -478,7 +483,7 @@ function render(cfg){
   var heroUrl=HERO[tag0]||HERO.nature;
   var qs=(QUOTES[tag0]||QUOTES.nature);
   var q1=qs[0],q2=qs[1];
-  var imgs=pickWeightedImgs(wtags,12,travType);
+  var imgs=pickWeightedImgs(wtags,12,travType,heroUrl);
   var wrap=document.getElementById('slides');wrap.innerHTML='';
 
   // P1 COVER — card has NO logo. Logo only in bottom-left corner.
@@ -560,7 +565,7 @@ async function captureSlide(){
   await Promise.all(Array.from(imgs).map(function(im){
     return im.complete?Promise.resolve():new Promise(function(r){im.onload=r;im.onerror=r});
   }));
-  await new Promise(function(r){setTimeout(r,400)});
+  await new Promise(function(r){setTimeout(r,600)});
   var canvas=await html2canvas(slide,{
     useCORS:true,allowTaint:true,scale:2,
     backgroundColor:'#080808',logging:false,imageTimeout:10000
@@ -582,101 +587,94 @@ function setBtnState(id,txt){
   if(b)b.textContent=txt;
 }
 
-// 5.1 FACEBOOK
-// Opens share dialog (popup), downloads image for manual attachment, shows toast
+// ── SHARE IMPLEMENTATIONS ─────────────────────────────────────
+// Common: capture cover → download JPEG → open share dialog
+
+// 5.1 FACEBOOK: popup (opened sync to avoid popup blocker) + image download + toast
 async function doFB(){
   closeShare();
   setBtnState('fbBtn','Saving…');
-  // Open popup immediately (before async so popup blocker doesn't trigger)
-  var popup=window.open(
-    'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(SHARE_URL)+'&quote='+encodeURIComponent(SHARE_MSG),
-    'fb-share','width=626,height=436,resizable=yes'
-  );
+  // Open popup FIRST (synchronous, before any await = popup blockers won't trigger)
+  var fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(SHARE_URL)+'&quote='+encodeURIComponent(SHARE_MSG);
+  var popup=window.open(fbUrl,'fb-share','width=626,height=436,resizable=yes,scrollbars=yes');
+  // If popup was blocked, fall back to new tab
+  if(!popup||popup.closed||typeof popup.closed==='undefined'){
+    window.open(fbUrl,'_blank');
+  }
   try{
     var blob=await captureSlide();
     if(blob){
       downloadBlob(blob,'BlindExperiences-Moodboard.jpg');
+      // Also copy message to clipboard so user can paste into FB post
+      try{await navigator.clipboard.writeText(SHARE_MSG)}catch(ce){}
       showToast('Image saved — paste it into your Facebook post');
     }
   }catch(e){
-    console.error('FB capture failed:',e);
-    showToast('Facebook share opened');
+    console.error('FB capture:',e);
   }
   setBtnState('fbBtn','Facebook');
 }
 
-// 5.2 LINKEDIN
-// Opens share dialog (popup), downloads image for manual attachment, shows toast
+// 5.2 LINKEDIN: popup + image download + toast
 async function doLI(){
   closeShare();
   setBtnState('liBtn','Saving…');
-  var popup=window.open(
-    'https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(SHARE_URL),
-    'li-share','width=626,height=436,resizable=yes'
-  );
+  var liUrl='https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(SHARE_URL);
+  var popup=window.open(liUrl,'li-share','width=626,height=436,resizable=yes,scrollbars=yes');
+  if(!popup||popup.closed||typeof popup.closed==='undefined'){
+    window.open(liUrl,'_blank');
+  }
   try{
     var blob=await captureSlide();
     if(blob){
       downloadBlob(blob,'BlindExperiences-Moodboard.jpg');
+      try{await navigator.clipboard.writeText(SHARE_MSG)}catch(ce){}
       showToast('Image saved — attach it to your LinkedIn post');
     }
   }catch(e){
-    console.error('LI capture failed:',e);
-    showToast('LinkedIn share opened');
+    console.error('LI capture:',e);
   }
   setBtnState('liBtn','LinkedIn');
 }
 
-// 5.3 INSTAGRAM — three-path approach (no direct Instagram URL — never works on desktop)
+// 5.3 INSTAGRAM: mobile file share → mobile URL share → desktop download+clipboard
 async function doIG(){
   closeShare();
   setBtnState('igBtn','Preparing…');
   try{
     var blob=await captureSlide();
-    if(!blob)throw new Error('capture failed');
+    if(!blob)throw new Error('capture returned null');
     var file=new File([blob],'BlindExperiences-Moodboard.jpg',{type:'image/jpeg'});
 
-    // PATH 1: Mobile with file share — opens native iOS/Android share sheet (includes Instagram)
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+    // PATH 1: Mobile native share with file (iOS/Android opens Instagram directly)
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
       try{
-        await navigator.share({files:[file],text:SHARE_MSG,url:SHARE_URL});
+        await navigator.share({files:[file],title:'My BlindExperiences Moodboard',text:SHARE_MSG,url:SHARE_URL});
         setBtnState('igBtn','Instagram');return;
-      }catch(e){
-        if(e.name==='AbortError'){setBtnState('igBtn','Instagram');return}
-        // Fall through to path 2
-      }
+      }catch(e){if(e.name==='AbortError'){setBtnState('igBtn','Instagram');return}}
     }
-
-    // PATH 2: Mobile URL+text share (no file) — opens share sheet without image
+    // PATH 2: Mobile URL+text share (no file)
     if(navigator.share){
       try{
-        await navigator.share({text:SHARE_MSG,url:SHARE_URL});
+        await navigator.share({title:'My BlindExperiences Moodboard',text:SHARE_MSG,url:SHARE_URL});
         setBtnState('igBtn','Instagram');return;
-      }catch(e){
-        if(e.name==='AbortError'){setBtnState('igBtn','Instagram');return}
-        // Fall through to path 3
-      }
+      }catch(e){if(e.name==='AbortError'){setBtnState('igBtn','Instagram');return}}
     }
-
-    // PATH 3: Desktop — download image + copy caption to clipboard
+    // PATH 3: Desktop — download + clipboard
     downloadBlob(blob,'BlindExperiences-Moodboard.jpg');
+    var captionCopied=false;
     if(navigator.clipboard){
-      await navigator.clipboard.writeText(SHARE_MSG);
-      showToast('Image saved — open Instagram and paste the caption from your clipboard');
-    }else{
-      showToast('Image saved — open Instagram to share it');
+      try{await navigator.clipboard.writeText(SHARE_MSG);captionCopied=true}catch(ce){}
     }
+    showToast(captionCopied
+      ?'Image saved + caption copied — open Instagram and share'
+      :'Image saved — open Instagram, post the image, and add this caption: '+SHARE_URL);
   }catch(e){
-    console.error('IG share failed:',e);
-    // Last resort: copy text only
+    console.error('IG:',e);
     if(navigator.clipboard){
-      try{
-        await navigator.clipboard.writeText(SHARE_MSG);
-        showToast('Caption copied — open Instagram to share');
-      }catch(ce){showToast('Open Instagram and share your moodboard')}
-    }else{
-      showToast('Open Instagram and share your moodboard');
-    }
+      try{await navigator.clipboard.writeText(SHARE_MSG);showToast('Caption copied — open Instagram to share')}
+      catch(ce){showToast('Screenshot the page and share on Instagram')}
+    }else{showToast('Screenshot this page and share on Instagram')}
   }
   setBtnState('igBtn','Instagram');
 }
@@ -685,7 +683,7 @@ async function dlPDF(){
   var btn=document.getElementById('dlBtn');btn.classList.add('busy');btn.textContent='Generating\u2026';
   var allImgs=document.querySelectorAll('.sl img');
   await Promise.all(Array.from(allImgs).map(function(im){return im.complete?Promise.resolve():new Promise(function(r){im.onload=r;im.onerror=r})}));
-  await new Promise(function(r){setTimeout(r,1000)});
+  await new Promise(function(r){setTimeout(r,2000)});
   try{
     var jsPDF=window.jspdf.jsPDF;
     var pdf=new jsPDF('l','mm','a4');
