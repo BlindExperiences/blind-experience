@@ -402,10 +402,12 @@ function getWeightedTags(axes){
 function pickWeightedImgs(weightedTags,n,travType,heroUrl){
   // Allocate n slots proportionally by weight
   var used={};
-  // Exclude hero image from pool to avoid same photo on cover+slides+closing
-  if(heroUrl){var hm=heroUrl.match(/\/(photo-[\w-]+)\?/);if(hm)used[hm[1]]=1;}
-  // Also block the full URL to catch 900×600 vs 1800×1000 variants
-  if(heroUrl){used[heroUrl.replace(/\?.*$/,'')]=1;}
+  // Exclude hero image from pool to avoid same photo on cover, slides, and closing
+  if(heroUrl){
+    used[heroUrl]=1; // exact 1800x1000 URL
+    // Also exclude the 900x600 variant by replacing dimensions in URL
+    used[heroUrl.replace('w=1800&h=1000','w=900&h=600')]=1;
+  }
   var slots=[];
   var tag0=weightedTags[0]?weightedTags[0].tag:'nature';
 
@@ -459,9 +461,10 @@ function pickWeightedImgs(weightedTags,n,travType,heroUrl){
   return slots.slice(0,n);
 }
 
+var IMG_FALLBACK='https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=900&h=600&fit=crop&q=82&auto=format';
+function imgFallback(el){if(el.src!==IMG_FALLBACK)el.src=IMG_FALLBACK;}
 function img(url,cls){
-  var fb="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=900&h=600&fit=crop&q=82&auto=format";
-  return '<img src="'+url+'" class="im'+(cls?' '+cls:'')+'" crossorigin="anonymous" alt="" loading="eager" onerror="if(this.src!==''+fb+'')this.src=''+fb+''">';
+  return '<img src="'+url+'" class="im'+(cls?' '+cls:'')+'" crossorigin="anonymous" alt="" loading="eager" onerror="imgFallback(this)">';
 }
 function gc(url){
   return '<div class="gc">'+img(url)+'</div>';
