@@ -58,7 +58,7 @@ html,body{background:var(--bk);color:var(--wh);font-family:'Montserrat',sans-ser
 .qo blockquote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2vw,1.6rem);font-style:italic;font-weight:300;line-height:1.65;color:rgba(248,245,240,.94)}
 .qo cite{display:block;margin-top:.8rem;font-family:'Montserrat',sans-serif;font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-style:normal;font-weight:400}
 /* Closing */
-.closing-hero{filter:brightness(.12) saturate(.7)}
+.closing-hero{filter:brightness(.4) saturate(.85)}
 .closing-inner{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem}
 .closing-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.2vw,2.5rem);font-weight:300;font-style:italic;line-height:1.35;color:#fff;max-width:540px;margin-bottom:.7rem}
 .closing-sub{font-size:.68rem;font-weight:300;color:rgba(248,245,240,.55);letter-spacing:.1em;margin-bottom:.7rem;line-height:1.7}
@@ -115,11 +115,11 @@ var POOLS={
     U('photo-1480714378408-67cf0d13bc1b',900,600), // city skyline dusk
     U('photo-1449824913935-59a10b8d2000',900,600), // open road into city
     U('photo-1494253186083-7d4869552c3e',900,600), // cityscape night
-    U('photo-1499923264978-f6e6e7da5a4c',900,600), // city aerial lights
-    U('photo-1493959715878-7e79b92ba9d7',900,600), // night city lights
+    U('photo-1461988741922-b71b9cdf4f99',900,600), // city skyline panorama
+    U('photo-1524524268099-5c2efaaeb0a0',900,600), // NYC avenue golden hour
     U('photo-1518563172008-e56c5dfbaef6',900,600), // urban architecture
     U('photo-1434861636547-3ddea1c9b477',900,600), // busy street, people tiny
-    U('photo-1529655683826-aba9b3e77383',900,600)  // tokyo city aerial night
+    U('photo-1480714378408-67cf0d13bc1b',900,600)  // city skyline dusk confirmed
   ],
   slow:[
     U('photo-1439694314941-69ad16a8c49c',900,600), // morning table, still life
@@ -341,12 +341,12 @@ var HERO={
   warm:    U('photo-1542314831-068cd1dbfeeb',1800,1000),
   cold:    U('photo-1440342359743-84fcb8c21f21',1800,1000),
   nature:  U('photo-1501862700950-18382cd41497',1800,1000),
-  culture: U('photo-1499692431049-71c40b25e3f6',1800,1000),
-  wildlife:U('photo-1474777648489-d8b9f5a60b38',1800,1000),
+  culture: U('photo-1528642474498-1af0c17fd8c3',1800,1000),
+  wildlife:U('photo-1416478002-4a6f6b50f58a',1800,1000),
   human:   U('photo-1527631746610-bca00a040d60',1800,1000),
   ancient: U('photo-1576204557749-ca7052a2865a',1800,1000),
   modern:  U('photo-1486325212027-8081e485255e',1800,1000),
-  intimate:U('photo-1469474968028-56623f02e42e',1800,1000),
+  intimate:U('photo-1506905925346-21bda4d32df4',1800,1000),
   thrill:  U('photo-1518976024611-28bf4b48222e',1800,1000),
   rest:    U('photo-1440342359743-84fcb8c21f21',1800,1000),
   grit:    U('photo-1522098543979-ffc7f79a56c4',1800,1000)
@@ -502,7 +502,7 @@ function render(cfg){
   ));
   // Apply cover hero image style after DOM insertion
   var heroEl=document.querySelector('.hero-bg');
-  if(heroEl){heroEl.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.38) saturate(1.1)'}
+  if(heroEl){heroEl.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.62) saturate(1.05)'}
 
   // P2 — 60/40 asymmetric, no text
   wrap.appendChild(mkSlide(
@@ -643,43 +643,46 @@ async function doLI(){
 // 5.3 INSTAGRAM: mobile file share → mobile URL share → desktop download+clipboard
 async function doIG(){
   closeShare();
-  setBtnState('igBtn','Preparing…');
+  var btn=document.getElementById('igBtn');
+  btn.textContent='Preparing…';btn.style.opacity='0.5';btn.style.pointerEvents='none';
   try{
-    var blob=await captureSlide();
-    if(!blob)throw new Error('capture returned null');
+    // Wait for slide images to finish loading before capture
+    var firstSlide=document.querySelector('.sl');
+    if(!firstSlide)throw new Error('no slide');
+    var imgs=firstSlide.querySelectorAll('img');
+    await Promise.all(Array.from(imgs).map(function(im){
+      return(im.complete&&im.naturalWidth>0)?Promise.resolve():new Promise(function(r){im.onload=r;im.onerror=r});
+    }));
+    await new Promise(function(r){setTimeout(r,1000)});
+    var canvas=await html2canvas(firstSlide,{useCORS:true,allowTaint:true,scale:2,backgroundColor:'#080808',logging:false,imageTimeout:15000});
+    var blob=await new Promise(function(res){canvas.toBlob(res,'image/jpeg',0.92)});
+    if(!blob)throw new Error('canvas blob is null');
     var file=new File([blob],'BlindExperiences-Moodboard.jpg',{type:'image/jpeg'});
-
-    // PATH 1: Mobile native share with file (iOS/Android opens Instagram directly)
+    // PATH 1: Mobile — native share with file (opens iOS/Android share sheet including Instagram)
     if(navigator.canShare&&navigator.canShare({files:[file]})){
-      try{
-        await navigator.share({files:[file],title:'My BlindExperiences Moodboard',text:SHARE_MSG,url:SHARE_URL});
-        setBtnState('igBtn','Instagram');return;
-      }catch(e){if(e.name==='AbortError'){setBtnState('igBtn','Instagram');return}}
+      try{await navigator.share({files:[file],text:SHARE_MSG,url:SHARE_URL});return}
+      catch(e){if(e.name==='AbortError')return}
     }
-    // PATH 2: Mobile URL+text share (no file)
+    // PATH 2: Mobile — URL+text share (no file)
     if(navigator.share){
-      try{
-        await navigator.share({title:'My BlindExperiences Moodboard',text:SHARE_MSG,url:SHARE_URL});
-        setBtnState('igBtn','Instagram');return;
-      }catch(e){if(e.name==='AbortError'){setBtnState('igBtn','Instagram');return}}
+      try{await navigator.share({text:SHARE_MSG,url:SHARE_URL});return}
+      catch(e){if(e.name==='AbortError')return}
     }
-    // PATH 3: Desktop — download + clipboard
-    downloadBlob(blob,'BlindExperiences-Moodboard.jpg');
-    var captionCopied=false;
-    if(navigator.clipboard){
-      try{await navigator.clipboard.writeText(SHARE_MSG);captionCopied=true}catch(ce){}
-    }
-    showToast(captionCopied
-      ?'Image saved + caption copied — open Instagram and share'
-      :'Image saved — open Instagram, post the image, and add this caption: '+SHARE_URL);
+    // PATH 3: Desktop — download image + copy caption to clipboard
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='BlindExperiences-Moodboard.jpg';
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href)},1500);
+    var copied=false;
+    if(navigator.clipboard){try{await navigator.clipboard.writeText(SHARE_MSG);copied=true}catch(ce){}}
+    showToast(copied?'Image saved + caption copied — open Instagram and post':'Image saved — open Instagram and post the image');
   }catch(e){
-    console.error('IG:',e);
-    if(navigator.clipboard){
-      try{await navigator.clipboard.writeText(SHARE_MSG);showToast('Caption copied — open Instagram to share')}
-      catch(ce){showToast('Screenshot the page and share on Instagram')}
-    }else{showToast('Screenshot this page and share on Instagram')}
+    console.error('Instagram:',e);
+    showToast('Use the Download button, then post the image to Instagram manually');
+  }finally{
+    btn.textContent='Instagram';btn.style.opacity='';btn.style.pointerEvents='';
   }
-  setBtnState('igBtn','Instagram');
 }
 
 async function dlPDF(){
@@ -703,10 +706,28 @@ async function dlPDF(){
     }
     pdf.save('BlindExperiences-Moodboard.pdf');
     showToast('PDF saved \u2713');
+    // Also email PDF to customer
+    try{var buf=await pdf.output('arraybuffer');emailPDF(buf)}catch(ee){}
   }catch(e){console.error(e);showToast('Try: right-click > Print > Save as PDF')}
   btn.classList.remove('busy');btn.textContent='Download PDF';
 }
 
+
+// Auto-send PDF to customer email (called from dlPDF)
+async function emailPDF(pdfBytes){
+  try{
+    var cfg=JSON.parse(localStorage.getItem('blindMoodboard')||'{}');
+    var email=cfg.email||cfg.customerEmail;
+    if(!email)return; // No email stored, skip silently
+    var base64=btoa(String.fromCharCode.apply(null,new Uint8Array(pdfBytes)));
+    var GAS_URL='https://script.google.com/macros/s/AKfycbzN1iRzwnyiFz67IVTlAzUJ_FWwWv7z346VQ1giJgCTbqasZRMMV-swVhybZ0G16aEmdA/exec';
+    await fetch(GAS_URL,{
+      method:'POST',
+      body:JSON.stringify({action:'emailPDF',email:email,name:cfg.name||'',pdfBase64:base64}),
+      headers:{'Content-Type':'application/json'}
+    });
+  }catch(e){console.log('PDF email skipped:',e)}
+}
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3500)}
 
 var cfg=(function(){
