@@ -1,0 +1,230 @@
+<!-- ============================================================
+     BLIND HONEYMOON — Step-by-Step Image Choice Journey
+     Paste into a Wix "Embed HTML / iframe" element, FULL WIDTH.
+     Set the iframe / section height to ~720px (or full viewport).
+     Seven steps: two images per step, slider to lean, auto-advance.
+     Ends on dynamic closing line + lead form. Single POST to GAS.
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bk:#080808;--wh:#f8f5f0;--gold:#c9a96e;--mid:rgba(248,245,240,.45);--line:rgba(248,245,240,.18)}
+  html,body{height:100%}
+  #beh{background:var(--bk);color:var(--wh);font-family:'Montserrat',sans-serif;font-weight:300;min-height:100vh;position:relative;overflow:hidden;-webkit-font-smoothing:antialiased}
+
+  #beh .progress{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;gap:4px;padding:18px clamp(16px,4vw,40px)}
+  #beh .pdot{flex:1;height:2px;background:rgba(248,245,240,.15);transition:background .4s}
+  #beh .pdot.done{background:var(--gold)}
+  #beh .pdot.current{background:rgba(248,245,240,.6)}
+
+  #beh .step{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .6s ease}
+  #beh .step.active{opacity:1;pointer-events:auto}
+  #beh .step-q{position:absolute;top:0;left:0;right:0;z-index:30;text-align:center;padding:clamp(48px,9vw,80px) 1rem 0;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.4rem,3.5vw,2.2rem);letter-spacing:.02em;text-shadow:0 2px 24px rgba(0,0,0,.7);pointer-events:none}
+
+  #beh .pair{flex:1;display:flex;position:relative}
+  #beh .half{position:relative;flex:1 1 50%;overflow:hidden;transition:flex-basis .35s ease}
+  #beh .half img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.5) saturate(1.05);transition:filter .4s}
+  #beh .half.lead img{filter:brightness(.72) saturate(1.1)}
+  #beh .half.fade img{filter:brightness(.28) saturate(.9)}
+  #beh .half-caption{position:absolute;left:0;right:0;bottom:clamp(90px,16vh,140px);z-index:20;text-align:center;padding:0 1.2rem;pointer-events:none}
+  #beh .half-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:clamp(1.1rem,2.4vw,1.6rem);line-height:1.2;margin-bottom:.3rem;text-shadow:0 2px 16px rgba(0,0,0,.8)}
+  #beh .half-sub{font-size:.66rem;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,245,240,.75);text-shadow:0 1px 10px rgba(0,0,0,.9)}
+  #beh .divider{position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(248,245,240,.25);transform:translateX(-50%);z-index:15;transition:left .35s ease}
+
+  #beh .slider-zone{position:absolute;left:0;right:0;bottom:0;z-index:35;padding:0 clamp(24px,8vw,120px) clamp(36px,7vh,64px);pointer-events:none}
+  #beh .slider-hint{text-align:center;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(248,245,240,.5);margin-bottom:1rem;transition:opacity .3s}
+  #beh .be-range{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:rgba(248,245,240,.25);outline:none;cursor:grab;pointer-events:auto;border-radius:2px}
+  #beh .be-range:active{cursor:grabbing}
+  #beh .be-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--wh);cursor:grab;box-shadow:0 2px 16px rgba(0,0,0,.5);transition:transform .15s,background .2s}
+  #beh .be-range::-webkit-slider-thumb:hover{transform:scale(1.12);background:var(--gold)}
+  #beh .be-range::-moz-range-thumb{width:24px;height:24px;border:none;border-radius:50%;background:var(--wh);cursor:grab;box-shadow:0 2px 16px rgba(0,0,0,.5)}
+
+  #beh .final{position:absolute;inset:0;z-index:50;background:var(--bk);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(2rem,6vw,4rem);text-align:center;opacity:0;pointer-events:none;transition:opacity .8s ease;overflow-y:auto}
+  #beh .final.show{opacity:1;pointer-events:auto}
+  #beh .final-inner{max-width:480px;width:100%}
+  #beh .closing-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.4rem,3.2vw,2rem);line-height:1.5;letter-spacing:.02em;margin-bottom:clamp(2rem,5vw,3rem);min-height:90px}
+  #beh .form-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.2rem,2.6vw,1.5rem);margin-bottom:.9rem;letter-spacing:.02em}
+  #beh .form-sub{font-size:.76rem;font-weight:300;line-height:1.7;color:var(--mid);letter-spacing:.03em;margin-bottom:2rem;max-width:400px;margin-left:auto;margin-right:auto}
+  #beh .field{margin-bottom:1rem}
+  #beh .field input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:300;padding:.7rem .2rem;outline:none;transition:border-color .3s;letter-spacing:.03em;text-align:center}
+  #beh .field input::placeholder{color:rgba(248,245,240,.3);letter-spacing:.06em}
+  #beh .field input:focus{border-bottom-color:var(--gold)}
+  #beh .submit-btn{width:100%;margin-top:1.3rem;padding:1rem;background:transparent;border:1px solid rgba(248,245,240,.25);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:all .35s}
+  #beh .submit-btn:hover{background:var(--wh);color:var(--bk);border-color:var(--wh)}
+  #beh .submit-btn:disabled{opacity:.4;cursor:not-allowed}
+
+  #beh .confirm{display:none}
+  #beh .confirm.show{display:block;animation:behFade 1s ease}
+  @keyframes behFade{from{opacity:0}to{opacity:1}}
+  #beh .confirm-line{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.6rem,4vw,2.3rem);margin-bottom:1rem;letter-spacing:.02em}
+  #beh .confirm-sub{font-size:.82rem;font-weight:300;color:var(--mid);letter-spacing:.04em;line-height:1.7;max-width:360px;margin:0 auto}
+
+  #beh .intro{position:absolute;inset:0;z-index:60;background:var(--bk);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(2rem,6vw,4rem);transition:opacity .7s ease}
+  #beh .intro.hide{opacity:0;pointer-events:none}
+  #beh .intro .eyebrow{font-size:.62rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:1.6rem;font-weight:400}
+  #beh .intro h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1.12;letter-spacing:.02em;margin-bottom:1.1rem}
+  #beh .intro .subhead{font-size:clamp(.85rem,2vw,1rem);color:rgba(248,245,240,.7);letter-spacing:.04em;line-height:1.6;max-width:480px;margin-bottom:.5rem}
+  #beh .intro .instruction{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--mid);margin-bottom:2.4rem}
+  #beh .start-btn{padding:1rem 2.6rem;background:transparent;border:1px solid rgba(248,245,240,.3);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:all .35s}
+  #beh .start-btn:hover{background:var(--wh);color:var(--bk)}
+
+  @media(max-width:600px){
+    #beh .pair{flex-direction:column}
+    #beh .divider{left:0;right:0;top:50%;bottom:auto;width:auto;height:1px;transform:translateY(-50%)}
+    #beh .half-caption{bottom:auto;top:50%;transform:translateY(-50%)}
+  }
+</style>
+</head>
+<body>
+<div id="beh">
+  <div class="progress" id="beh-progress"></div>
+
+  <div class="intro" id="beh-intro">
+    <div class="eyebrow">Blind Honeymoon</div>
+    <h1>The Less You Know,<br>the More You Feel.</h1>
+    <div class="subhead">Seven choices. No right answers. Just the two of you.</div>
+    <div class="instruction">It's a balance, not a battle.</div>
+    <button class="start-btn" id="beh-start">Begin</button>
+  </div>
+
+  <div id="beh-steps"></div>
+
+  <div class="final" id="beh-final">
+    <div class="final-inner">
+      <div id="beh-formwrap">
+        <div class="closing-text" id="beh-closing"></div>
+        <div class="form-label">This is where your Blind Honeymoon begins.</div>
+        <div class="form-sub">Fill in your details. We'll send you our Honeymoon Questionnaire, and Chiara will reach out personally within 24 hours. From here, we take care of everything.</div>
+        <form id="beh-form">
+          <div class="field"><input type="text"  name="name"  placeholder="Your names" required></div>
+          <div class="field"><input type="email" name="email" placeholder="Email" required></div>
+          <div class="field"><input type="tel"   name="phone" placeholder="Phone (optional)"></div>
+          <button type="submit" class="submit-btn" id="beh-submit">Start Our Story</button>
+        </form>
+      </div>
+      <div class="confirm" id="beh-confirm">
+        <div class="confirm-line">Something is taking shape&hellip;</div>
+        <div class="confirm-sub">We will be in touch within 24 hours. In the meantime, check your inbox for the next step.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var GAS_URL='https://script.google.com/macros/s/AKfycbycDchPBCfRKFpGhGDVHQuv9U3yUSbxQoxl7-g_AeTpAM8hBOV0j_FDdM2wzjnonGoCaA/exec';
+  var TRIP_TYPE='Blind Honeymoon';
+  var U=function(id){return 'https://images.unsplash.com/'+id+'?w=1100&h=1500&fit=crop&q=82&auto=format'};
+
+  // left = wilderness pole, right = elegance pole. Verified CDN IDs.
+  var STEPS=[
+    {q:"Raw wilderness, or refined elegance?",
+     a:{img:U('photo-1639922957725-0c6ffd44a078'),label:'Raw wilderness',sub:'Canvas, campfire, stars overhead'},
+     b:{img:U('photo-1743465832721-208d5b2e4609'),label:'Refined elegance',sub:'Crafted, considered, seamless'}},
+    {q:"Complete solitude, or a world to discover together?",
+     a:{img:U('photo-1756155160750-42354f02c1b7'),label:'Complete solitude',sub:'Just the two of you, nothing else'},
+     b:{img:U('photo-1556019947-8695cb3d4e81'),label:'A world to discover',sub:'Markets, language, belonging'}},
+    {q:"Stillness and slow mornings, or movement and new places?",
+     a:{img:U('photo-1744629903542-58d64a47c468'),label:'Stillness, slow mornings',sub:'Coffee cooling, time stretching'},
+     b:{img:U('photo-1514509353532-1419c0935d72'),label:'New places every day',sub:'Out before the world wakes'}},
+    {q:"Close to the ground, or elevated luxury?",
+     a:{img:U('photo-1578589303256-5675a36857c8'),label:'Close to the ground',sub:'Tents, treehouses, remote lodges'},
+     b:{img:U('photo-1517407480684-1fbac65ad9a4'),label:'Elevated luxury',sub:'Suites, private pools, white linen'}},
+    {q:"Eating where the locals eat, or tables that take months to book?",
+     a:{img:U('photo-1533587517351-4dd0ecf4f9f9'),label:'Where the locals eat',sub:'Hidden, honest, alive'},
+     b:{img:U('photo-1696580436068-f19c26850e8b'),label:'Tables months ahead',sub:'The reservation that defines a trip'}},
+    {q:"Guided and curated, or wandering and unscripted?",
+     a:{img:U('photo-1565687363630-7a81809a199c'),label:'Guided and curated',sub:'Someone who knows, leading'},
+     b:{img:U('photo-1518877593221-1f28583780b4'),label:'Wandering, unscripted',sub:'Getting beautifully lost'}},
+    {q:"A trip that challenges you, or one that restores you?",
+     a:{img:U('photo-1517462035531-76bc910a6903'),label:'A trip that challenges',sub:'The edge of your comfort zone'},
+     b:{img:U('photo-1762792049230-fd56cd6a6fb2'),label:'A trip that restores',sub:'Returned to yourselves'}}
+  ];
+
+  var CLOSING={
+    wilderness:"You don't honeymoon to escape the world. You honeymoon to finally arrive in it, together. Blind Experiences will find the place that feels like it was waiting for you.",
+    elegance:"You know what you love. You just don't know yet where it lives. We do.",
+    split:"The best trips don't ask you to choose between comfort and wonder. We build honeymoons that hold both."
+  };
+
+  var stepsWrap=document.getElementById('beh-steps');
+  var progress=document.getElementById('beh-progress');
+  var values=new Array(STEPS.length).fill(50);
+  var current=0, advanceTimer=null;
+
+  STEPS.forEach(function(_,i){var d=document.createElement('div');d.className='pdot';d.id='pdot-'+i;progress.appendChild(d)});
+
+  STEPS.forEach(function(s,i){
+    var step=document.createElement('div');step.className='step';step.id='step-'+i;
+    step.innerHTML=
+      '<div class="step-q">'+s.q+'</div>'+
+      '<div class="pair">'+
+        '<div class="half" id="half-a-'+i+'"><img src="'+s.a.img+'" crossorigin="anonymous" alt="">'+
+          '<div class="half-caption"><div class="half-label">'+s.a.label+'</div><div class="half-sub">'+s.a.sub+'</div></div></div>'+
+        '<div class="divider" id="divider-'+i+'"></div>'+
+        '<div class="half" id="half-b-'+i+'"><img src="'+s.b.img+'" crossorigin="anonymous" alt="">'+
+          '<div class="half-caption"><div class="half-label">'+s.b.label+'</div><div class="half-sub">'+s.b.sub+'</div></div></div>'+
+      '</div>'+
+      '<div class="slider-zone">'+
+        '<div class="slider-hint" id="hint-'+i+'">Drag to lean &middot; release to continue</div>'+
+        '<input type="range" min="0" max="100" value="50" class="be-range" id="range-'+i+'" data-idx="'+i+'"></div>';
+    stepsWrap.appendChild(step);
+  });
+
+  STEPS.forEach(function(s,i){
+    var range=document.getElementById('range-'+i);
+    var halfA=document.getElementById('half-a-'+i);
+    var halfB=document.getElementById('half-b-'+i);
+    var divider=document.getElementById('divider-'+i);
+    function reflect(){
+      var v=Number(range.value);values[i]=v;
+      halfA.style.flexBasis=(100-v)+'%';halfB.style.flexBasis=v+'%';divider.style.left=v+'%';
+      halfA.classList.toggle('lead',v<42);halfA.classList.toggle('fade',v>58);
+      halfB.classList.toggle('lead',v>58);halfB.classList.toggle('fade',v<42);
+    }
+    range.addEventListener('input',function(){reflect();clearTimeout(advanceTimer);document.getElementById('hint-'+i).style.opacity='.4'});
+    function scheduleAdvance(){clearTimeout(advanceTimer);advanceTimer=setTimeout(next,750)}
+    range.addEventListener('change',scheduleAdvance);
+    range.addEventListener('mouseup',scheduleAdvance);
+    range.addEventListener('touchend',scheduleAdvance);
+  });
+
+  function showStep(i){
+    document.querySelectorAll('#beh .step').forEach(function(s){s.classList.remove('active')});
+    var el=document.getElementById('step-'+i);if(el)el.classList.add('active');
+    for(var k=0;k<STEPS.length;k++){var d=document.getElementById('pdot-'+k);d.className='pdot'+(k<i?' done':k===i?' current':'')}
+  }
+  function next(){if(current<STEPS.length-1){current++;showStep(current)}else{finish()}}
+  function finish(){
+    var total=0;values.forEach(function(v){total+=(v-50)});
+    var avg=total/values.length;
+    var theme=avg<=-12?'wilderness':(avg>=12?'elegance':'split');
+    window.__behTheme=theme;window.__behAxes=values.slice();
+    document.getElementById('beh-closing').textContent=CLOSING[theme];
+    document.querySelectorAll('#beh .step').forEach(function(s){s.classList.remove('active')});
+    document.getElementById('beh-final').classList.add('show');
+  }
+
+  document.getElementById('beh-start').addEventListener('click',function(){
+    document.getElementById('beh-intro').classList.add('hide');current=0;showStep(0);
+  });
+
+  var form=document.getElementById('beh-form'),submitBtn=document.getElementById('beh-submit');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();submitBtn.disabled=true;submitBtn.textContent='Sending\u2026';
+    var payload={tripType:TRIP_TYPE,name:form.name.value.trim(),email:form.email.value.trim(),phone:form.phone.value.trim(),theme:window.__behTheme||'split',axes:(window.__behAxes||[]).join(',')};
+    var body=Object.keys(payload).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(payload[k])}).join('&');
+    fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}).then(confirmDone).catch(confirmDone);
+    setTimeout(confirmDone,1200);
+  });
+  var done=false;
+  function confirmDone(){if(done)return;done=true;document.getElementById('beh-formwrap').style.display='none';document.getElementById('beh-confirm').classList.add('show')}
+})();
+</script>
+</body>
+</html>
