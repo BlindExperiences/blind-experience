@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     BLIND EXPERIENCES · VISUAL JOURNEY (all four products)
+     Host on GitHub Pages, embed in Wix with an HTML iframe element,
+     full width, height ~760px desktop / ~720px mobile.
+     URL params:  ?product=honeymoon|family|legacy|expedition  (skip selector)
+                  ?src=instagram|newsletter|planner-xyz ...    (lead source)
+     Copy, slider pairs and closing lines: Chiara, May to June 2026.
+     Single POST (JSON) to the existing Apps Script endpoint, which writes
+     to "Blind Experiences — Questionnaire Data" > Profiles and emails whynot@.
+     ============================================================ -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Journey | Blind Experiences</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+<!-- Google Analytics (same property as blindexperiences.com) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L893C94E66"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-L893C94E66',{cookie_flags:'SameSite=None;Secure',page_title:'Visual Journey'});
+</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bk:#080808;--wh:#f8f5f0;--gold:#c9a96e;--mid:rgba(248,245,240,.55);--line:rgba(248,245,240,.18)}
+  html,body{height:100%;background:var(--bk)}
+  #bej{background:var(--bk);color:var(--wh);font-family:'Montserrat',sans-serif;font-weight:300;min-height:100vh;height:100%;position:relative;overflow:hidden;-webkit-font-smoothing:antialiased}
+  #bej button{font-family:inherit}
+  #bej .screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .6s ease}
+  #bej .screen.show{opacity:1;pointer-events:auto}
+  #bej .center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(1.5rem,6vw,4rem);overflow-y:auto}
+  #bej .eyebrow{font-size:.62rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem;font-weight:400}
+  #bej h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1.12;letter-spacing:.02em;margin-bottom:1rem}
+  #bej .subhead{font-size:clamp(.85rem,2vw,1rem);color:rgba(248,245,240,.75);letter-spacing:.04em;line-height:1.6;max-width:520px;margin-bottom:.5rem}
+  #bej .instruction{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--mid);margin-bottom:2.2rem}
+  #bej .btn{padding:1rem 2.6rem;background:transparent;border:1px solid rgba(248,245,240,.3);color:var(--wh);font-size:.64rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:all .35s}
+  #bej .btn:hover,#bej .btn:focus-visible{background:var(--wh);color:var(--bk);outline:none}
+  #bej .btn:disabled{opacity:.35;cursor:not-allowed;background:transparent;color:var(--wh)}
+  #bej .link{background:none;border:none;color:var(--mid);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;padding:.6rem}
+  #bej .link:hover{color:var(--wh)}
+
+  /* product selector */
+  #bej .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.4vw,16px);width:min(980px,100%);margin-top:1.6rem}
+  #bej .card{position:relative;aspect-ratio:3/4;overflow:hidden;border:1px solid var(--line);cursor:pointer;background:#111;text-align:center;color:var(--wh)}
+  #bej .card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45);transition:filter .4s,transform .8s}
+  #bej .card:hover img,#bej .card:focus-visible img{filter:brightness(.7);transform:scale(1.04)}
+  #bej .card:focus-visible{outline:1px solid var(--gold)}
+  #bej .card .ct{position:absolute;left:0;right:0;bottom:1.2rem;padding:0 .8rem}
+  #bej .card .cn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.1rem,2vw,1.45rem);margin-bottom:.3rem}
+  #bej .card .cs{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(248,245,240,.8)}
+
+  /* steps */
+  #bej .progress{position:absolute;top:0;left:0;right:0;z-index:40;display:none;gap:4px;padding:18px clamp(16px,4vw,40px)}
+  #bej .progress.on{display:flex}
+  #bej .pdot{flex:1;height:2px;background:rgba(248,245,240,.15);transition:background .4s}
+  #bej .pdot.done{background:var(--gold)}
+  #bej .pdot.current{background:rgba(248,245,240,.6)}
+  #bej .step{display:flex;flex-direction:column}
+  #bej .step-q{position:absolute;top:0;left:0;right:0;z-index:30;text-align:center;padding:clamp(46px,8vw,76px) 1rem 0;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.3rem,3.3vw,2.1rem);letter-spacing:.02em;text-shadow:0 2px 24px rgba(0,0,0,.8);pointer-events:none}
+  #bej .pair{flex:1;display:flex;position:relative}
+  #bej .half{position:relative;flex:1 1 50%;overflow:hidden;transition:flex-basis .35s ease}
+  #bej .half img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.5) saturate(1.05);transition:filter .4s}
+  #bej .half.lead img{filter:brightness(.74) saturate(1.1)}
+  #bej .half.fade img{filter:brightness(.26) saturate(.9)}
+  #bej .half-caption{position:absolute;left:0;right:0;bottom:clamp(120px,19vh,170px);z-index:20;text-align:center;padding:0 1.2rem;pointer-events:none}
+  #bej .half-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:clamp(1.05rem,2.3vw,1.55rem);line-height:1.2;margin-bottom:.3rem;text-shadow:0 2px 16px rgba(0,0,0,.85)}
+  #bej .half-sub{font-size:.62rem;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,245,240,.8);text-shadow:0 1px 10px rgba(0,0,0,.9)}
+  #bej .divider{position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(248,245,240,.25);transform:translateX(-50%);z-index:15;transition:left .35s ease,top .35s ease}
+  #bej .controls{position:absolute;left:0;right:0;bottom:0;z-index:35;padding:0 clamp(24px,8vw,120px) clamp(18px,4vh,36px);background:linear-gradient(transparent,rgba(8,8,8,.75) 45%)}
+  #bej .readout{display:flex;justify-content:space-between;gap:1rem;font-size:.66rem;letter-spacing:.2em;color:rgba(248,245,240,.7);margin-bottom:.7rem;padding-top:1.4rem}
+  #bej .readout b{font-weight:600;color:var(--wh)}
+  #bej .readout .mid{color:var(--gold);letter-spacing:.24em;text-transform:uppercase}
+  #bej .be-range{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:rgba(248,245,240,.25);outline:none;cursor:grab;border-radius:2px;display:block}
+  #bej .be-range:focus-visible{box-shadow:0 0 0 6px rgba(201,169,110,.25)}
+  #bej .be-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;background:var(--wh);cursor:grab;box-shadow:0 2px 16px rgba(0,0,0,.5);transition:transform .15s,background .2s}
+  #bej .be-range::-webkit-slider-thumb:hover{transform:scale(1.12);background:var(--gold)}
+  #bej .be-range::-moz-range-thumb{width:26px;height:26px;border:none;border-radius:50%;background:var(--wh);cursor:grab}
+  #bej .nav{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
+  #bej .nav .btn{padding:.8rem 2rem}
+
+  /* final */
+  #bej .final-inner{max-width:480px;width:100%}
+  #bej .closing-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.35rem,3.1vw,1.95rem);line-height:1.5;letter-spacing:.02em;margin-bottom:clamp(1.6rem,4vw,2.6rem)}
+  #bej .form-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.2rem,2.6vw,1.5rem);margin-bottom:.8rem}
+  #bej .form-sub{font-size:.76rem;line-height:1.7;color:var(--mid);letter-spacing:.03em;margin:0 auto 1.6rem;max-width:400px}
+  #bej .field{margin-bottom:.9rem}
+  #bej .field input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--wh);font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:300;padding:.7rem .2rem;outline:none;transition:border-color .3s;letter-spacing:.03em;text-align:center;border-radius:0}
+  #bej .field input::placeholder{color:rgba(248,245,240,.35);letter-spacing:.06em}
+  #bej .field input:focus{border-bottom-color:var(--gold)}
+  #bej .consent{display:flex;gap:.7rem;align-items:flex-start;text-align:left;font-size:.68rem;line-height:1.6;color:var(--mid);margin:1.2rem 0 .4rem;cursor:pointer}
+  #bej .consent input{margin-top:.2rem;accent-color:var(--gold);flex:none;width:15px;height:15px}
+  #bej .consent a{color:var(--wh)}
+  #bej .submit{width:100%;margin-top:1.1rem}
+  #bej .err{display:none;font-size:.72rem;line-height:1.6;color:#e7b4a0;margin-top:1rem}
+  #bej .err.show{display:block}
+  #bej .err a{color:var(--wh)}
+  #bej .confirm{display:none}
+  #bej .confirm.show{display:block;animation:bejFade 1s ease}
+  @keyframes bejFade{from{opacity:0}to{opacity:1}}
+  #bej .confirm-line{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.6rem,4vw,2.3rem);margin-bottom:1rem}
+  #bej .confirm-sub{font-size:.82rem;color:var(--mid);letter-spacing:.04em;line-height:1.7;max-width:360px;margin:0 auto}
+
+  @media(max-width:760px){
+    #bej .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+    #bej .card{aspect-ratio:4/5}
+  }
+  #bej .readout .arr{display:none}
+  @media(max-width:600px){
+    #bej .pair{flex-direction:column;margin-bottom:132px}
+    #bej .divider{left:0 !important;right:0;top:50%;bottom:auto;width:auto;height:1px;transform:translateY(-50%)}
+    #bej .half-caption{bottom:auto;top:50%;transform:translateY(-50%)}
+    #bej .half.a .half-caption{top:58%}
+    #bej .controls{padding:0 20px 18px;background:var(--bk);height:132px}
+    #bej .readout{padding-top:.9rem;font-size:.7rem}
+    #bej .readout .lbl{display:none}
+    #bej .readout .arr{display:inline}
+  }
+  @media (prefers-reduced-motion:reduce){#bej *{transition:none !important;animation:none !important}}
+</style>
+</head>
+<body>
+<div id="bej">
+  <div class="progress" id="bej-progress" aria-hidden="true"></div>
+
+  <!-- 1. who is this for -->
+  <section class="screen center show" id="bej-select" aria-label="Choose your journey">
+    <div class="eyebrow">Blind Experiences</div>
+    <h1>The Less You Know,<br>the More You Feel.</h1>
+    <div class="subhead">Seven choices, made with your eyes. Who is this journey for?</div>
+    <div class="cards" id="bej-cards"></div>
+  </section>
+
+  <!-- 2. product intro -->
+  <section class="screen center" id="bej-intro" aria-live="polite">
+    <div class="eyebrow" id="bej-i-eyebrow"></div>
+    <h1 id="bej-i-hero"></h1>
+    <div class="subhead" id="bej-i-sub"></div>
+    <div class="instruction" id="bej-i-instr"></div>
+    <button class="btn" id="bej-begin">Begin</button>
+    <button class="link" id="bej-change" style="margin-top:1.2rem">Choose another journey</button>
+  </section>
+
+  <!-- 3. steps (built in JS) -->
+  <div id="bej-steps"></div>
+
+  <!-- 4. result + form -->
+  <section class="screen center" id="bej-final">
+    <div class="final-inner">
+      <div id="bej-formwrap">
+        <div class="closing-text" id="bej-closing"></div>
+        <div class="form-label" id="bej-f-label"></div>
+        <div class="form-sub" id="bej-f-sub"></div>
+        <form id="bej-form" novalidate>
+          <div class="field"><input type="text" name="name" id="bej-name" autocomplete="name" required></div>
+          <div class="field"><input type="email" name="email" placeholder="Email" autocomplete="email" required></div>
+          <div class="field"><input type="tel" name="phone" placeholder="Phone (optional)" autocomplete="tel"></div>
+          <label class="consent"><input type="checkbox" name="consent" required>
+            <span>I'd like Blind Experiences to contact me about this journey, and I accept the <a href="https://www.blindexperiences.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
+          <button type="submit" class="btn submit" id="bej-submit"></button>
+          <div class="err" id="bej-err" role="alert"></div>
+        </form>
+        <button class="link" id="bej-back-final" style="margin-top:1rem">Back to the last choice</button>
+      </div>
+      <div class="confirm" id="bej-confirm" aria-live="polite">
+        <div class="confirm-line">Something is taking shape&hellip;</div>
+        <div class="confirm-sub">We will be in touch within 24 hours. In the meantime, check your inbox for the next step.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var GAS_URL='https://script.google.com/macros/s/AKfycbycDchPBCfRKFpGhGDVHQuv9U3yUSbxQoxl7-g_AeTpAM8hBOV0j_FDdM2wzjnonGoCaA/exec';
+  var CONTACT='whynot@blindexperiences.com';
+  var U=function(id,w,h){return 'https://images.unsplash.com/'+id+'?w='+(w||1100)+'&h='+(h||1500)+'&fit=crop&q=80&auto=format'};
+
+  /* pole: which closing group the LEFT image pulls towards ('A', 'B' or null = not scored).
+     The right image always pulls the opposite way. Values are recorded for every pair. */
+  var P={
+    honeymoon:{
+      name:'Blind Honeymoon',card:'The two of you, just married',cardImg:'photo-1743465832721-208d5b2e4609',
+      hero:'The Less You Know,<br>the More You Feel.',
+      sub:'Seven choices. No right answers. Just the two of you.',
+      instr:"It's a balance, not a battle.",
+      steps:[
+        {q:'Raw wilderness, or refined elegance?',pole:'A',
+         a:['photo-1639922957725-0c6ffd44a078','Raw wilderness','Canvas, campfire, stars overhead'],
+         b:['photo-1743465832721-208d5b2e4609','Refined elegance','Crafted, considered, seamless']},
+        {q:'Complete solitude, or a world to discover together?',pole:'A',
+         a:['photo-1756155160750-42354f02c1b7','Complete solitude','Just the two of you, nothing else'],
+         b:['photo-1556019947-8695cb3d4e81','A world to discover','Markets, language, belonging']},
+        {q:'Stillness and slow mornings, or movement and new places?',pole:'A',
+         a:['photo-1744629903542-58d64a47c468','Stillness, slow mornings','Coffee cooling, time stretching'],
+         b:['photo-1514509353532-1419c0935d72','New places every day','Out before the world wakes']},
+        {q:'Close to the ground, or elevated luxury?',pole:'A',
+         a:['photo-1578589303256-5675a36857c8','Close to the ground','Tents, treehouses, remote lodges'],
+         b:['photo-1517407480684-1fbac65ad9a4','Elevated luxury','Suites, private pools, white linen']},
+        {q:'Eating where the locals eat, or tables that take months to book?',pole:null,
+         a:['photo-1533587517351-4dd0ecf4f9f9','Where the locals eat','Hidden, honest, alive'],
+         b:['photo-1696580436068-f19c26850e8b','Tables months ahead','The reservation that defines a trip']},
+        {q:'Guided and curated, or wandering and unscripted?',pole:'B',
+         a:['photo-1565687363630-7a81809a199c','Guided and curated','Someone who knows, leading'],
+         b:['photo-1518877593221-1f28583780b4','Wandering, unscripted','Getting beautifully lost']},
+        {q:'A trip that challenges you, or one that restores you?',pole:null,
+         a:['photo-1517462035531-76bc910a6903','A trip that challenges','The edge of your comfort zone'],
+         b:['photo-1762792049230-fd56cd6a6fb2','A trip that restores','Returned to yourselves']}
+      ],
+      closing:{
+        A:"You don't honeymoon to escape the world. You honeymoon to finally arrive in it, together. Blind Experiences will find the place that feels like it was waiting for you.",
+        B:"You know what you love. You just don't know yet where it lives. We do.",
+        split:"The best trips don't ask you to choose between comfort and wonder. We build honeymoons that hold both."},
+      formLabel:'This is where your Blind Honeymoon begins.',
+      formSub:"Fill in your details. We'll send you our Honeymoon Questionnaire, and Chiara will reach out personally within 24 hours. From here, we take care of everything.",
+      namePh:'Your names',button:'Start Our Story'
+    },
+    family:{
+      name:'Blind Family',card:'Parents and children',cardImg:'photo-1503431153573-96e959f4d9b7',
+      hero:'The world is better when you<br>see it through their eyes.',
+      sub:"Seven choices. One family. No idea where you're going.",
+      instr:'There are no wrong answers. Just honest ones.',
+      steps:[
+        {q:'Nature and open skies, or cities full of stories?',pole:'A',
+         a:['photo-1503431153573-96e959f4d9b7','Nature and open skies','Room to run, sky to look up at'],
+         b:['photo-1780200971194-f4a6fe5c426e','Cities full of stories','Old streets, new discoveries']},
+        {q:'One base, slow and settled, or new places every day?',pole:'B',
+         a:['photo-1781456507315-b00848df005e','One base, slow and settled','The same table, a different light'],
+         b:['photo-1778382500405-9bc201fe9bf1','New places every day','Faces pressed to the window']},
+        {q:'Kids leading the way, or parents curating the magic?',pole:'A',
+         a:['photo-1489702932289-406b7782113c','Kids leading the way','They choose, you follow'],
+         b:['photo-1640622302099-f10b18de7b16','Parents curating the magic','Every moment quietly arranged']},
+        {q:'Wild and off grid, or comfortable and well appointed?',pole:'A',
+         a:['photo-1769817535563-f6d28b47e758','Wild and off grid','Tents, campfire, no signal'],
+         b:['photo-1752769041812-d956228c1e81','Comfortable and well appointed','A pool, a terrace, ease']},
+        {q:'Pure adventure and movement, or downtime, play and no agenda?',pole:'A',
+         a:['photo-1716172935868-b23591a7876b','Adventure and movement','Paddles, trails, tired legs'],
+         b:['photo-1656734314197-a2c774ef8a97','Downtime and play','Sand, water, no schedule']},
+        {q:'Shared discovery, or everyone their own moment?',pole:null,
+         a:['photo-1781484845125-b768cec037f3','Shared discovery','Seeing it for the first time, together'],
+         b:['photo-1764139134764-e3b60a9ae11c','Everyone their own moment','Space to wander off and come back']},
+        {q:'A holiday you planned, or a surprise none of you will forget?',pole:null,
+         a:['photo-1502301197179-65228ab57f78','A holiday you planned','Every detail, decided by you'],
+         b:['photo-1621452773781-0f992fd1f5cb','A surprise for all of you','A secret, kept until the last moment']}
+      ],
+      closing:{
+        A:"The best family memories aren't made in comfort zones. They're made at the edge of one, together. We'll find the place that makes your family feel alive.",
+        B:"Families who travel well don't just go places. They come back closer. We'll plan a trip that gives you all something to talk about for years.",
+        split:"Every family is different. That's exactly why we don't use templates. Tell us who you are, and we'll build something entirely yours."},
+      formLabel:"This is where your family's Blind Family Experience begins.",
+      formSub:"Fill in your details. We'll send you our Family Questionnaire, and Chiara will reach out personally within 24 hours. From here, we take care of everything, including the secret.",
+      namePh:'Your name',button:'Start Our Story'
+    },
+    legacy:{
+      name:'Blind Legacy',card:'One adult, one child',cardImg:'photo-1753164725369-23a8c8190922',
+      hero:'The Less You Know,<br>the More You Feel.',
+      sub:'Some trips you take. Some trips you give. This one does both.',
+      instr:"It's a balance, not a battle.",
+      steps:[
+        {q:'Wide open nature, or living, breathing cities?',pole:null,
+         a:['photo-1778307016143-f7392f611f75','Wide open nature','Space and sky, scale that makes you gasp'],
+         b:['photo-1677462517304-fe8748af63ed','Living, breathing cities','Colour, noise, eyes wide']},
+        {q:'Physical adventure, or cultural wonder?',pole:'A',
+         a:['photo-1791821959092-a774ef512758','Physical adventure','Climbing, cycling, being in the body'],
+         b:['photo-1753164725369-23a8c8190922','Cultural wonder','Artisans, markets, stories']},
+        {q:'Moving fast and seeing everything, or going deep and staying longer?',pole:null,
+         a:['photo-1770543774556-0cd76a19e120','Moving fast','A window seat, the world rushing past'],
+         b:['photo-1496464749978-589a1f20b1e3','Going deep','One place, truly known']},
+        {q:'Luxury and comfort, or raw and immersive?',pole:'B',
+         a:['photo-1574744918163-6cef6f4a31b0','Luxury and comfort','Something exceptional, for the first time'],
+         b:['photo-1674230316788-d9c8b92f0d63','Raw and immersive','Tents, firelight, roughing it together']},
+        {q:'Guided and curated, or wandering and discovering together?',pole:null,
+         a:['photo-1777659261156-ddb58e9b2699','Guided and curated','Someone who knows, handing it over'],
+         b:['photo-1544164559-90f4302d5142','Wandering together','Slightly lost, finding it yourselves']},
+        {q:'Connecting with local people, or private time just the two of you?',pole:null,
+         a:['photo-1781637700475-fc9f61b47530','Local people and places','A real exchange, across age and culture'],
+         b:['photo-1765445736608-b6dbbc216cdf','Just the two of you','No one else in frame']},
+        {q:'A trip that challenges and stretches them, or one that enchants and delights them?',pole:'A',
+         a:['photo-1763735134912-3b18dedd2713','Challenge','Tired, proud, looking out'],
+         b:['photo-1768970051563-20222d6089b2','Enchantment','Completely still, watching something magical']}
+      ],
+      closing:{
+        A:"You're not just planning a trip. You're deciding who they get to become on it. Our team will make sure it's everything you're imagining, and a few things you haven't thought of yet.",
+        B:'The world you\'re about to give them will stay with them longer than anything else you could offer. Our team will make sure every moment of it is extraordinary.',
+        split:"The best Legacy trips hold two things at once: the child's wonder and the adult's wisdom. Our team builds exactly that balance, for both of you."},
+      formLabel:'This is where your Blind Legacy begins.',
+      formSub:"Fill in your details. We'll send you our Legacy Questionnaire, and our team will be in touch personally within 24 hours. From here, we take care of everything.",
+      namePh:'Your name',button:'Start Their Story'
+    },
+    expedition:{
+      name:'Blind Expedition',card:'Women only',cardImg:'photo-1767708330030-a9f78d1e8b08',
+      hero:'You already know<br>you need this trip.',
+      sub:'Seven choices. No group itinerary. Just you, and what you actually want.',
+      instr:'Be honest. This is the part that shapes everything.',
+      steps:[
+        {q:'Deep wilderness, or culture, art and the pulse of a city?',pole:'A',
+         a:['photo-1567710145156-9e5bc95bc430','Deep wilderness','Raw landscape, nothing between you and it'],
+         b:['photo-1563000215-e31a8ddcb2d0','Culture and the city','Art, streets, the pulse of a place']},
+        {q:'Physical challenge and movement, or rest, restoration and stillness?',pole:'A',
+         a:['photo-1621531518034-94ecf4778186','Challenge and movement','Legs burning, mind clear'],
+         b:['photo-1445307806294-bff7f67ff225','Rest and stillness','Nowhere to be, no one to answer']},
+        {q:'Solo in a group, or shared everything?',pole:null,
+         a:['photo-1608051640145-10f4127517cc','Solo in a group','Your own pace, your own space'],
+         b:['photo-1696627958251-775068a8ddbc','Shared everything','Meals, discoveries, late nights']},
+        {q:'Luxury that feels earned, or luxury that simply exists?',pole:null,
+         a:['photo-1607672390383-aa666b4761ea','Luxury that feels earned','The view you walked to'],
+         b:['photo-1787143061724-21dbe51822bf','Luxury that simply exists','No justification needed']},
+        {q:'A trip that pushes you, or one that returns you to yourself?',pole:'A',
+         a:['photo-1507034589631-9433cc6bc453','A trip that pushes you','The edge, and a little past it'],
+         b:['photo-1522075782449-e45a34f1ddfb','A trip that returns you','Back to who you are']},
+        {q:'Guided and held, or free and unscripted?',pole:null,
+         a:['photo-1629185752152-fe65698ddee4','Guided and held','Someone else carries the plan'],
+         b:['photo-1543920926-96c2e719d762','Free and unscripted','Turn left because you feel like it']},
+        {q:'A journey about the destination, or about who you become along the way?',pole:'A',
+         a:['photo-1767708330030-a9f78d1e8b08','The destination','A place that stops you'],
+         b:['photo-1579017308347-e53e0d2fc5e9','Who you become','The pages you write on the way']}
+      ],
+      closing:{
+        A:"You don't travel to rest. You travel to remember what you're capable of. We'll build an expedition that meets you there.",
+        B:"The best trips for women aren't about escaping your life. They're about remembering who you are outside of it. We know exactly where to take you.",
+        split:"The women who travel best aren't looking for one thing. They want all of it, and so do we. We'll design something that holds the full range of who you are."},
+      formLabel:'This is where your Expedition begins.',
+      formSub:"Fill in your details. We'll send you our Expedition Questionnaire, and Chiara will reach out personally within 24 hours. From here, we take care of everything.",
+      namePh:'Your name',button:'Claim My Spot'
+    }
+  };
+  var ORDER=['honeymoon','family','legacy','expedition'];
+  /* trip keys the backend and Sheet already use ('escape' = family) */
+  var KEY={honeymoon:'honeymoon',family:'escape',legacy:'legacy',expedition:'expedition'};
+  var RESULT_LABEL={A:'Wild and open',B:'Refined and curated',split:'Both'};
+
+  var $=function(id){return document.getElementById(id)};
+  var params=new URLSearchParams(location.search);
+  var SRC=(params.get('src')||params.get('utm_source')||'').slice(0,60);
+  var product=null, values=[], touched=[], current=0;
+
+  function track(name,data){try{gtag('event',name,Object.assign({journey:product||'none',source:SRC||'direct'},data||{}))}catch(e){}}
+  function show(id){['bej-select','bej-intro','bej-final'].forEach(function(s){$(s).classList.toggle('show',s===id)});
+    document.querySelectorAll('#bej .step').forEach(function(s){s.classList.remove('show')});
+    $('bej-progress').classList.toggle('on',false);}
+
+  /* selector cards */
+  ORDER.forEach(function(k){
+    var p=P[k],b=document.createElement('button');b.className='card';b.type='button';
+    b.innerHTML='<img src="'+U(p.cardImg,500,660)+'" alt="" loading="lazy"><span class="ct"><span class="cn" style="display:block">'+p.name+'</span><span class="cs">'+p.card+'</span></span>';
+    b.addEventListener('click',function(){pick(k)});$('bej-cards').appendChild(b);
+  });
+
+  function pick(k){
+    product=k;var p=P[k];
+    $('bej-i-eyebrow').textContent=p.name;$('bej-i-hero').innerHTML=p.hero;
+    $('bej-i-sub').textContent=p.sub;$('bej-i-instr').textContent=p.instr;
+    build();show('bej-intro');track('journey_select');
+  }
+
+  function build(){
+    var p=P[product],wrap=$('bej-steps'),prog=$('bej-progress');
+    wrap.innerHTML='';prog.innerHTML='';values=p.steps.map(function(){return 50});touched=p.steps.map(function(){return false});
+    p.steps.forEach(function(s,i){
+      var d=document.createElement('div');d.className='pdot';d.id='pdot-'+i;prog.appendChild(d);
+      var el=document.createElement('section');el.className='screen step';el.id='step-'+i;el.setAttribute('aria-label','Choice '+(i+1)+' of '+p.steps.length);
+      el.innerHTML=
+        '<div class="step-q">'+s.q+'</div>'+
+        '<div class="pair">'+
+          '<div class="half a" id="ha-'+i+'"><img src="'+U(s.a[0])+'" alt="" '+(i>1?'loading="lazy"':'')+'><div class="half-caption"><div class="half-label">'+s.a[1]+'</div><div class="half-sub">'+s.a[2]+'</div></div></div>'+
+          '<div class="divider" id="dv-'+i+'"></div>'+
+          '<div class="half b" id="hb-'+i+'"><img src="'+U(s.b[0])+'" alt="" '+(i>1?'loading="lazy"':'')+'><div class="half-caption"><div class="half-label">'+s.b[1]+'</div><div class="half-sub">'+s.b[2]+'</div></div></div>'+
+        '</div>'+
+        '<div class="controls">'+
+          '<div class="readout"><span><span class="arr">&#9650; </span><b id="ra-'+i+'">50</b>%<span class="lbl"> '+s.a[1]+'</span></span><span class="mid" id="rm-'+i+'">Drag to lean</span><span><span class="lbl">'+s.b[1]+' </span><b id="rb-'+i+'">50</b>%<span class="arr"> &#9660;</span></span></div>'+
+          '<input type="range" min="0" max="100" step="5" value="50" class="be-range" id="rg-'+i+'" aria-label="'+s.a[1]+' or '+s.b[1]+'" aria-valuetext="50 percent each">'+
+          '<div class="nav"><button class="link" type="button" id="bk-'+i+'">'+(i===0?'Back':'Previous')+'</button>'+
+          '<button class="btn" type="button" id="nx-'+i+'">'+(i===p.steps.length-1?'See what it says':'Next')+'</button></div>'+
+        '</div>';
+      wrap.appendChild(el);
+      var rg=el.querySelector('#rg-'+i);
+      rg.addEventListener('input',function(){touched[i]=true;reflect(i)});
+      el.querySelector('#nx-'+i).addEventListener('click',function(){next(i)});
+      el.querySelector('#bk-'+i).addEventListener('click',function(){i===0?show('bej-intro'):go(i-1)});
+    });
+  }
+
+  function reflect(i){
+    var v=Number($('rg-'+i).value);values[i]=v;
+    var mobile=window.matchMedia('(max-width:600px)').matches;
+    $('ha-'+i).style.flexBasis=(100-v)+'%';$('hb-'+i).style.flexBasis=v+'%';
+    var dv=$('dv-'+i);if(mobile){dv.style.left='';dv.style.top=(100-v)+'%'}else{dv.style.top='';dv.style.left=(100-v)+'%'}
+    $('ha-'+i).classList.toggle('lead',v<45);$('ha-'+i).classList.toggle('fade',v>55);
+    $('hb-'+i).classList.toggle('lead',v>55);$('hb-'+i).classList.toggle('fade',v<45);
+    $('ra-'+i).textContent=100-v;$('rb-'+i).textContent=v;
+    $('rm-'+i).textContent=!touched[i]&&v===50?'Drag to lean':(v===50?'Both, equally':'');
+    $('rg-'+i).setAttribute('aria-valuetext',(100-v)+' percent '+P[product].steps[i].a[1]+', '+v+' percent '+P[product].steps[i].b[1]);
+  }
+
+  function go(i){
+    current=i;show(null);$('bej-progress').classList.add('on');
+    $('step-'+i).classList.add('show');
+    for(var k=0;k<values.length;k++){$('pdot-'+k).className='pdot'+(k<i?' done':k===i?' current':'')}
+    reflect(i);
+  }
+  function next(i){
+    track('journey_step',{step:i+1,lean:values[i],moved:touched[i]});
+    if(i<values.length-1){go(i+1)}else{finish()}
+  }
+
+  function score(){
+    var p=P[product],t=0,n=0;
+    p.steps.forEach(function(s,i){if(!s.pole)return;var lean=50-values[i];t+=(s.pole==='A'?lean:-lean);n++});
+    var avg=n?t/n:0;return avg>=12?'A':(avg<=-12?'B':'split');
+  }
+  var result='split';
+  function finish(){
+    var p=P[product];result=score();
+    $('bej-closing').textContent=p.closing[result];
+    $('bej-f-label').textContent=p.formLabel;$('bej-f-sub').textContent=p.formSub;
+    $('bej-name').placeholder=p.namePh;$('bej-submit').textContent=p.button;
+    show('bej-final');track('journey_complete',{result:result});
+  }
+
+  $('bej-begin').addEventListener('click',function(){go(0);track('journey_start')});
+  $('bej-change').addEventListener('click',function(){show('bej-select')});
+  $('bej-back-final').addEventListener('click',function(){go(values.length-1)});
+  window.addEventListener('resize',function(){if(product&&$('step-'+current)&&$('step-'+current).classList.contains('show'))reflect(current)});
+
+  /* form: one POST, honest about failure */
+  var form=$('bej-form'),btn=$('bej-submit'),err=$('bej-err'),sent=false;
+  function fail(msg){btn.disabled=false;btn.textContent=P[product].button;err.innerHTML=msg;err.classList.add('show')}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();if(sent)return;err.classList.remove('show');
+    var name=form.name.value.trim(),email=form.email.value.trim();
+    if(!name){fail('Please add your name.');form.name.focus();return}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){fail('Please check your email address.');form.email.focus();return}
+    if(!form.consent.checked){fail('Please tick the box so we can contact you.');return}
+    sent=true;btn.disabled=true;btn.textContent='Sending…';
+    var p=P[product],now=new Date();
+    /* JSON body in the shape the Apps Script backend reads (doPost parses e.postData.contents).
+       text/plain keeps it a simple request: no CORS preflight, and the JSON reply is readable. */
+    var data={action:'profile',id:'j_'+now.getTime(),timestamp:now.toISOString(),
+      tripType:KEY[product],product:p.name,name:name,email:email,phone:form.phone.value.trim(),
+      travellers:'',duration:'',experienceType:p.name+': '+RESULT_LABEL[result],
+      topTags:[RESULT_LABEL[result]],closing:p.closing[result],
+      spectrum:p.steps.map(function(s,i){return {left:s.a[1],right:s.b[1],pct:100-values[i]}}),
+      axes:values,source:SRC||'direct',page:document.referrer||location.href,consent:'yes',tool:'visual-journey-v2'};
+    /* slow network: say so, but never re-enable the button while the first request is still in flight */
+    var timer=setTimeout(function(){err.innerHTML='Still sending. If nothing happens, write to us at <a href="mailto:'+CONTACT+'">'+CONTACT+'</a>.';err.classList.add('show')},15000);
+    function ok(){clearTimeout(timer);err.classList.remove('show');$('bej-formwrap').style.display='none';$('bej-confirm').classList.add('show');track('generate_lead',{result:result})}
+    function bad(){clearTimeout(timer);sent=false;track('lead_error');fail('We couldn\'t send your details. Please try again, or write to us at <a href="mailto:'+CONTACT+'">'+CONTACT+'</a>.')}
+    fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
+      .then(function(r){return r.json()})
+      .then(function(j){j&&j.success?ok():bad()})
+      .catch(bad);
+  });
+
+  /* deep link: ?product=family skips the selector */
+  var pre=(params.get('product')||'').toLowerCase();
+  if(P[pre]){pick(pre)}
+})();
+</script>
+</body>
+</html>
