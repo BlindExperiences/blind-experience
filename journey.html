@@ -12,7 +12,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Your Journey | Blind Experiences</title>
 <meta name="robots" content="noindex">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{--bk:#080808;--wh:#f8f5f0;--gold:#c9a96e;--mid:rgba(248,245,240,.55);--line:rgba(248,245,240,.18)}
   html,body{height:100%;background:var(--bk)}
-  #bej{background:var(--bk);color:var(--wh);font-family:'Montserrat',sans-serif;font-weight:300;min-height:100vh;height:100%;position:relative;overflow:hidden;-webkit-font-smoothing:antialiased}
+  #bej{background:var(--bk);color:var(--wh);font-family:'Montserrat',sans-serif;font-weight:300;height:100vh;height:100dvh;position:relative;overflow:hidden;-webkit-font-smoothing:antialiased}
   #bej button{font-family:inherit}
   #bej .screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .6s ease}
   #bej .screen.show{opacity:1;pointer-events:auto}
@@ -109,20 +109,30 @@
   }
   #bej .readout .arr{display:none}
   @media(max-width:600px){
-    #bej .pair{flex-direction:column;margin-bottom:132px}
+    #bej .pair{flex-direction:column;margin-bottom:calc(132px + env(safe-area-inset-bottom))}
     #bej .divider{left:0 !important;right:0;top:50%;bottom:auto;width:auto;height:1px;transform:translateY(-50%)}
     #bej .half-caption{bottom:auto;top:50%;transform:translateY(-50%)}
     #bej .half.a .half-caption{top:58%}
-    #bej .controls{padding:0 20px 18px;background:var(--bk);height:132px}
+    #bej .controls{padding:0 20px calc(18px + env(safe-area-inset-bottom));background:var(--bk);height:calc(132px + env(safe-area-inset-bottom))}
+    #bej .step-q{padding-top:40px;font-size:1.2rem;padding-left:1.2rem;padding-right:1.2rem}
     #bej .readout{padding-top:.9rem;font-size:.7rem}
     #bej .readout .lbl{display:none}
     #bej .readout .arr{display:inline}
   }
+  #bej .xbtn{display:none;position:absolute;top:8px;right:8px;z-index:60;width:40px;height:40px;align-items:center;justify-content:center;color:rgba(248,245,240,.75);font-size:1.5rem;line-height:1;text-decoration:none;background:none;border:none;cursor:pointer}
+  #bej.solo .xbtn{display:flex}
+  #bej.solo .progress{padding-right:56px}
+  #bej .home{display:none;margin-top:1.6rem}
+  #bej.solo .home{display:inline-block}
+  #bej .opened{display:none;margin-top:1.2rem;font-size:.72rem;line-height:1.6;color:var(--mid)}
+  #bej .opened.show{display:block}
+  #bej .opened a{color:var(--wh)}
   @media (prefers-reduced-motion:reduce){#bej *{transition:none !important;animation:none !important}}
 </style>
 </head>
 <body>
 <div id="bej">
+  <button class="xbtn" id="bej-x" type="button" aria-label="Close and return to Blind Experiences">&times;</button>
   <div class="progress" id="bej-progress" aria-hidden="true"></div>
 
   <!-- 1. who is this for -->
@@ -131,6 +141,7 @@
     <h1>The Less You Know,<br>the More You Feel.</h1>
     <div class="subhead">Seven choices, made with your eyes. Who is this journey for?</div>
     <div class="cards" id="bej-cards"></div>
+    <div class="opened" id="bej-opened" role="status"></div>
   </section>
 
   <!-- 2. product intro -->
@@ -167,6 +178,7 @@
       <div class="confirm" id="bej-confirm" aria-live="polite">
         <div class="confirm-line">Something is taking shape&hellip;</div>
         <div class="confirm-sub">We will be in touch within 24 hours. In the meantime, check your inbox for the next step.</div>
+        <button class="link home" type="button" id="bej-home">Return to Blind Experiences</button>
       </div>
     </div>
   </section>
@@ -335,6 +347,24 @@
   var params=new URLSearchParams(location.search);
   var SRC=(params.get('src')||params.get('utm_source')||'').slice(0,60);
   var product=null, values=[], touched=[], current=0;
+  var SITE='https://www.blindexperiences.com';
+  var framed=(function(){try{return window.self!==window.top}catch(e){return true}})();
+  var small=function(){return window.matchMedia('(max-width:760px)').matches};
+  if(!framed)document.getElementById('bej').classList.add('solo');
+  /* inside the Wix embed on a phone the frame is taller than the screen,
+     so the journey opens on its own, full screen */
+  function fullUrl(k){return location.origin+location.pathname+'?product='+k+'&src='+encodeURIComponent(SRC||'website')}
+  function breakOut(k){
+    var url=fullUrl(k);
+    try{window.top.location.href=url;return true}catch(e){}
+    var w=null;try{w=window.open(url,'_blank')}catch(e){}
+    if(w){$('bej-opened').innerHTML='Your journey has opened full screen in a new tab. <a href="'+url+'" target="_blank" rel="noopener">Open it again</a>';$('bej-opened').classList.add('show');return true}
+    return false;
+  }
+  function leave(){
+    if(window.opener){try{window.close()}catch(e){}}
+    var r=document.referrer;location.href=(r&&/blindexperiences\.com/.test(r))?r:SITE;
+  }
 
   function track(name,data){try{gtag('event',name,Object.assign({journey:product||'none',source:SRC||'direct'},data||{}))}catch(e){}}
   function show(id){['bej-select','bej-intro','bej-final'].forEach(function(s){$(s).classList.toggle('show',s===id)});
@@ -348,7 +378,8 @@
     b.addEventListener('click',function(){pick(k)});$('bej-cards').appendChild(b);
   });
 
-  function pick(k){
+  function pick(k,auto){
+    if(!auto&&framed&&small()){track('journey_fullscreen',{journey:k});if(breakOut(k))return}
     product=k;var p=P[k];
     $('bej-i-eyebrow').textContent=p.name;$('bej-i-hero').innerHTML=p.hero;
     $('bej-i-sub').textContent=p.sub;$('bej-i-instr').textContent=p.instr;
@@ -419,7 +450,10 @@
     show('bej-final');track('journey_complete',{result:result});
   }
 
-  $('bej-begin').addEventListener('click',function(){go(0);track('journey_start')});
+  $('bej-begin').addEventListener('click',function(){
+    if(framed&&small()){track('journey_fullscreen');if(breakOut(product))return}
+    go(0);track('journey_start')});
+  $('bej-x').addEventListener('click',leave);$('bej-home').addEventListener('click',leave);
   $('bej-change').addEventListener('click',function(){show('bej-select')});
   $('bej-back-final').addEventListener('click',function(){go(values.length-1)});
   window.addEventListener('resize',function(){if(product&&$('step-'+current)&&$('step-'+current).classList.contains('show'))reflect(current)});
@@ -455,7 +489,7 @@
 
   /* deep link: ?product=family skips the selector */
   var pre=(params.get('product')||'').toLowerCase();
-  if(P[pre]){pick(pre)}
+  if(P[pre]){pick(pre,true)}
 })();
 </script>
 </body>
