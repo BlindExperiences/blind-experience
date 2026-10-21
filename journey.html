@@ -100,6 +100,8 @@
   #bej .confirm{display:none}
   #bej .confirm.show{display:block;animation:bejFade 1s ease}
   @keyframes bejFade{from{opacity:0}to{opacity:1}}
+  #bej .confirm-img{display:block;width:100%;max-width:420px;height:clamp(150px,34vh,260px);object-fit:cover;margin:0 auto 1.6rem;border:1px solid var(--line)}
+  #bej .confirm-img[hidden]{display:none}
   #bej .confirm-line{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.6rem,4vw,2.3rem);margin-bottom:1rem}
   #bej .confirm-sub{font-size:.82rem;color:var(--mid);letter-spacing:.04em;line-height:1.7;max-width:360px;margin:0 auto}
 
@@ -198,6 +200,7 @@
         <button class="link" id="bej-back-final" style="margin-top:1rem">Back to the last choice</button>
       </div>
       <div class="confirm" id="bej-confirm" aria-live="polite">
+        <img class="confirm-img" id="bej-confirm-img" alt="Sealed Blind Experiences envelopes" hidden>
         <div class="confirm-line">Something is taking shape&hellip;</div>
         <div class="confirm-sub">We will be in touch within 24 hours. In the meantime, check your inbox for the next step.</div>
         <button class="link home" type="button" id="bej-home">Return to Blind Experiences</button>
@@ -226,22 +229,22 @@
          b:['photo-1743465832721-208d5b2e4609','Refined elegance','Crafted, considered, seamless']},
         {q:'Complete solitude, or a world to discover together?',pole:'A',
          a:['photo-1756155160750-42354f02c1b7','Complete solitude','Just the two of you, nothing else'],
-         b:['photo-1556019947-8695cb3d4e81','A world to discover','Markets, language, belonging']},
+         b:['photo-1759843541277-14651600026c','A world to discover','Markets, language, belonging']},
         {q:'Stillness and slow mornings, or movement and new places?',pole:'A',
          a:['photo-1744629903542-58d64a47c468','Stillness, slow mornings','Coffee cooling, time stretching'],
          b:['photo-1514509353532-1419c0935d72','New places every day','Out before the world wakes']},
         {q:'Close to the ground, or elevated luxury?',pole:'A',
-         a:['photo-1578589303256-5675a36857c8','Close to the ground','Tents, treehouses, remote lodges'],
-         b:['photo-1517407480684-1fbac65ad9a4','Elevated luxury','Suites, private pools, white linen']},
+         a:['photo-1582880421648-a7154a8c99c1','Close to the ground','Tents, treehouses, remote lodges'],
+         b:['photo-1728049006339-1cc328a28ab0','Elevated luxury','Suites, private pools, white linen']},
         {q:'Eating where the locals eat, or tables that take months to book?',pole:null,
-         a:['photo-1533587517351-4dd0ecf4f9f9','Where the locals eat','Hidden, honest, alive'],
-         b:['photo-1696580436068-f19c26850e8b','Tables months ahead','The reservation that defines a trip']},
+         a:['photo-1768162126000-b6060d02f4bb','Where the locals eat','Hidden, honest, alive'],
+         b:['photo-1627941433145-3ca08bb930f5','Tables months ahead','The reservation that defines a trip']},
         {q:'Guided and curated, or wandering and unscripted?',pole:'B',
          a:['photo-1565687363630-7a81809a199c','Guided and curated','Someone who knows, leading'],
-         b:['photo-1518877593221-1f28583780b4','Wandering, unscripted','Getting beautifully lost']},
+         b:['photo-1768318386605-0ffabd142007','Wandering, unscripted','Getting beautifully lost']},
         {q:'A trip that challenges you, or one that restores you?',pole:null,
-         a:['photo-1517462035531-76bc910a6903','A trip that challenges','The edge of your comfort zone'],
-         b:['photo-1762792049230-fd56cd6a6fb2','A trip that restores','Returned to yourselves']}
+         a:['photo-1788425773254-4ec242711c52','A trip that challenges','The edge of your comfort zone'],
+         b:['photo-1756765176405-6ec6db878a6c','A trip that restores','Returned to yourselves']}
       ],
       closing:{
         A:"You don't honeymoon to escape the world. You honeymoon to finally arrive in it, together. Blind Experiences will find the place that feels like it was waiting for you.",
@@ -249,7 +252,7 @@
         split:"The best trips don't ask you to choose between comfort and wonder. We build honeymoons that hold both."},
       formLabel:'This is where your Blind Honeymoon begins.',
       formSub:"Fill in your details. We'll send you our Honeymoon Questionnaire, and Chiara will reach out personally within 24 hours. From here, we take care of everything.",
-      namePh:'Your names',button:'Start Our Story'
+      namePh:'Your names',button:'Start Our Story',confirmImg:'assets/confirm-honeymoon.jpg'
     },
     family:{
       name:'Blind Family',card:'Parents and children',cardImg:'photo-1503431153573-96e959f4d9b7',
@@ -265,7 +268,7 @@
          b:['photo-1778382500405-9bc201fe9bf1','New places every day','Faces pressed to the window']},
         {q:'Kids leading the way, or parents curating the magic?',pole:'A',
          a:['photo-1489702932289-406b7782113c','Kids leading the way','They choose, you follow'],
-         b:['photo-1640622302099-f10b18de7b16','Parents curating the magic','Every moment quietly arranged']},
+         b:['photo-1516546453174-5e1098a4b4af','Parents curating the magic','Every moment quietly arranged']},
         {q:'Wild and off grid, or comfortable and well appointed?',pole:'A',
          a:['photo-1769817535563-f6d28b47e758','Wild and off grid','Tents, campfire, no signal'],
          b:['photo-1752769041812-d956228c1e81','Comfortable and well appointed','A pool, a terrace, ease']},
@@ -273,7 +276,7 @@
          a:['photo-1716172935868-b23591a7876b','Adventure and movement','Paddles, trails, tired legs'],
          b:['photo-1656734314197-a2c774ef8a97','Downtime and play','Sand, water, no schedule']},
         {q:'Shared discovery, or everyone their own moment?',pole:null,
-         a:['photo-1781484845125-b768cec037f3','Shared discovery','Seeing it for the first time, together'],
+         a:['photo-1767708235741-782b4459e1fa','Shared discovery','Seeing it for the first time, together'],
          b:['photo-1764139134764-e3b60a9ae11c','Everyone their own moment','Space to wander off and come back']},
         {q:'A holiday you planned, or a surprise none of you will forget?',pole:null,
          a:['photo-1502301197179-65228ab57f78','A holiday you planned','Every detail, decided by you'],
@@ -282,16 +285,16 @@
       closing:{
         A:"The best family memories aren't made in comfort zones. They're made at the edge of one, together. We'll find the place that makes your family feel alive.",
         B:"Families who travel well don't just go places. They come back closer. We'll plan a trip that gives you all something to talk about for years.",
-        split:"Every family is different. That's exactly why we don't use templates. Tell us who you are, and we'll build something entirely yours."},
-      formLabel:"This is where your family's Blind Family Experience begins.",
+        split:"No two families travel the same way. Tell us who yours is, and we'll build something no one else could have."},
+      formLabel:'This is where your Blind Family begins.',
       formSub:"Fill in your details. We'll send you our Family Questionnaire, and Chiara will reach out personally within 24 hours. From here, we take care of everything, including the secret.",
-      namePh:'Your name',button:'Start Our Story'
+      namePh:'Your name',button:'Start Our Story',confirmImg:'assets/confirm-envelopes.jpg'
     },
     legacy:{
       name:'Blind Legacy',card:'One adult, one child',cardImg:'photo-1753164725369-23a8c8190922',
       hero:'The Less You Know,<br>the More You Feel.',
       sub:'Some trips you take. Some trips you give. This one does both.',
-      instr:"It's a balance, not a battle.",
+      instr:'Choose with them in mind.',
       steps:[
         {q:'Wide open nature, or living, breathing cities?',pole:null,
          a:['photo-1778307016143-f7392f611f75','Wide open nature','Space and sky, scale that makes you gasp'],
@@ -301,15 +304,15 @@
          b:['photo-1753164725369-23a8c8190922','Cultural wonder','Artisans, markets, stories']},
         {q:'Moving fast and seeing everything, or going deep and staying longer?',pole:null,
          a:['photo-1770543774556-0cd76a19e120','Moving fast','A window seat, the world rushing past'],
-         b:['photo-1496464749978-589a1f20b1e3','Going deep','One place, truly known']},
+         b:['photo-1782680722647-378ad338f833','Going deep','One place, truly known']},
         {q:'Luxury and comfort, or raw and immersive?',pole:'B',
          a:['photo-1574744918163-6cef6f4a31b0','Luxury and comfort','Something exceptional, for the first time'],
          b:['photo-1674230316788-d9c8b92f0d63','Raw and immersive','Tents, firelight, roughing it together']},
         {q:'Guided and curated, or wandering and discovering together?',pole:null,
          a:['photo-1777659261156-ddb58e9b2699','Guided and curated','Someone who knows, handing it over'],
-         b:['photo-1544164559-90f4302d5142','Wandering together','Slightly lost, finding it yourselves']},
+         b:['photo-1706059923470-513f39627980','Wandering together','Slightly lost, finding it yourselves']},
         {q:'Connecting with local people, or private time just the two of you?',pole:null,
-         a:['photo-1781637700475-fc9f61b47530','Local people and places','A real exchange, across age and culture'],
+         a:['photo-1765658641449-626ec2e810b0','Local people and places','A real exchange, across age and culture'],
          b:['photo-1765445736608-b6dbbc216cdf','Just the two of you','No one else in frame']},
         {q:'A trip that challenges and stretches them, or one that enchants and delights them?',pole:'A',
          a:['photo-1763735134912-3b18dedd2713','Challenge','Tired, proud, looking out'],
@@ -321,7 +324,7 @@
         split:"The best Legacy trips hold two things at once: the child's wonder and the adult's wisdom. Our team builds exactly that balance, for both of you."},
       formLabel:'This is where your Blind Legacy begins.',
       formSub:"Fill in your details. We'll send you our Legacy Questionnaire, and our team will be in touch personally within 24 hours. From here, we take care of everything.",
-      namePh:'Your name',button:'Start Their Story'
+      namePh:'Your name',button:'Start Their Story',confirmImg:'assets/confirm-envelopes.jpg'
     },
     expedition:{
       name:'Blind Expedition',card:'Women only',cardImg:'photo-1767708330030-a9f78d1e8b08',
@@ -336,7 +339,7 @@
          a:['photo-1621531518034-94ecf4778186','Challenge and movement','Legs burning, mind clear'],
          b:['photo-1445307806294-bff7f67ff225','Rest and stillness','Nowhere to be, no one to answer']},
         {q:'Solo in a group, or shared everything?',pole:null,
-         a:['photo-1608051640145-10f4127517cc','Solo in a group','Your own pace, your own space'],
+         a:['photo-1536625979259-edbae645c7c3','Solo in a group','Your own pace, your own space'],
          b:['photo-1696627958251-775068a8ddbc','Shared everything','Meals, discoveries, late nights']},
         {q:'Luxury that feels earned, or luxury that simply exists?',pole:null,
          a:['photo-1607672390383-aa666b4761ea','Luxury that feels earned','The view you walked to'],
@@ -357,7 +360,7 @@
         split:"The women who travel best aren't looking for one thing. They want all of it, and so do we. We'll design something that holds the full range of who you are."},
       formLabel:'This is where your Expedition begins.',
       formSub:"Fill in your details. We'll send you our Expedition Questionnaire, and Chiara will reach out personally within 24 hours. From here, we take care of everything.",
-      namePh:'Your name',button:'Claim My Spot'
+      namePh:'Your name',button:'Claim My Spot',confirmImg:'assets/confirm-expedition.jpg'
     }
   };
   var ORDER=['honeymoon','family','legacy','expedition'];
@@ -469,6 +472,7 @@
     $('bej-closing').textContent=p.closing[result];
     $('bej-f-label').textContent=p.formLabel;$('bej-f-sub').textContent=p.formSub;
     $('bej-name').placeholder=p.namePh;$('bej-submit').textContent=p.button;
+    var ci=$('bej-confirm-img');if(p.confirmImg){ci.src=p.confirmImg;ci.hidden=false}else{ci.hidden=true}
     show('bej-final');track('journey_complete',{result:result});
   }
 
